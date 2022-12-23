@@ -6,7 +6,6 @@
  * @flow strict-local
  */
 
-import { Viro3DObject, ViroARImageMarker, ViroARScene, ViroARSceneNavigator, ViroBox, ViroLightingEnvironment, ViroMaterials, ViroNode, ViroQuad, ViroSphere, ViroSpotLight, ViroText } from '@viro-community/react-viro';
 import React, { useState } from 'react';
 import {Node} from 'react';
 import { Image, Platform, TouchableHighlight } from 'react-native';
@@ -84,57 +83,8 @@ const Section = ({children, title}): Node => {
 /*https://drive.google.com/uc?export=download&id=15dD5osi5nqez01JWih9nwrx6_5y0ypqY*/
 /*https://drive.google.com/uc?export=download&id=1d2DSnsyvHBbHmRUFKbA770S5QqR_JNuJ*/
 
-const firstscene = () => {
-  return <ViroARScene style={styles.arView}>
 
-  <ViroText text={"Hello world"} scale={[.5, .5, .5]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />
-  <ViroSpotLight
-            innerAngle={5}
-            outerAngle={45}
-            direction={[0,-1,-.2]}
-            position={[0, 3, 0]}
-            color="#ffffff"
-            castsShadow={true}
-            influenceBitMask={2}
-            shadowMapSize={2048}
-            shadowNearZ={2}
-            shadowFarZ={5}
-            shadowOpacity={.7} />
-  <ViroBox position={[0, -.5, -1]}
-    animation={{name: "rotate", run: true, loop: true}}
-    scale={[.3, .5, .01]} materials={["grid"]} />
-  <ViroARImageMarker >
-    <ViroNode scale={[1, 1, 1]} transformBehaviors={["billboardY"]}>
-      <ViroSphere  materials={["blue_sphere"]}
-        heightSegmentCount={20} widthSegmentCount={20} radius={.03}
-        position={[-.2, .25, 0]}
-        shadowCastingBitMask={0} />
-
-      <ViroSphere materials={["blue_sphere"]}
-        heightSegmentCount={20} widthSegmentCount={20} radius={.03}
-        position={[-.1, .25, 0]}
-        shadowCastingBitMask={0} />
-
-      <ViroSphere  materials={["blue_sphere"]}
-        heightSegmentCount={20} widthSegmentCount={20} radius={.03}
-        position={[0, .25, 0]}
-        shadowCastingBitMask={0} />
-
-      <ViroSphere  materials={["blue_sphere"]}
-        heightSegmentCount={20} widthSegmentCount={20} radius={.03}
-        position={[.1, .25, 0]}
-        shadowCastingBitMask={0} />
-
-      <ViroSphere  materials={["blue_sphere"]}
-        heightSegmentCount={20} widthSegmentCount={20} radius={.03}
-        position={[.2, .25, 0]}
-        shadowCastingBitMask={0}/>
-    </ViroNode>
-  </ViroARImageMarker>
-  </ViroARScene>
-}
-
-const App = () => {
+const App = (): Node => {
   const isDarkMode = useColorScheme() === 'dark';
   const [place, setPlace] = useState(true);
   const backgroundStyle = {
@@ -146,13 +96,7 @@ const App = () => {
        <Text style={styles.item}>Try permissions</Text>
         <Button title="request permissions" onPress={requestCameraPermission} />
         
-      <ViroARSceneNavigator
-        initialScene={{
-          scene: firstscene
-        }}
-      >
       
-      </ViroARSceneNavigator>
       
       <View style={styles.footer}>
         <TouchableHighlight style={styles.button}>
@@ -172,15 +116,7 @@ const App = () => {
     </View>
   );
 };
-ViroMaterials.createMaterials({
-  blue_sphere: {
-    lightingModel: "PBR",
-    diffuseColor: "rgb(19,42,143)",
-  },
-  grid: {
-    diffuseTexture: require('./res/default.jpg'),
-  },
-});
+
 const styles = StyleSheet.create({
   sectionContainer: {
     marginTop: 32,
