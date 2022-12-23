@@ -6,7 +6,6 @@
  * @flow strict-local
  */
 
-import { Viro3DObject, ViroARImageMarker, ViroARScene, ViroARSceneNavigator, ViroARTrackingTargets, ViroBox, ViroLightingEnvironment, ViroMaterials, ViroNode, ViroQuad, ViroSphere, ViroSpotLight, ViroText } from '@viro-community/react-viro';
 import React, { useState } from 'react';
 import {Node} from 'react';
 import { Image, Platform, TouchableHighlight, TouchableOpacity } from 'react-native';
