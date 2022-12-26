@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import { Viro3DObject, ViroARImageMarker, ViroARScene, ViroARSceneNavigator, ViroBox, ViroLightingEnvironment, ViroMaterials, ViroNode, ViroQuad, ViroSphere, ViroSpotLight, ViroText } from '@viro-community/react-viro';
+import { Viro3DObject, ViroARImageMarker, ViroARScene, ViroARSceneNavigator, ViroARTrackingTargets, ViroBox, ViroLightingEnvironment, ViroMaterials, ViroNode, ViroQuad, ViroSphere, ViroSpotLight, ViroText } from '@viro-community/react-viro';
 import React, { useState } from 'react';
 import {Node} from 'react';
 import { Image, Platform, TouchableHighlight } from 'react-native';
@@ -85,10 +85,10 @@ const Section = ({children, title}): Node => {
 /*https://drive.google.com/uc?export=download&id=1d2DSnsyvHBbHmRUFKbA770S5QqR_JNuJ*/
 
 const firstscene = () => {
-  return <ViroARScene style={styles.arView}>
+  return <ViroARScene>
 
-  <ViroText text={"Hello world"} scale={[.5, .5, .5]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />
-  <ViroSpotLight
+  {/*<ViroText text={"Hello world"} scale={[.5, .5, .5]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />*/}
+  {/*<ViroSpotLight
             innerAngle={5}
             outerAngle={45}
             direction={[0,-1,-.2]}
@@ -99,11 +99,14 @@ const firstscene = () => {
             shadowMapSize={2048}
             shadowNearZ={2}
             shadowFarZ={5}
-            shadowOpacity={.7} />
-  <ViroBox position={[0, -.5, -1]}
+shadowOpacity={.7} />*/}
+  <ViroARImageMarker target={"logo"}>
+  <ViroBox position={[0, 0, 0]}
     animation={{name: "rotate", run: true, loop: true}}
-    scale={[.3, .5, .01]} materials={["grid"]} />
-  <ViroARImageMarker >
+    scale={[.07, .005, .1]} materials={["grid"]} />
+  </ViroARImageMarker>
+  
+  {/*<ViroARImageMarker target={"logo"}>
     <ViroNode scale={[1, 1, 1]} transformBehaviors={["billboardY"]}>
       <ViroSphere  materials={["blue_sphere"]}
         heightSegmentCount={20} widthSegmentCount={20} radius={.03}
@@ -130,7 +133,7 @@ const firstscene = () => {
         position={[.2, .25, 0]}
         shadowCastingBitMask={0}/>
     </ViroNode>
-  </ViroARImageMarker>
+</ViroARImageMarker>*/}
   </ViroARScene>
 }
 
@@ -146,13 +149,18 @@ const App = () => {
        <Text style={styles.item}>Try permissions</Text>
         <Button title="request permissions" onPress={requestCameraPermission} />
         
+      <View style={styles.arView}>
       <ViroARSceneNavigator
+        autofocus={true}
+        style={styles.arView}
         initialScene={{
           scene: firstscene
         }}
       >
       
       </ViroARSceneNavigator>
+      </View>
+      
       
       <View style={styles.footer}>
         <TouchableHighlight style={styles.button}>
@@ -227,6 +235,16 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     textAlign: 'center',
   },
+});
+
+
+ViroARTrackingTargets.createTargets({
+  logo : {
+    source : require('./res/default.jpg'),
+    orientation : "Up",
+    physicalWidth : 0.08, // real world width in meters
+    type: 'Image'
+  }
 });
 
 export default App;
