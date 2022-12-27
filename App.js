@@ -63,8 +63,45 @@ const requestCameraPermission = async () => {
   }
 };
 
+<<<<<<< HEAD
 
 const App = () => {
+=======
+const Section = ({children, title}): Node => {
+  const isDarkMode = useColorScheme() === 'dark';
+  return (
+    
+    <View style={styles.sectionContainer}>
+      <Text style={styles.item}>Try permissions</Text>
+        <Button title="request permissions" onPress={requestCameraPermission} />
+      
+      <Text
+        style={[
+          styles.sectionTitle,
+          {
+            color: isDarkMode ? Colors.white : Colors.black,
+          },
+        ]}>
+        {title}
+      </Text>
+      <Text
+        style={[
+          styles.sectionDescription,
+          {
+            color: isDarkMode ? Colors.light : Colors.dark,
+          },
+        ]}>
+        {children}
+      </Text>
+    </View>
+  );
+};
+/*https://drive.google.com/uc?export=download&id=15dD5osi5nqez01JWih9nwrx6_5y0ypqY*/
+/*https://drive.google.com/uc?export=download&id=1d2DSnsyvHBbHmRUFKbA770S5QqR_JNuJ*/
+
+
+const App = (): Node => {
+>>>>>>> 1c0410e65ffc99d8dc8c071f7f6fda32a934d67e
   const isDarkMode = useColorScheme() === 'dark';
   const [place, setPlace] = useState(true);
   const backgroundStyle = {
@@ -74,6 +111,7 @@ const App = () => {
   return (
     
     <View style={styles.container}>
+<<<<<<< HEAD
       <HeaderRNE containerStyle={styles.header}
         statusBarProps={{backgroundColor:'#1D5C63'}}
         leftComponent={<TouchableOpacity onPress={() => {/*MENU CODE HEDRE*/}}>
@@ -96,9 +134,81 @@ const App = () => {
       </Stack.Navigator>
     </NavigationContainer>
       
+=======
+       <Text style={styles.item}>Try permissions</Text>
+        <Button title="request permissions" onPress={requestCameraPermission} />
+        
+      
+      
+      <View style={styles.footer}>
+        <TouchableHighlight style={styles.button}>
+          <Text>Take Snapshot</Text>
+        </TouchableHighlight>
+        <Button title="aaa"  style={styles.button} onPress={() => {
+          setPlace(false);
+          console.log("HERE")
+        }}/>
+        <TouchableHighlight  style={styles.button}>
+          <Text>Reset</Text>
+        </TouchableHighlight>
+        <TouchableHighlight  style={styles.button}>
+          <Text>Rotate</Text>
+        </TouchableHighlight>
+      </View>
+>>>>>>> 1c0410e65ffc99d8dc8c071f7f6fda32a934d67e
     </View>
   );
 };
 
+<<<<<<< HEAD
+=======
+const styles = StyleSheet.create({
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  sectionDescription: {
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400',
+  },
+  highlight: {
+    fontWeight: '700',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  arView: {
+    flex: 5,
+  },
+  footer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexWrap: 'nowrap',
+    flexDirection: 'row',
+    backgroundColor: 'white',
+  },
+  button: {
+    borderColor: 'black',
+    borderWidth: 1,
+    backgroundColor: 'red',
+    padding: 10,
+    margin: 5,
+  },
+  helloWorldTextStyle: {
+    fontFamily: 'Arial',
+    fontSize: 30,
+    color: '#ffffff',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+  },
+});
+>>>>>>> 1c0410e65ffc99d8dc8c071f7f6fda32a934d67e
 
 export default App;
