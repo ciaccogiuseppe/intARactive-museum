@@ -9,8 +9,11 @@
 import { Viro3DObject, ViroARImageMarker, ViroARScene, ViroARSceneNavigator, ViroARTrackingTargets, ViroBox, ViroLightingEnvironment, ViroMaterials, ViroNode, ViroQuad, ViroSphere, ViroSpotLight, ViroText } from '@viro-community/react-viro';
 import React, { useState } from 'react';
 import {Node} from 'react';
-import { Image, Platform, TouchableHighlight } from 'react-native';
+import { Image, Platform, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { Button, PermissionsAndroid} from "react-native";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+const Stack = createNativeStackNavigator();
+
 import {
   SafeAreaView,
   ScrollView,
@@ -20,14 +23,23 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import styles from './Globals/Styles'
 
 import {
   Colors,
   DebugInstructions,
-  Header,
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import { Header as HeaderRNE, HeaderProps} from '@rneui/themed';
+import Icon from 'react-native-vector-icons/Entypo';
+import ARComponent from './Components/AR/ARComponent';
+import { NavigationContainer } from '@react-navigation/native';
+import HomePage from './Components/HomePage/HomePage';
+import Tips from './Components/Tips/Tips';
+import Quiz from './Components/Quiz/Quiz';
+import Achievements from './Components/Achievements/Achievements';
+
 const requestCameraPermission = async () => {
   try {
     const granted = await PermissionsAndroid.request(
@@ -52,90 +64,6 @@ const requestCameraPermission = async () => {
   }
 };
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    
-    <View style={styles.sectionContainer}>
-      <Text style={styles.item}>Try permissions</Text>
-        <Button title="request permissions" onPress={requestCameraPermission} />
-      
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
-/*https://drive.google.com/uc?export=download&id=15dD5osi5nqez01JWih9nwrx6_5y0ypqY*/
-/*https://drive.google.com/uc?export=download&id=1d2DSnsyvHBbHmRUFKbA770S5QqR_JNuJ*/
-
-const firstscene = () => {
-  return <ViroARScene>
-
-  {/*<ViroText text={"Hello world"} scale={[.5, .5, .5]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />*/}
-  {/*<ViroSpotLight
-            innerAngle={5}
-            outerAngle={45}
-            direction={[0,-1,-.2]}
-            position={[0, 3, 0]}
-            color="#ffffff"
-            castsShadow={true}
-            influenceBitMask={2}
-            shadowMapSize={2048}
-            shadowNearZ={2}
-            shadowFarZ={5}
-shadowOpacity={.7} />*/}
-  <ViroARImageMarker target={"logo"}>
-  <ViroBox position={[0, 0, 0]}
-    animation={{name: "rotate", run: true, loop: true}}
-    scale={[.07, .005, .1]} materials={["grid"]} />
-  </ViroARImageMarker>
-  
-  {/*<ViroARImageMarker target={"logo"}>
-    <ViroNode scale={[1, 1, 1]} transformBehaviors={["billboardY"]}>
-      <ViroSphere  materials={["blue_sphere"]}
-        heightSegmentCount={20} widthSegmentCount={20} radius={.03}
-        position={[-.2, .25, 0]}
-        shadowCastingBitMask={0} />
-
-      <ViroSphere materials={["blue_sphere"]}
-        heightSegmentCount={20} widthSegmentCount={20} radius={.03}
-        position={[-.1, .25, 0]}
-        shadowCastingBitMask={0} />
-
-      <ViroSphere  materials={["blue_sphere"]}
-        heightSegmentCount={20} widthSegmentCount={20} radius={.03}
-        position={[0, .25, 0]}
-        shadowCastingBitMask={0} />
-
-      <ViroSphere  materials={["blue_sphere"]}
-        heightSegmentCount={20} widthSegmentCount={20} radius={.03}
-        position={[.1, .25, 0]}
-        shadowCastingBitMask={0} />
-
-      <ViroSphere  materials={["blue_sphere"]}
-        heightSegmentCount={20} widthSegmentCount={20} radius={.03}
-        position={[.2, .25, 0]}
-        shadowCastingBitMask={0}/>
-    </ViroNode>
-</ViroARImageMarker>*/}
-  </ViroARScene>
-}
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -145,106 +73,33 @@ const App = () => {
   };
   
   return (
+    
     <View style={styles.container}>
-       <Text style={styles.item}>Try permissions</Text>
-        <Button title="request permissions" onPress={requestCameraPermission} />
-        
-      <View style={styles.arView}>
-      <ViroARSceneNavigator
-        autofocus={true}
-        style={styles.arView}
-        initialScene={{
-          scene: firstscene
-        }}
-      >
+      <HeaderRNE containerStyle={styles.header}
+        statusBarProps={{backgroundColor:'#1D5C63'}}
+        leftComponent={<TouchableOpacity onPress={() => {/*MENU CODE HEDRE*/}}>
+        <Icon name="menu" color="white" size={28} />
+      </TouchableOpacity>}
+        centerComponent={{ text: 'intARactive museum', style: { color: 'white',
+        fontSize: 22,
+        fontWeight: 'bold'} }}
+      />
+
+      {/*<Button title="request permissions" onPress={requestCameraPermission} />*/}
+      {/*<ARComponent/>*/}
+      <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomePage} options={{headerShown: false, animation:'fade'}} />
+        <Stack.Screen name="Tips" component={Tips} options={{headerShown: false, animation:'fade'}} />
+        <Stack.Screen name="Quiz" component={Quiz} options={{headerShown: false, animation:'fade'}} />
+        <Stack.Screen name="Achievements" component={Achievements} options={{headerShown: false, animation:'fade'}} />
+        <Stack.Screen name="ARObject" component={ARComponent} options={{headerShown: false, animation:'fade'}} />
+      </Stack.Navigator>
+    </NavigationContainer>
       
-      </ViroARSceneNavigator>
-      </View>
-      
-      
-      <View style={styles.footer}>
-        <TouchableHighlight style={styles.button}>
-          <Text>Take Snapshot</Text>
-        </TouchableHighlight>
-        <Button title="aaa"  style={styles.button} onPress={() => {
-          setPlace(false);
-          console.log("HERE")
-        }}/>
-        <TouchableHighlight  style={styles.button}>
-          <Text>Reset</Text>
-        </TouchableHighlight>
-        <TouchableHighlight  style={styles.button}>
-          <Text>Rotate</Text>
-        </TouchableHighlight>
-      </View>
     </View>
   );
 };
-ViroMaterials.createMaterials({
-  blue_sphere: {
-    lightingModel: "PBR",
-    diffuseColor: "rgb(19,42,143)",
-  },
-  grid: {
-    diffuseTexture: require('./res/default.jpg'),
-  },
-});
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  arView: {
-    flex: 5,
-  },
-  footer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexWrap: 'nowrap',
-    flexDirection: 'row',
-    backgroundColor: 'white',
-  },
-  button: {
-    borderColor: 'black',
-    borderWidth: 1,
-    backgroundColor: 'red',
-    padding: 10,
-    margin: 5,
-  },
-  helloWorldTextStyle: {
-    fontFamily: 'Arial',
-    fontSize: 30,
-    color: '#ffffff',
-    textAlignVertical: 'center',
-    textAlign: 'center',
-  },
-});
 
-
-ViroARTrackingTargets.createTargets({
-  logo : {
-    source : require('./res/default.jpg'),
-    orientation : "Up",
-    physicalWidth : 0.08, // real world width in meters
-    type: 'Image'
-  }
-});
 
 export default App;
