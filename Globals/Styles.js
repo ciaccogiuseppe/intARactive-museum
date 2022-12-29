@@ -93,6 +93,19 @@ const styles = StyleSheet.create({
       backgroundColor: palette[2],
       padding: 10,
       margin: 5,
+    },
+    descriptionTextStyle: {
+      fontFamily: 'Arial',
+      fontSize: 100,
+      color: '#ffffff',
+      textAlignVertical: 'center',
+      textAlign: 'center',
+      textShadowColor: '#000000',
+      textShadowRadius: 200,
+      textShadowOffset: {
+        height: 112,
+        width: 112
+      }
     }
   });
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ViroARImageMarker, ViroARScene, ViroARSceneNavigator, ViroARTrackingTargets, ViroBox, ViroCamera, ViroMaterials, ViroSphere, ViroSpotLight } from "@viro-community/react-viro"
+import { ViroARImageMarker, ViroARScene, ViroARSceneNavigator, ViroARTrackingTargets, ViroBox, ViroCamera, ViroMaterials, ViroOmniLight, ViroSphere, ViroSpotLight, ViroText } from "@viro-community/react-viro"
 import styles from "../../Globals/Styles"
 import Icon from 'react-native-vector-icons/Entypo';
 import {
@@ -14,9 +14,12 @@ import {
 const firstscene = (props) => {
     const [color, setColor] = useState("white_sphere");
     const [color2, setColor2] = useState("white_sphere");
+    const [visible, setVisible] = useState(false);
+    const [visible2, setVisible2] = useState(false);
     return <ViroARScene ref={props.arSceneNavigator.viroAppProps.ref}>
   
     {/*<ViroText text={"Hello world"} scale={[.5, .5, .5]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />*/}
+    
 
     <ViroARImageMarker 
       target={"logo"}>
@@ -24,17 +27,28 @@ const firstscene = (props) => {
       animation={{name: "rotate", run: true, loop: true}}
       scale={[.075, .005, .1]}
       materials={["grid"]}
-      
       />
-    {/*<ViroSphere
+  
+    <ViroText
+      text={"Flower"}
       scale={[0.005, 0.005, 0.005]}
-      position={[0, 0, 0.002]}
-      opacity={0.2}
-      materials={[color]}
-    shadowCastingBitMask={0}/>*/}
+      position={[0, 0.0065, -0.005]}
+      rotation={[-90, 0, 0]}
+      outerStroke={{type:"Outline", width:8, color:'rgba(0,0,0, 0.5)'}}   
+      style={styles.descriptionTextStyle}
+      visible={visible}/>
+
+    <ViroText
+      text={"Background"}
+      scale={[0.005, 0.005, 0.005]}
+      position={[-0.02, 0.0065, -0.035]}
+      rotation={[-90, 0, 0]}
+      outerStroke={{type:"Outline", width:8, color:'rgba(0,0,0, 0.5)'}}   
+      style={styles.descriptionTextStyle}
+      visible={visible2}/>
 
     <ViroSphere
-      scale={[0.010, 0.010, 0.010]}
+      scale={[0.003, 0.003, 0.003]}
       position={[0, 0.02, 0]}
       opacity={0.2}
       materials={[color]}
@@ -43,14 +57,16 @@ const firstscene = (props) => {
         console.log(a.valueOf());
         if (a.valueOf() == true){
           setColor("blue_sphere");
+          setVisible(true);
         }
         else{
           setColor("white_sphere");
+          setVisible(false);
         }
       }}/>
 
     <ViroSphere
-      scale={[0.008, 0.008, 0.008]}
+      scale={[0.003, 0.003, 0.003]}
       position={[-0.02, 0.02, -0.03]}
       opacity={0.2}
       materials={[color2]}
@@ -59,9 +75,11 @@ const firstscene = (props) => {
         console.log(a.valueOf());
         if (a.valueOf() == true){
           setColor2("blue_sphere");
+          setVisible2(true);
         }
         else{
           setColor2("white_sphere");
+          setVisible2(false);
         }
       }}/>
     </ViroARImageMarker>
@@ -151,10 +169,10 @@ const ARComponent = (props) => {
 
 ViroMaterials.createMaterials({
     blue_sphere: {
-      diffuseTexture: require('../../res/white.png'),
+      diffuseTexture: require('../../res/blue.png'),
     },
     white_sphere: {
-      diffuseTexture: require('../../res/blue.png'),
+      diffuseTexture: require('../../res/white.png'),
     },
     grid: {
       diffuseTexture: require('../../res/default.jpg'),
