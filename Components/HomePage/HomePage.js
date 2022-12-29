@@ -13,6 +13,9 @@ const HomePage = ({navigation}) => {
     <TouchableHighlight style={{...styles.button, width:"40%", alignSelf:'center'}} onPress={() => navigation.navigate('ARObject')}>
         <Text style={{color:'white', alignSelf:'center'}}>AR scene</Text>
     </TouchableHighlight>
+    <TouchableHighlight style={{...styles.button, width:"40%", alignSelf:'center'}} onPress={() => navigation.navigate('Quiz')}>
+        <Text style={{color:'white', alignSelf:'center'}}>Quiz</Text>
+    </TouchableHighlight>
     </>
 }
 

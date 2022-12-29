@@ -69,6 +69,22 @@ const styles = StyleSheet.create({
       backgroundColor: palette[2],
       padding: 10,
       margin: 5,
+    },
+    buttonDisabled: {
+      borderColor: 'black',
+      borderWidth: 0,
+      borderRadius: 10,
+      backgroundColor: "#A9A9A9",
+      padding: 10,
+      margin: 5,
+    },
+    quizSelected: {
+      borderColor: 'black',
+      borderWidth: 0,
+      borderRadius: 10,
+      backgroundColor: "#6082B6",
+      padding: 10,
+      margin: 5,
     }
   });
 
