@@ -1,5 +1,5 @@
-import React from 'react';
-import { ViroARImageMarker, ViroARScene, ViroARSceneNavigator, ViroARTrackingTargets, ViroBox, ViroMaterials } from "@viro-community/react-viro"
+import React, { useState } from 'react';
+import { ViroARImageMarker, ViroARScene, ViroARSceneNavigator, ViroARTrackingTargets, ViroBox, ViroCamera, ViroMaterials, ViroSphere, ViroSpotLight } from "@viro-community/react-viro"
 import styles from "../../Globals/Styles"
 import Icon from 'react-native-vector-icons/Entypo';
 import {
@@ -7,28 +7,63 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     View,
+    Image
   } from 'react-native';
-const firstscene = () => {
-    return <ViroARScene>
+
+  
+const firstscene = (props) => {
+    const [color, setColor] = useState("white_sphere");
+    const [color2, setColor2] = useState("white_sphere");
+    return <ViroARScene ref={props.arSceneNavigator.viroAppProps.ref}>
   
     {/*<ViroText text={"Hello world"} scale={[.5, .5, .5]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />*/}
-    {/*<ViroSpotLight
-              innerAngle={5}
-              outerAngle={45}
-              direction={[0,-1,-.2]}
-              position={[0, 3, 0]}
-              color="#ffffff"
-              castsShadow={true}
-              influenceBitMask={2}
-              shadowMapSize={2048}
-              shadowNearZ={2}
-              shadowFarZ={5}
-  shadowOpacity={.7} />*/}
-    <ViroARImageMarker target={"logo"}>
+
+    <ViroARImageMarker 
+      target={"logo"}>
     <ViroBox position={[0, 0, 0]}
       animation={{name: "rotate", run: true, loop: true}}
       scale={[.075, .005, .1]}
-      materials={["grid"]} />
+      materials={["grid"]}
+      
+      />
+    {/*<ViroSphere
+      scale={[0.005, 0.005, 0.005]}
+      position={[0, 0, 0.002]}
+      opacity={0.2}
+      materials={[color]}
+    shadowCastingBitMask={0}/>*/}
+
+    <ViroSphere
+      scale={[0.010, 0.010, 0.010]}
+      position={[0, 0.02, 0]}
+      opacity={0.2}
+      materials={[color]}
+      shadowCastingBitMask={0}
+      onHover={a => {
+        console.log(a.valueOf());
+        if (a.valueOf() == true){
+          setColor("blue_sphere");
+        }
+        else{
+          setColor("white_sphere");
+        }
+      }}/>
+
+    <ViroSphere
+      scale={[0.008, 0.008, 0.008]}
+      position={[-0.02, 0.02, -0.03]}
+      opacity={0.2}
+      materials={[color2]}
+      shadowCastingBitMask={0}
+      onHover={a => {
+        console.log(a.valueOf());
+        if (a.valueOf() == true){
+          setColor2("blue_sphere");
+        }
+        else{
+          setColor2("white_sphere");
+        }
+      }}/>
     </ViroARImageMarker>
     
     {/*<ViroARImageMarker target={"logo"}>
@@ -63,12 +98,20 @@ const firstscene = () => {
   }
 
 const ARComponent = (props) => {
+  const [position, setPosition] = useState([0,0,0]);
+  const ref = React.createRef();
     return(
         <>
         <View style={styles.arView}>
         <ViroARSceneNavigator
+          on
+          ref={ref}
           autofocus={true}
           style={styles.arView}
+          viroAppProps={{
+            position: position,
+            setPosition: setPosition,
+            ref: ref}}
           initialScene={{
             scene: firstscene
           }}
@@ -76,11 +119,16 @@ const ARComponent = (props) => {
         
         </ViroARSceneNavigator>
         </View>
-        <View style={styles.secondHeader}>
+        {/*<View style={styles.crosshair}/>*/}
+        <View pointerEvents='box-none' style={styles.secondHeader}>
             <Text style={{color:"white", margin:4, fontSize: 16, alignSelf:'center', position:'absolute'}}>Van Gogh - Sunflowers</Text>
-            <TouchableOpacity onPress={() => {/*MENU CODE HEDRE*/}} style={{marginLeft: 'auto', margin: 6}}>
+            <TouchableOpacity onPress={() => {}} style={{marginLeft: 'auto', margin: 6}}>
             <Icon  name="circle-with-cross" type="Entypo" color="white" size={30} />
             </TouchableOpacity>
+        </View>
+
+        <View style={styles.viewFinder}>
+            <Image source={require('../../res/viewfinder.png')} style={{width: 60,   height: 60}}/>
         </View>
 
         <View style={styles.footer}>
@@ -93,6 +141,9 @@ const ARComponent = (props) => {
             <TouchableHighlight  style={styles.button}>
             <Text>Rotate</Text>
             </TouchableHighlight>
+            <Text>{position[0].toFixed(2)} </Text>
+            <Text>{position[1].toFixed(2)} </Text>
+            <Text>{position[2].toFixed(2)} </Text>
         </View>
         </>)
     
@@ -100,8 +151,10 @@ const ARComponent = (props) => {
 
 ViroMaterials.createMaterials({
     blue_sphere: {
-      lightingModel: "PBR",
-      diffuseColor: "rgb(19,42,143)",
+      diffuseTexture: require('../../res/white.png'),
+    },
+    white_sphere: {
+      diffuseTexture: require('../../res/blue.png'),
     },
     grid: {
       diffuseTexture: require('../../res/default.jpg'),

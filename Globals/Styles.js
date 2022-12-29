@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
 const palette = [
     "#EDE6DB",
@@ -61,6 +61,30 @@ const styles = StyleSheet.create({
         opacity: 0.8,
         width:'100%',
         height:47
+      },
+      crosshair: {
+        position: 'absolute',
+        top: (Dimensions.get('window').height / 2 - 10),
+        left: (Dimensions.get('window').width / 2 - 10),
+        width: 20,
+        height: 20,
+        borderRadius: 15,
+        borderWidth: 1,
+        backgroundColor: 'grey',
+    },  
+    viewFinder: {
+        flex: 1,
+        top: 0,
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignContent: 'center',
+        flexWrap: 'nowrap',
+        flexDirection: 'row',
+        position: 'absolute',
+        opacity: 0.4,
+        height:640,
+        width:'100%',
       },
     button: {
       borderColor: 'black',
