@@ -37,6 +37,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import HomePage from './Components/HomePage/HomePage';
 import Tips from './Components/Tips/Tips';
 import Quiz from './Components/Quiz/Quiz';
+import QuizHistory from './Components/QuizHistory/QuizHistory';
 import Achievements from './Components/Achievements/Achievements';
 
 const requestCameraPermission = async () => {
@@ -91,6 +92,7 @@ const App = () => {
         <Stack.Screen name="Home" component={HomePage} options={{headerShown: false, animation:'fade'}} />
         <Stack.Screen name="Tips" component={Tips} options={{headerShown: false, animation:'fade'}} />
         <Stack.Screen name="Quiz" component={Quiz} options={{headerShown: false, animation:'fade'}} />
+        <Stack.Screen name="QuizHistory" component={QuizHistory} options={{headerShown: false, animation:'fade'}} />
         <Stack.Screen name="Achievements" component={Achievements} options={{headerShown: false, animation:'fade'}} />
         <Stack.Screen name="ARObject" component={ARComponent} options={{headerShown: false, animation:'fade'}} />
       </Stack.Navigator>

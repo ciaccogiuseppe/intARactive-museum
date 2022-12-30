@@ -3,54 +3,13 @@ import { View, Image } from 'react-native';
 import { Button, Text } from "@rneui/themed";
 import { TouchableHighlight } from "react-native";
 import styles from "../../Globals/Styles";
-
-  const questionsSunflowers = [
-  {
-  question: "Why are these flowers called 'sunflowers'?",
-  options: [
-  "Because they turn toward the sun",
-  "Because they only grow during summer",
-  "Because their shape resembles the sun",
-  "Because they only appear when sunny"
-  ],
-  solution: 0,
-  explanation: "The name sunflower comes from the Greek helios 'sun' and anthos 'flower'. Sunflower got its name because the flowers turn toward the sun."
-  },
-    {
-    question: "How long can sunflowers live?",
-    options: [
-    "From 10 to 20 days",
-    "From 8 to 12 weeks",
-    "From 5 to 6 months",
-    "About a year"
-    ],
-    solution: 1,
-    explanation: "They are tough plants that offer 8-12 weeks of flowers. Rather than sending up a giant flower head, like many of the annual types, these sunflowers form clumps with many smaller flowers."
-    },
-      {
-      question: "How do sunflowers use energy?",
-      options: [
-      "Generating oxygen and biomass",
-      "Creating free electricity",
-      "Generating the sunflower fruit",
-      "Warming the surrounding environment"
-      ],
-      solution: 0,
-      explanation: "Flowers capture sunlight during the day, they transform the sunlight energy into chemical energy and by consuming carbon dioxide and water, they generate biomass and oxygen. Many flowers also follow the sun in order to maximize their exposure to the light that sustains their life"
-      }
-  ];
-
-  let givenAnswers = [ // indexes of this array corresponds to that of questions array to keep a mapping without using IDs
-  [],
-  [],
-  [],
-  ];
-
+import { questionsSunflowers, givenAnswersSunflowers } from "./QuestionsAndAnswers";
 
 
 const Quiz = ({navigation}) => {
   const [quizPage, setQuizPage] = useState("Home");
   const [quizNum, setQuizNum] = useState(1);
+  const [answers, setAnswers] = useState([]);
   const [score, setScore] = useState(0);
 
   switch (quizPage) {
@@ -59,8 +18,8 @@ const Quiz = ({navigation}) => {
                                    break;
                                  case "Question":
                                   return <QuizQuestion navigation={navigation} setQuizPage={setQuizPage}
-                                          quizNum={quizNum} setScore={setScore}
-                                          givenAnswers={givenAnswers[quizNum-1]}
+                                          quizNum={quizNum} setScore={setScore} answers={answers} score={score}
+                                          setAnswers={setAnswers}
                                           questionAndAnswers={questionsSunflowers[quizNum-1]}/>
                                    break;
                                  case "Correct":
@@ -70,14 +29,14 @@ const Quiz = ({navigation}) => {
                                    break;
                                  case "Wrong":
                                    return <QuizWrong navigation={navigation} setQuizPage={setQuizPage}
+                                                                             answers={answers}
                                                                              quizNum={quizNum} setQuizNum={setQuizNum}
-                                                                             givenAnswers={givenAnswers[quizNum-1]}
                                                                              questionAndAnswers={questionsSunflowers[quizNum-1]}/>
                                    break;
                                  case "Results":
                                    return <QuizResults navigation={navigation} setQuizPage={setQuizPage}
-                                                  givenAnswers={givenAnswers[quizNum-1]} score={score} setScore={setScore}
-                                                  questionAndAnswers={questionsSunflowers[quizNum-1]}/>
+                                                  setAnswers={setAnswers}
+                                                  givenAnswers={givenAnswersSunflowers} score={score} setScore={setScore}/>
                                    break;
                                  default:
                                    return <QuizHomePage navigation={navigation} setQuizPage={setQuizPage}/>
@@ -155,7 +114,7 @@ return <>
                                                       } else {
                                                       props.setQuizPage("Wrong");
                                                       }
-                                                      props.givenAnswers.push(answerSelected);
+                                                      props.setAnswers(answers => [...answers, answerSelected]);
                                                       setAnswerSelected(-1);
                            }}>
                                <Text style={{color:'white', alignSelf:'center'}}>Confirm</Text>
@@ -221,7 +180,7 @@ return <>
                                Wrong!
                            </Text>
                            <Text style={{color:'black', marginTop:20, alignSelf:'center', fontSize:25}}>
-                                  Your answer: {props.questionAndAnswers.options[props.givenAnswers[props.givenAnswers.length - 1]]}
+                                  Your answer: {props.questionAndAnswers.options[props.answers[props.quizNum - 1]]}
                                   {"\n"}
                                   Correct answer: {props.questionAndAnswers.options[props.questionAndAnswers.solution]}
                            </Text>
@@ -251,6 +210,13 @@ return <>
 
 
 const QuizResults = (props) => {
+                                                      props.givenAnswers.push(
+                                                          {
+                                                             answers: props.answers,
+                                                             date: new Date().toLocaleString().toString(),
+                                                             score: props.score
+                                                          }
+                                                      );
 let resultCommentMessage = "";
 switch (props.score) {
 case 0:
@@ -299,6 +265,7 @@ return <>
                            <TouchableHighlight style={{...styles.button, width:"90%", alignSelf:'center'}} onPress={() => {
                                 props.setQuizPage("Home");
                                 props.setScore(0);
+                                props.setAnswers([]);
                                 }}>
                                <Text style={{color:'white', alignSelf:'center'}}>Back to quiz home page</Text>
                            </TouchableHighlight>
