@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image } from 'react-native';
-import { Button, Text } from "@rneui/themed";
+import { Text } from "@rneui/themed";
 import { TouchableHighlight } from "react-native";
 import styles from "../../Globals/Styles";
+import moment from 'moment';
 import { questionsSunflowers, givenAnswersSunflowers } from "./QuestionsAndAnswers";
 
 
@@ -18,7 +19,7 @@ const Quiz = ({ navigation }) => {
         case "Question":
             return <QuizQuestion navigation={navigation} setQuizPage={setQuizPage}
                 quizNum={quizNum} setScore={setScore} answers={answers} score={score}
-                setAnswers={setAnswers}
+                setAnswers={setAnswers} setQuizNum={setQuizNum}
                 questionAndAnswers={questionsSunflowers[quizNum - 1]} />
         case "CorrectOrWrong":
             return <QuizCorrectOrWrong navigation={navigation} setQuizPage={setQuizPage}
@@ -78,16 +79,48 @@ const QuizQuestion = (props) => {
         )
     }
 
+    <hr />
+
     return <>
         <View style={{ ...styles.secondHeader }}>
             <TouchableHighlight style={{ ...styles.button, width: "20%", alignSelf: 'center' }} onPress={() => props.navigation.navigate('Home')}>
                 <Text style={{ color: 'white', alignSelf: 'center' }}>Home</Text>
             </TouchableHighlight>
             <Text style={{ color: 'white', alignSelf: 'center', fontSize: 30 }}>
-                Quiz - Sunflowers ({props.quizNum})
+                Quiz - Sunflowers
+            </Text>
+            <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, padding: 10 }}
+                onPress={() => {
+                    props.setQuizNum(1);
+                    props.setQuizPage("Home");
+                }}>
+                x
             </Text>
         </View>
 
+        <View style={{ ...styles.breadcrumb }}>
+            <Text style={{ color: props.quizNum == 1 ? 'black' : 'gray', fontSize: 15, paddingRight: 15 }}>
+                Question 1
+            </Text>
+            <Text style={{ color: 'gray', fontSize: 15, paddingRight: 15 }}>
+                &gt;
+            </Text>
+            <Text style={{ color: props.quizNum == 2 ? 'black' : 'gray', fontSize: 15, paddingRight: 15 }}>
+                Question 2
+            </Text>
+            <Text style={{ color: 'gray', fontSize: 15, paddingRight: 15 }}>
+                &gt;
+            </Text>
+            <Text style={{ color: props.quizNum == 3 ? 'black' : 'gray', fontSize: 15, paddingRight: 15 }}>
+                Question 3
+            </Text>
+            <Text style={{ color: 'gray', fontSize: 15, paddingRight: 15 }}>
+                &gt;
+            </Text>
+            <Text style={{ color: 'gray', fontSize: 15 }}>
+                Results
+            </Text>
+        </View>
 
         <Text style={{ color: 'black', marginTop: 100, marginBottom: 30, alignSelf: 'center', fontSize: 30 }}>
             {props.questionAndAnswers.question}
@@ -127,10 +160,40 @@ const QuizCorrectOrWrong = (props) => {
             <Text style={{ color: 'white', alignSelf: 'center', fontSize: 30 }}>
                 Quiz - Sunflowers
             </Text>
+            <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, padding: 10 }}
+                onPress={() => {
+                    props.setQuizNum(1);
+                    props.setQuizPage("Home");
+                }}>
+                x
+            </Text>
         </View>
 
+        <View style={{ ...styles.breadcrumb }}>
+            <Text style={{ color: props.quizNum == 1 ? 'black' : 'gray', fontSize: 15, paddingRight: 15 }}>
+                Question 1
+            </Text>
+            <Text style={{ color: 'gray', fontSize: 15, paddingRight: 15 }}>
+                &gt;
+            </Text>
+            <Text style={{ color: props.quizNum == 2 ? 'black' : 'gray', fontSize: 15, paddingRight: 15 }}>
+                Question 2
+            </Text>
+            <Text style={{ color: 'gray', fontSize: 15, paddingRight: 15 }}>
+                &gt;
+            </Text>
+            <Text style={{ color: props.quizNum == 3 ? 'black' : 'gray', fontSize: 15, paddingRight: 15 }}>
+                Question 3
+            </Text>
+            <Text style={{ color: 'gray', fontSize: 15, paddingRight: 15 }}>
+                &gt;
+            </Text>
+            <Text style={{ color: 'gray', fontSize: 15 }}>
+                Results
+            </Text>
+        </View>
 
-        <Text style={{ color: 'black', marginTop: 50, alignSelf: 'center', fontSize: 40 }}>
+        <Text style={{ color: 'black', marginTop: 80, alignSelf: 'center', fontSize: 40 }}>
             {correct ? "Correct!" : "Wrong!"}
         </Text>
 
@@ -148,7 +211,7 @@ const QuizCorrectOrWrong = (props) => {
         <Text style={{ color: 'black', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
             {props.questionAndAnswers.question}
         </Text>
-        <Text style={{ color: 'black', margin: 20, alignSelf: 'center', fontSize: 25 }}>
+        <Text style={{ color: 'black', margin: 20, alignSelf: 'center', fontSize: 20 }}>
             {props.questionAndAnswers.explanation}
         </Text>
 
@@ -174,9 +237,9 @@ const QuizResults = (props) => {
     props.givenAnswers.push(
         {
             answers: props.answers,
-            date: new Date().toLocaleString().toString(),
+            date: moment().calendar(), 
             score: props.score
-        }
+        } 
     );
     let resultCommentMessage = "";
     switch (props.score) {
@@ -206,8 +269,31 @@ const QuizResults = (props) => {
             </Text>
         </View>
 
+        <View style={{ ...styles.breadcrumb }}>
+            <Text style={{ color: 'gray', fontSize: 15, paddingRight: 15 }}>
+                Question 1
+            </Text>
+            <Text style={{ color: 'gray', fontSize: 15, paddingRight: 15 }}>
+                &gt;
+            </Text>
+            <Text style={{ color: 'gray', fontSize: 15, paddingRight: 15 }}>
+                Question 2
+            </Text>
+            <Text style={{ color: 'gray', fontSize: 15, paddingRight: 15 }}>
+                &gt;
+            </Text>
+            <Text style={{ color: 'gray', fontSize: 15, paddingRight: 15 }}>
+                Question 3
+            </Text>
+            <Text style={{ color: 'gray', fontSize: 15, paddingRight: 15 }}>
+                &gt;
+            </Text>
+            <Text style={{ color: 'black', fontSize: 15 }}>
+                Results
+            </Text>
+        </View>
 
-        <Text style={{ color: 'black', marginTop: 50, alignSelf: 'center', fontSize: 40 }}>
+        <Text style={{ color: 'black', marginTop: 80, alignSelf: 'center', fontSize: 40 }}>
             Quiz result
         </Text>
         <Text style={{ color: 'black', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>

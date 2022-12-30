@@ -80,13 +80,40 @@ const QuizHistoryCorrectOrWrong = (props) => {
             <TouchableHighlight style={{ ...styles.button, width: "20%", alignSelf: 'center' }} onPress={() => props.navigation.navigate('Home')}>
                 <Text style={{ color: 'white', alignSelf: 'center' }}>Home</Text>
             </TouchableHighlight>
-            <Text style={{ color: 'white', alignSelf: 'center', fontSize: 30 }}>
+            <Text style={{ color: 'white', alignSelf: 'center', fontSize: 30, paddingRight: 20 }}>
                 Quiz - Sunflowers
+            </Text>
+            <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, padding: 10 }}
+                onPress={() => {
+                    props.setHistoryNum(1);
+                    props.setHistoryPage("Home");
+                }}>
+                x
             </Text>
         </View>
 
+        <View style={{ ...styles.breadcrumb }}>
+            <Text style={{ color: props.historyNum == 1 ? 'black' : 'gray', fontSize: 15, paddingRight: 15 }}
+                onPress={() => props.setHistoryNum(1)}>
+                Question 1
+            </Text>
+            <Text style={{ color: 'gray', fontSize: 15, paddingRight: 15 }}>
+                &gt;
+            </Text>
+            <Text style={{ color: props.historyNum == 2 ? 'black' : 'gray', fontSize: 15, paddingRight: 15 }}
+                onPress={() => props.setHistoryNum(2)}>
+                Question 2
+            </Text>
+            <Text style={{ color: 'gray', fontSize: 15, paddingRight: 15 }}>
+                &gt;
+            </Text>
+            <Text style={{ color: props.historyNum == 3 ? 'black' : 'gray', fontSize: 15 }}
+                onPress={() => props.setHistoryNum(3)}>
+                Question 3
+            </Text>
+        </View>
 
-        <Text style={{ color: 'black', marginTop: 50, alignSelf: 'center', fontSize: 40 }}>
+        <Text style={{ color: 'black', marginTop: 80, alignSelf: 'center', fontSize: 40 }}>
             {correct ? "Correct!" : "Wrong!"}
         </Text>
 
@@ -104,7 +131,7 @@ const QuizHistoryCorrectOrWrong = (props) => {
         <Text style={{ color: 'black', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
             {props.questionAndAnswers.question}
         </Text>
-        <Text style={{ color: 'black', margin: 20, alignSelf: 'center', fontSize: 25 }}>
+        <Text style={{ color: 'black', margin: 20, alignSelf: 'center', fontSize: 20 }}>
             {props.questionAndAnswers.explanation}
         </Text>
 
