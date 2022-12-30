@@ -6,3 +6,4 @@ Tips: https://github.com/weahforsage/react-native-animated-pagination-dots
 (Tips: https://github.com/dohooo/react-native-reanimated-carousel/)
 Side menu: https://reactnavigation.org/docs/drawer-based-navigation/
 Navigation: https://reactnavigation.org/docs/navigating
+Progress bar: https://callstack.github.io/react-native-paper
