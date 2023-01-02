@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         position: 'absolute',
         opacity: 0.4,
-        height:640,
+        height:665,
         width:'100%',
       },
     button: {
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
       backgroundColor: palette[2],
       padding: 10,
       margin: 5,
+      width:130
     },
     descriptionTextStyle: {
       fontFamily: 'Arial',
