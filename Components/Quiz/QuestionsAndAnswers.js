@@ -42,3 +42,11 @@ export var givenAnswersSunflowers = [];
     //   date: 30/12/2022 10:45
     //   score: 3
     //}
+
+export let quizAnswered = [];
+    // when the user complete a quiz it will contain objects like this:
+    //{
+    //   quizID: 1, 
+    //   correctAnswers: [1,1,0], // 1 if correct, 0 if wrong
+    //   bestScore: 2
+    //}

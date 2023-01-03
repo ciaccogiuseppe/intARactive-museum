@@ -4,14 +4,40 @@ import { Text } from "@rneui/themed";
 import { TouchableHighlight } from "react-native";
 import styles from "../../Globals/Styles";
 import moment from 'moment';
-import { questionsSunflowers, givenAnswersSunflowers } from "./QuestionsAndAnswers";
-
+import { questionsSunflowers, givenAnswersSunflowers, quizAnswered } from "./QuestionsAndAnswers";
+import { updateDone } from '../Achievements/AchievementLists';
 
 const Quiz = ({ navigation }) => {
     const [quizPage, setQuizPage] = useState("Home");
     const [quizNum, setQuizNum] = useState(1);
     const [answers, setAnswers] = useState([]);
     const [score, setScore] = useState(0);
+
+    const updateBest = () => {
+        let correctLocalAnswer = [];
+        for (let i = 0; i < 3; i++) {
+            correctLocalAnswer[i] = (answers[i] == questionsSunflowers[i].solution ? 1 : 0);
+        }
+        if (quizAnswered[0] == null) {
+            quizAnswered[0] = {
+                quizID: 1,
+                correctAnswers: correctLocalAnswer,
+                bestScore: score.valueOf(),
+            };
+            updateDone(quizAnswered[0], 0);
+        } else {
+            let count = 0;
+            let oldScore = quizAnswered[0].bestScore;
+            for (let i = 0; i < 3; i++) {
+                quizAnswered[0].correctAnswers[i] |= correctLocalAnswer[i];
+                count += quizAnswered[0].correctAnswers[i];
+            }
+            if (count > quizAnswered[0].bestScore) {
+                quizAnswered[0].bestScore = count;
+                updateDone(quizAnswered[0], oldScore);
+            }
+        }
+    };
 
     switch (quizPage) {
         case "Home":
@@ -29,7 +55,8 @@ const Quiz = ({ navigation }) => {
         case "Results":
             return <QuizResults navigation={navigation} setQuizPage={setQuizPage}
                 setAnswers={setAnswers} answers={answers}
-                givenAnswers={givenAnswersSunflowers} score={score} setScore={setScore} />
+                givenAnswers={givenAnswersSunflowers} score={score} setScore={setScore}
+                updateBest={updateBest} />
         default:
             return "Should not happen"
     }
@@ -237,10 +264,11 @@ const QuizResults = (props) => {
     props.givenAnswers.push(
         {
             answers: props.answers,
-            date: moment().calendar(), 
+            date: moment().calendar(),
             score: props.score
-        } 
+        }
     );
+    props.updateBest();
     let resultCommentMessage = "";
     switch (props.score) {
         case 0:

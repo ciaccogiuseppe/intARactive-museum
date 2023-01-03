@@ -30,7 +30,7 @@ const themes = {
     twentiethCentury: "900's"
 };
 
-const doneByTheme = {
+let doneByTheme = {
     vanGogh: 48,
     monet: 0,
     friedrich: 0,
@@ -79,7 +79,23 @@ function getNeeded(achievement) {
     return pointPerLevel[index];
 }
 
-const achievementsList = [
+function updateDone(bestAnswers, oldScore) {
+    let updateScore = bestAnswers.bestScore - oldScore;
+    if (bestAnswers.quizID == 1) {
+        if ((doneByTheme.vanGogh < pointPerLevel.enjoyer) && ((doneByTheme.vanGogh + updateScore >= pointPerLevel.enjoyer))) {
+            achievementsList[0].date_obtained = moment().format('MM/DD/YYYY');
+        }
+        if ((doneByTheme.vanGogh < pointPerLevel.fan) && ((doneByTheme.vanGogh + updateScore >= pointPerLevel.fan))) {
+            achievementsList[2].date_obtained = moment().format('MM/DD/YYYY');
+        }
+        if ((doneByTheme.vanGogh < pointPerLevel.expert) && ((doneByTheme.vanGogh + updateScore >= pointPerLevel.expert))) {
+            achievementsList[5].date_obtained = moment().format('MM/DD/YYYY');
+        }
+        doneByTheme.vanGogh += updateScore;
+    }
+}
+
+let achievementsList = [
     {
         id: 1,
         title: "Van Gogh Enjoyer",
@@ -275,4 +291,4 @@ const achievementsList = [
     }
 ];
 
-export { achievementsList, getDone, getNeeded };
+export { achievementsList, getDone, getNeeded, updateDone };
