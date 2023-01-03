@@ -83,7 +83,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         position: 'absolute',
         opacity: 0.4,
-        height:665,
+        height:645,
+        width:'100%',
+      },
+    video: {
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignContent: 'center',
+        flexWrap: 'nowrap',
+        flexDirection: 'row',
+        position: 'absolute',
+        opacity: 1,
+        height:645,
         width:'100%',
       },
     button: {
@@ -108,6 +120,7 @@ const styles = StyleSheet.create({
         width: 112
       }
     }
+    
   });
 
   export default styles;

@@ -12,9 +12,10 @@ const ARSunflowersMain = (props) => {
     const curScene = props.curScene;
     const setNextScene = props.setNextScene;
     const nextScene = props.nextScene;
+    const overlayActive = props.overlayActive;
 
     useEffect(() => {
-        if(curScene != "scene1"){
+        if(curScene.main != "scene1"){
           setColor("white");
           setColor2("white");
           setColor3("white");
@@ -33,7 +34,7 @@ const ARSunflowersMain = (props) => {
         position={[0, 0, 0]}
         animation={{name: "rotate", run: true, loop: true}}
         scale={[.075, .005, .1]}
-        materials={["grid"]}
+        materials={["sunflowers_full"]}
         />
     
       <ViroText
@@ -51,7 +52,7 @@ const ARSunflowersMain = (props) => {
         scale={[0.005, 0.000, 0.005]}
         position={[-0.01, 0.005, -0.0065]}
         animation={{name: "rotate", run: true, loop: true}}
-        materials={["grid3"]}
+        materials={["mglass_icon"]}
         visible={visible}
         />
 
@@ -71,7 +72,7 @@ const ARSunflowersMain = (props) => {
         scale={[0.005, 0.000, 0.005]}
         position={[-0.036, 0.005, -0.0365]}
         animation={{name: "rotate", run: true, loop: true}}
-        materials={["grid3"]}
+        materials={["mglass_icon"]}
         visible={visible2}
         />
 
@@ -90,26 +91,27 @@ const ARSunflowersMain = (props) => {
         scale={[0.005, 0.000, 0.005]}
         position={[-0.0055, 0.005, 0.0175]}
         animation={{name: "rotate", run: true, loop: true}}
-        materials={["grid3"]}
+        materials={["mglass_icon"]}
         visible={visible3}
         />
 
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.005, 0.000, 0.005]}
+        scale={[0.007, 0.000, 0.007]}
         position={[0, 0.02, 0]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={[color]}
         opacity={0.7}
+        visible={!overlayActive}
         onHover={a => {
           if (a.valueOf() == true){
-            setNextScene("scene2") 
+            setNextScene({main:"scene2", inner:""}) 
             setColor("blue");
             setVisible(true);
           }
           else{
-            if(nextScene == "scene2")
-            setNextScene("scene1")
+            if(nextScene.main == "scene2")
+            setNextScene({main:"scene1", inner:""})
             setColor("white");
             setVisible(false);
           }
@@ -118,20 +120,21 @@ const ARSunflowersMain = (props) => {
 
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.005, 0.000, 0.005]}
+        scale={[0.007, 0.000, 0.007]}
         position={[-0.02, 0.02, -0.03]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={[color2]}
         opacity={0.7}
+        visible={!overlayActive}
         onHover={a => {
           if (a.valueOf() == true){
-            setNextScene("scene3")
+            setNextScene({main:"scene3", inner:""})
             setColor2("blue");
             setVisible2(true);              
           }
           else{
-            if(nextScene == "scene3")
-            setNextScene("scene1")
+            if(nextScene.main == "scene3")
+            setNextScene({main:"scene1", inner:""})
             setColor2("white");
             setVisible2(false);
           }
@@ -140,20 +143,21 @@ const ARSunflowersMain = (props) => {
 
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.005, 0.000, 0.005]}
+        scale={[0.007, 0.000, 0.007]}
         position={[0.001, 0.02, 0.024]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={[color3]}
         opacity={0.7}
+        visible={!overlayActive}
         onHover={a => {
           if (a.valueOf() == true){
-            setNextScene("scene4")
+            setNextScene({main:"scene4", inner:""})
             setColor3("blue");
             setVisible3(true);              
           }
           else{
-            if(nextScene == "scene4")
-            setNextScene("scene1")
+            if(nextScene.main == "scene4")
+            setNextScene({main:"scene1", inner:""})
             setColor3("white");
             setVisible3(false);
           }
