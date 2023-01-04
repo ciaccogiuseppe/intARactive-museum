@@ -49,7 +49,7 @@ const Quiz = ({ navigation }) => {
                 questionAndAnswers={questionsSunflowers[quizNum - 1]} />
         case "CorrectOrWrong":
             return <QuizCorrectOrWrong navigation={navigation} setQuizPage={setQuizPage}
-                answers={answers} setScore={setScore}
+                answers={answers} setScore={setScore} setAnswers={setAnswers}
                 quizNum={quizNum} setQuizNum={setQuizNum}
                 questionAndAnswers={questionsSunflowers[quizNum - 1]} />
         case "Results":
@@ -119,6 +119,8 @@ const QuizQuestion = (props) => {
             <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, padding: 10 }}
                 onPress={() => {
                     props.setQuizNum(1);
+                    props.setScore(0);
+                    props.setAnswers([]);
                     props.setQuizPage("Home");
                 }}>
                 x
@@ -190,6 +192,8 @@ const QuizCorrectOrWrong = (props) => {
             <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, padding: 10 }}
                 onPress={() => {
                     props.setQuizNum(1);
+                    props.setScore(0);
+                    props.setAnswers([]);
                     props.setQuizPage("Home");
                 }}>
                 x

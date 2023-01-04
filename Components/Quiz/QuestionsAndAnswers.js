@@ -38,7 +38,7 @@ export const questionsSunflowers = [
 export var givenAnswersSunflowers = [];
     // when the user complete a quiz it will contain objects like this:
     //{
-    //   answers: [0,1,0]
+    //   answers: [0,1,0] // numbers are the indexes of the given questions
     //   date: 30/12/2022 10:45
     //   score: 3
     //}
