@@ -4,7 +4,9 @@ import { TouchableHighlight, View } from "react-native";
 import styles from "../../Globals/Styles";
 import { questionsSunflowers, givenAnswersSunflowers } from "../Quiz/QuestionsAndAnswers";
 
-const QuizHistory = ({ navigation }) => {
+const QuizHistory = (props) => {
+    const { navigation } = props;
+
     const [historyPage, setHistoryPage] = useState("Home");
     const [historyNum, setHistoryNum] = useState(1);
     const [historyId, setHistoryId] = useState(0);
@@ -21,14 +23,14 @@ const QuizHistory = ({ navigation }) => {
                     </Text>
                 </View>
 
-                {givenAnswersSunflowers.length == 0 ?
+                {props.numTakenQuiz == 0 ?
                     <Text style={{ color: 'black', marginTop: 300, alignSelf: 'center', fontSize: 25 }}>
                         You have not completed any quiz yet.
                     </Text> :
                     <CompletedQuizList navigation={navigation} givenAnswers={givenAnswersSunflowers}
-                        setHistoryId={setHistoryId}
+                        setHistoryId={setHistoryId} numTakenQuiz={props.numTakenQuiz}
                         setHistoryPage={setHistoryPage} setHistoryNum={setHistoryNum} historyNum={historyNum} />}
-            </>
+            </> 
             break;
         case "Info":
             return <QuizHistoryCorrectOrWrong navigation={navigation} setHistoryPage={setHistoryPage}
@@ -42,8 +44,9 @@ const QuizHistory = ({ navigation }) => {
 }
 
 const CompletedQuizList = (props) => {
+
     let list = [];
-    for (let i = 0; i < props.givenAnswers.length; ++i) {
+    for (let i = 0; i < props.numTakenQuiz; ++i) {
         list.push(<TouchableHighlight key={i} style={{ ...styles.button, marginTop: i == 0 ? 60 : 0, width: "95%", alignSelf: 'center' }}
             onPress={() => {
                 props.setHistoryPage("Info");

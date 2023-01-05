@@ -13,6 +13,7 @@ import { Button, PermissionsAndroid } from "react-native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem, } from '@react-navigation/drawer';
 import SwitchSelector from 'react-native-switch-selector';
+import { givenAnswersSunflowers } from "./Components/Quiz/QuestionsAndAnswers";
 
 import {
   SafeAreaView,
@@ -134,7 +135,6 @@ const DrawerNavigator = () => {
     }}>
       <Drawer.Screen name="Home" component={HomePage} options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} />
       <Drawer.Screen name="Achievements" component={Achievements} options={{ drawerIcon: IconComponent('trophy', 0), drawerLabel: "Achievements", title: "IntARactive Museum" }} />
-      <Drawer.Screen name="QuizHistory" component={QuizHistory} options={{ drawerIcon: IconComponent('clipboard-list', 0), drawerLabel: "Quiz History", title: "IntARactive Museum" }} />
       <Drawer.Screen name="Tips" component={Tips} options={{ drawerIcon: IconComponent('lightbulb-on-outline', 1), drawerLabel: "Tips", title: "IntARactive Museum" }} />
     </Drawer.Navigator>)
 };
@@ -145,6 +145,7 @@ const DrawerNavigator = () => {
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [place, setPlace] = useState(true);
+  const [numTakenQuiz, setNumTakenQuiz] = useState(0);
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
@@ -159,7 +160,12 @@ const App = () => {
           <Stack.Screen name="Menu" component={DrawerNavigator} options={{ headerShown: false }} />
           <Stack.Screen name="Home" component={HomePage} options={{ headerShown: false, animation: 'fade' }} />
           <Stack.Screen name="Tips" component={Tips} options={{ headerShown: false, animation: 'fade' }} />
-          <Stack.Screen name="Quiz" component={Quiz} options={{ headerShown: false, animation: 'fade' }} />
+          <Stack.Screen name="Quiz" options={{ headerShown: false, animation: 'fade' }}>
+            {(props) => <Quiz {...props} numTakenQuiz={numTakenQuiz} setNumTakenQuiz={setNumTakenQuiz} />}
+          </Stack.Screen>
+          <Stack.Screen name="QuizHistory" options={{ headerShown: false, animation: 'fade' }}>
+            {(props) => <QuizHistory {...props} numTakenQuiz={numTakenQuiz} setNumTakenQuiz={setNumTakenQuiz} />}
+          </Stack.Screen>
           <Stack.Screen name="Achievements" component={Achievements} options={{ headerShown: false, animation: 'fade' }} />
           <Stack.Screen name="ARObject" component={ARComponent} options={{ headerShown: false, animation: 'fade' }} />
         </Stack.Navigator>
