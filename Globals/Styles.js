@@ -39,6 +39,9 @@ const styles = StyleSheet.create({
       flexWrap: 'nowrap',
       flexDirection: 'row',
       backgroundColor: palette[1],
+      position:'absolute',
+      bottom:0,
+      width:"100%"
     },
     header: {
         textAlignVertical: 'center',

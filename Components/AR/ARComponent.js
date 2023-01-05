@@ -25,6 +25,16 @@ import Video from 'react-native-video';
 import VideoPlayer from 'react-native-video-player';
 import { useBackHandler } from '@react-native-community/hooks';
 import KeepAwake from '@sayem314/react-native-keep-awake';
+import { Svg, Text as T2 } from 'react-native-svg';
+import ARWaveWave from './ARWaveWave';
+import ARWaveSignature from './ARWaveSignature';
+import ARWaveBoats from './ARWaveBoats';
+
+const artifactNames = [
+  " - ",
+  "Van Gogh - Sunflowers",
+  "Hokusai - The Great Wave off Kanagawa"
+]
 
 const descriptions = {
   "scene2description1": "With striking yellow petals and a large seed head, sunflowers can easily become the focal point of a room. It's no surprise then, that these vivid blooms have captured the attention of artists over the centuries.",
@@ -68,8 +78,8 @@ In van Gogh’s painting, yellow has been lightened into a tint with white. Mixi
 Mixing yellow with black causes yellow to move closer to blue in the color space. Without applying blue directly to yellow, van Gogh pushed the color closer to blue by applying tints and shades of yellow.`,
 
 "scene4": `Examining the highlight on the vase in “Sunflowers” emphasizes van Gogh’s familiarity with color.
-The highlight on the vase is shifted towards cyan, which is close to the brightest point of cool colors. Relative to yellow, the cyan is actually closer to blue, since subtracting yellow from cyan equals cyan plus blue.
-`
+The highlight on the vase is shifted towards cyan, which is close to the brightest point of cool colors. Relative to yellow, the cyan is actually closer to blue, since subtracting yellow from cyan equals cyan plus blue.`
+
 
 
 }
@@ -78,21 +88,26 @@ const subtitle = {
   "scene1" : `General`,
   "scene2" : `Detail: Flowers`,
   "scene3" : `Detail: Background`,
-  "scene4" : `Detail: Pot`
+  "scene4" : `Detail: Pot`,
+  "scene5" : `Detail: Boats`,
+  "scene6" : `Detail: Signature`,
+  "scene7" : `Detail: Boats`,
 }
-
 const firstscene = (props) => {
-    
     const curScene = props.arSceneNavigator.viroAppProps.curScene;
     const nextScene = props.arSceneNavigator.viroAppProps.nextScene;
     const setNextScene = props.arSceneNavigator.viroAppProps.setNextScene;
     const overlayActive = props.arSceneNavigator.viroAppProps.overlayActive;
-    
-    
+    const curArtifact = props.arSceneNavigator.viroAppProps.curArtifact;
+    const setCurArtifact = props.arSceneNavigator.viroAppProps.setCurArtifact;
 
     return <>
     
-    {curScene.main == "scene1" && <ARSunflowersMain curScene={curScene} setNextScene={setNextScene} nextScene={nextScene} overlayActive={overlayActive}/>}
+    {curScene.main == "scene1" && <ARSunflowersMain 
+      curScene={curScene} setNextScene={setNextScene}
+      nextScene={nextScene} overlayActive={overlayActive}
+      curArtifact={curArtifact} setCurArtifact={setCurArtifact}/>}
+
 
     {curScene.main == "scene2" && <ARSunflowersFlowers curScene={curScene} setNextScene={setNextScene} nextScene={nextScene} overlayActive={overlayActive}/>}
 
@@ -100,10 +115,16 @@ const firstscene = (props) => {
 
     {curScene.main == "scene4" && <ARSunflowersPot curScene={curScene} setNextScene={setNextScene} nextScene={nextScene} overlayActive={overlayActive}/>}
 
+    {curScene.main == "scene5" && <ARWaveBoats curScene={curScene} setNextScene={setNextScene} nextScene={nextScene} overlayActive={overlayActive}/>}
+
+    {curScene.main == "scene6" && <ARWaveSignature curScene={curScene} setNextScene={setNextScene} nextScene={nextScene} overlayActive={overlayActive}/>}
+
+    {curScene.main == "scene7" && <ARWaveWave curScene={curScene} setNextScene={setNextScene} nextScene={nextScene} overlayActive={overlayActive}/>}
+
     </>
   }
 
-const ARComponent = (props) => {
+const ARComponent = ({navigation}) => {
 
   const [position, setPosition] = useState([0,0,0]);
   const [percentage, setPercentage] = useState(2);
@@ -111,6 +132,7 @@ const ARComponent = (props) => {
   const [nextScene, setNextScene] = useState({main:"scene1", inner:""});
   const [curScene, setCurScene] = useState({main:"scene1", inner:""});
   const [overlayVisible, setOverlayVisible] = useState(false);
+  const [curArtifact, setCurArtifact] = useState(0);
   const [panelProps, setPanelProps] = useState({
     fullWidth: true,
     openLarge: false,
@@ -185,7 +207,6 @@ const ARComponent = (props) => {
         <>
         <View style={styles.arView}>
         <ViroARSceneNavigator
-          on
           ref={ref}
           autofocus={true}
           style={styles.arView}
@@ -198,7 +219,9 @@ const ARComponent = (props) => {
             curScene: curScene,
             nextScene: nextScene,
             setNextScene: setNextScene,
-            overlayActive:isPanelActive}
+            overlayActive:isPanelActive,
+            curArtifact: curArtifact,
+            setCurArtifact: setCurArtifact}
             }
           initialScene={{
             scene: firstscene
@@ -210,10 +233,26 @@ const ARComponent = (props) => {
         {/*<View style={styles.crosshair}/>*/}
         
         
-
         <View pointerEvents='box-none' style={styles.viewFinder}>
             <Image source={require('../../res/viewfinder.png')} style={{width: 50,   height: 50}}/>
         </View>
+        
+        {curArtifact == 0 &&<View pointerEvents='box-none' style={{...styles.viewFinder, height:740, opacity:0.6}}>
+        <Svg height="60" width="200">
+          <T2
+            fill="white"
+            stroke="black"
+            fontSize="40"
+            scale={0.5}
+            x="200"
+            y="60"
+            textAnchor="middle"
+            style={{fontFamily: 'Arial'}}
+          >
+            Focus an artifact
+          </T2>
+        </Svg>
+        </View>}
 
         {showBar && <View pointerEvents='box-none' style={{...styles.viewFinder, height:750}}>
           <ProgressBar
@@ -225,7 +264,7 @@ const ARComponent = (props) => {
         </View>}
         
         
-        <View style={styles.footer}>
+        {curArtifact > 0 &&<View style={styles.footer}>
 
             <TouchableHighlight style={styles.button}>
             <Text style={{alignSelf:"center"}} >Quiz</Text>
@@ -233,7 +272,7 @@ const ARComponent = (props) => {
             <TouchableHighlight style={styles.button} onPress={() => openPanel()}>
             <Text style={{alignSelf:"center"}}> Description</Text>
             </TouchableHighlight>
-        </View>
+        </View>}
         <SwipeablePanel {...panelProps} isActive={isPanelActive}>
         <Text style={{color:"black", alignSelf:"center", fontSize:25, fontWeight:"bold"}}>Sunflowers</Text>
         <Text style={{color:"black", alignSelf:"center", fontSize:17}}>Vincent Van Gogh 1889</Text>
@@ -288,16 +327,19 @@ const ARComponent = (props) => {
                 top: '33%'}
               }}
         /></>}
-        <View pointerEvents='box-none' style={styles.secondHeader}>
-            {curScene.main !== 'scene1' && 
-            <TouchableOpacity onPress={() => {getBack();}}>
-              <Icon2  style={{margin:4}} name="arrow-back" type="Ionicons" color="white" size={30} />
-            </TouchableOpacity>}
-            <Text style={{color:"white", margin:4, fontSize: 16, alignSelf:'center', position:'absolute'}}>Van Gogh - Sunflowers</Text>
-            <TouchableOpacity onPress={() => {}} style={{marginLeft: 'auto', margin: 6}}>
-              <Icon  name="circle-with-cross" type="Entypo" color="white" size={30} />
-            </TouchableOpacity>
-        </View>
+        
+        {curArtifact > 0 &&
+          <View pointerEvents='box-none' style={styles.secondHeader}>
+          {curScene.main !== 'scene1' && 
+          <TouchableOpacity onPress={() => {getBack();}}>
+            <Icon2  style={{margin:4}} name="arrow-back" type="Ionicons" color="white" size={30} />
+          </TouchableOpacity>}
+          <Text style={{color:"white", margin:4, fontSize: 16, alignSelf:'center', position:'absolute'}}>{artifactNames[curArtifact]}</Text>
+          <TouchableOpacity onPress={() => {setCurArtifact(0); navigation.navigate('Home')}} style={{marginLeft: 'auto', margin: 6}}>
+            <Icon  name="circle-with-cross" type="Entypo" color="white" size={30} />
+          </TouchableOpacity>
+      </View>}
+        
         <KeepAwake/>
         </>)
     
@@ -334,6 +376,18 @@ ViroMaterials.createMaterials({
     vase_compare2: {
       diffuseTexture: require('../../res/vase_compare2.jpg'),
     },
+    wave_full: {
+      diffuseTexture: require('../../res/default2.jpg'),
+    },
+    boats_full: {
+      diffuseTexture: require('../../res/boats.jpg'),
+    },
+    signature_full: {
+      diffuseTexture: require('../../res/signature.jpg'),
+    },
+    wavedet_full: {
+      diffuseTexture: require('../../res/wave.jpg'),
+    },
     mglass_icon: {
       diffuseTexture: require('../../res/magglass.png'),
     },
@@ -361,6 +415,12 @@ ViroMaterials.createMaterials({
       source : require('../../res/default.jpg'),
       orientation : "Up",
       physicalWidth : 0.08, // real world width in meters
+      type: 'Image'
+    },
+    logo2 : {
+      source : require('../../res/default2.jpg'),
+      orientation : "Up",
+      physicalWidth : 0.09, // real world width in meters
       type: 'Image'
     }
   });
