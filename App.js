@@ -124,6 +124,7 @@ const CustomDrawerContent = (props) => {
   );
 };
 
+/* Quiz and Home screens are hidden in the drawer, but still available */
 const DrawerNavigator = () => {
   return (
     <Drawer.Navigator drawerContent={(props) => <CustomDrawerContent {...props} />} screenOptions={{
@@ -134,7 +135,13 @@ const DrawerNavigator = () => {
       drawerItemStyle: { marginLeft: 0 }
     }}>
       <Drawer.Screen name="Home" component={HomePage} options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} />
+      <Drawer.Screen name="Quiz" options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} >
+        {(props) => <Quiz {...props} numTakenQuiz={numTakenQuiz} setNumTakenQuiz={setNumTakenQuiz} />}
+      </Drawer.Screen>
       <Drawer.Screen name="Achievements" component={Achievements} options={{ drawerIcon: IconComponent('trophy', 0), drawerLabel: "Achievements", title: "IntARactive Museum" }} />
+      <Drawer.Screen name="QuizHistory" options={{ drawerIcon: IconComponent('clipboard-list', 0), drawerLabel: "Quiz History", title: "IntARactive Museum" }} >
+        {(props) => <QuizHistory {...props} numTakenQuiz={numTakenQuiz} setNumTakenQuiz={setNumTakenQuiz} />}
+      </Drawer.Screen>
       <Drawer.Screen name="Tips" component={Tips} options={{ drawerIcon: IconComponent('lightbulb-on-outline', 1), drawerLabel: "Tips", title: "IntARactive Museum" }} />
     </Drawer.Navigator>)
 };
@@ -156,19 +163,21 @@ const App = () => {
       {/*<Button title="request permissions" onPress={requestCameraPermission} />*/}
       {/*<ARComponent/>*/}
       <NavigationContainer>
-        <Stack.Navigator>
+        <DrawerNavigator />
+        {/*<Stack.Navigator>
           <Stack.Screen name="Menu" component={DrawerNavigator} options={{ headerShown: false }} />
+          
           <Stack.Screen name="Home" component={HomePage} options={{ headerShown: false, animation: 'fade' }} />
           <Stack.Screen name="Tips" component={Tips} options={{ headerShown: false, animation: 'fade' }} />
           <Stack.Screen name="Quiz" options={{ headerShown: false, animation: 'fade' }}>
             {(props) => <Quiz {...props} numTakenQuiz={numTakenQuiz} setNumTakenQuiz={setNumTakenQuiz} />}
-          </Stack.Screen>
+  </Stack.Screen>
           <Stack.Screen name="QuizHistory" options={{ headerShown: false, animation: 'fade' }}>
             {(props) => <QuizHistory {...props} numTakenQuiz={numTakenQuiz} setNumTakenQuiz={setNumTakenQuiz} />}
           </Stack.Screen>
           <Stack.Screen name="Achievements" component={Achievements} options={{ headerShown: false, animation: 'fade' }} />
-          <Stack.Screen name="ARObject" component={ARComponent} options={{ headerShown: false, animation: 'fade' }} />
-        </Stack.Navigator>
+          <Stack.Screen name="ARObject" component={ARComponent} options={{ headerShown: false, animation: 'fade' }} />          
+        </Stack.Navigator>*/}
       </NavigationContainer>
 
     </View >
