@@ -1,6 +1,6 @@
-import { Button, Text } from "@rneui/themed";
-import React, { useState, useEffect } from 'react';
-import { TouchableHighlight, View } from "react-native";
+import { Text } from "@rneui/themed";
+import React, { useState } from 'react';
+import { TouchableHighlight, View, ScrollView } from "react-native";
 import styles from "../../Globals/Styles";
 import { questionsSunflowers, givenAnswersSunflowers } from "../Quiz/QuestionsAndAnswers";
 
@@ -14,7 +14,7 @@ const QuizHistory = (props) => {
     switch (historyPage) {
         case "Home":
             return <>
-                <View style={{ ...styles.secondHeader }}>
+                <View style={{ ...styles.secondHeader, flex: 1, flexGrow: 1, zIndex: 999 }}>
                     <TouchableHighlight style={{ ...styles.button, width: "20%", alignSelf: 'center' }} onPress={() => navigation.navigate('Home')}>
                         <Text style={{ color: 'white', alignSelf: 'center' }}>Home</Text>
                     </TouchableHighlight>
@@ -27,10 +27,12 @@ const QuizHistory = (props) => {
                     <Text style={{ color: 'black', marginTop: 300, alignSelf: 'center', fontSize: 25 }}>
                         You have not completed any quiz yet.
                     </Text> :
-                    <CompletedQuizList navigation={navigation} givenAnswers={givenAnswersSunflowers}
-                        setHistoryId={setHistoryId} numTakenQuiz={props.numTakenQuiz}
-                        setHistoryPage={setHistoryPage} setHistoryNum={setHistoryNum} historyNum={historyNum} />}
-            </> 
+                    <View style={{ flex: 2 }}>
+                        <CompletedQuizList navigation={navigation} givenAnswers={givenAnswersSunflowers}
+                            setHistoryId={setHistoryId} numTakenQuiz={props.numTakenQuiz}
+                            setHistoryPage={setHistoryPage} setHistoryNum={setHistoryNum} historyNum={historyNum} />
+                    </View>}
+            </>
             break;
         case "Info":
             return <QuizHistoryCorrectOrWrong navigation={navigation} setHistoryPage={setHistoryPage}
@@ -68,7 +70,11 @@ const CompletedQuizList = (props) => {
         </TouchableHighlight>
         );
     }
-    return list
+    return <ScrollView>
+        <View>
+            {list}
+        </View>
+    </ScrollView>
 }
 
 const QuizHistoryCorrectOrWrong = (props) => {
@@ -80,7 +86,11 @@ const QuizHistoryCorrectOrWrong = (props) => {
     }
     return <>
         <View style={{ ...styles.secondHeader }}>
-            <TouchableHighlight style={{ ...styles.button, width: "20%", alignSelf: 'center' }} onPress={() => props.navigation.navigate('Home')}>
+            <TouchableHighlight style={{ ...styles.button, width: "20%", alignSelf: 'center' }} onPress={() => {
+                props.navigation.navigate('Home');
+                props.setHistoryNum(1);
+                props.setHistoryPage("Home");
+            }}>
                 <Text style={{ color: 'white', alignSelf: 'center' }}>Home</Text>
             </TouchableHighlight>
             <Text style={{ color: 'white', alignSelf: 'center', fontSize: 30, paddingRight: 20 }}>

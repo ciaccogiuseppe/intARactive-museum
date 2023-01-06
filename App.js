@@ -126,6 +126,7 @@ const CustomDrawerContent = (props) => {
 
 /* Quiz and Home screens are hidden in the drawer, but still available */
 const DrawerNavigator = () => {
+  const [numTakenQuiz, setNumTakenQuiz] = useState(0);
   return (
     <Drawer.Navigator drawerContent={(props) => <CustomDrawerContent {...props} />} screenOptions={{
       drawerPosition: 'left',
@@ -136,11 +137,11 @@ const DrawerNavigator = () => {
     }}>
       <Drawer.Screen name="Home" component={HomePage} options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} />
       <Drawer.Screen name="Quiz" options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} >
-        {(props) => <Quiz {...props} numTakenQuiz={numTakenQuiz} setNumTakenQuiz={setNumTakenQuiz} />}
+        {(props) => <Quiz {...props} setNumTakenQuiz={setNumTakenQuiz} />}
       </Drawer.Screen>
       <Drawer.Screen name="Achievements" component={Achievements} options={{ drawerIcon: IconComponent('trophy', 0), drawerLabel: "Achievements", title: "IntARactive Museum" }} />
       <Drawer.Screen name="QuizHistory" options={{ drawerIcon: IconComponent('clipboard-list', 0), drawerLabel: "Quiz History", title: "IntARactive Museum" }} >
-        {(props) => <QuizHistory {...props} numTakenQuiz={numTakenQuiz} setNumTakenQuiz={setNumTakenQuiz} />}
+        {(props) => <QuizHistory {...props} numTakenQuiz={numTakenQuiz} />}
       </Drawer.Screen>
       <Drawer.Screen name="Tips" component={Tips} options={{ drawerIcon: IconComponent('lightbulb-on-outline', 1), drawerLabel: "Tips", title: "IntARactive Museum" }} />
     </Drawer.Navigator>)
