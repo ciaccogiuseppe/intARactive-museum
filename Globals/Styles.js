@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#A9A9A9",
     padding: 10,
     margin: 5,
+    height: 40
   },
   quizSelected: {
     borderColor: 'black',
@@ -101,6 +102,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#6082B6",
     padding: 10,
     margin: 5,
+    height: 40
+  },
+  bottom: {
+    flex: 1, 
+    justifyContent: 'flex-end',
+    marginBottom: 15
   }
 });
 

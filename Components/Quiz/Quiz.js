@@ -44,7 +44,7 @@ const Quiz = (props) => {
     switch (quizPage) {
         case "Home":
             return <QuizHomePage setQuizNum={setQuizNum} navigation={navigation}
-             setQuizPage={setQuizPage} setScore={setScore} setAnswers={setAnswers}/>
+                setQuizPage={setQuizPage} setScore={setScore} setAnswers={setAnswers} />
         case "Question":
             return <QuizQuestion navigation={navigation} setQuizPage={setQuizPage}
                 quizNum={quizNum} setScore={setScore} answers={answers} score={score}
@@ -67,7 +67,7 @@ const Quiz = (props) => {
 
 const QuizHomePage = (props) => {
     return <>
-                <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
+        <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={false}
             setQuizPage={props.setQuizPage} />
 
@@ -83,9 +83,11 @@ const QuizHomePage = (props) => {
             Only one answer is correct
         </Text>
 
-        <TouchableHighlight style={{ ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => props.setQuizPage("Question")}>
-            <Text style={{ color: 'white', alignSelf: 'center' }}>Start</Text>
-        </TouchableHighlight>
+        <View style={{ ...styles.bottom }}>
+            <TouchableHighlight style={{ ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => props.setQuizPage("Question")}>
+                <Text style={{ color: 'white', alignSelf: 'center' }}>Start</Text>
+            </TouchableHighlight>
+        </View>
     </>
 }
 
@@ -97,7 +99,7 @@ const QuizQuestion = (props) => {
         options.push(
             <TouchableHighlight key={i} style={answerSelected === i ?
                 { ...styles.quizSelected, width: "90%", alignSelf: 'center' } :
-                { ...styles.button, width: "90%", alignSelf: 'center' }}
+                { ...styles.button, height: 40, width: "90%", alignSelf: 'center' }}
                 onPress={() => setAnswerSelected(i)}>
                 <Text style={{ color: 'white', alignSelf: 'center' }}>{props.questionAndAnswers.options[i]}</Text>
             </TouchableHighlight>
@@ -106,7 +108,7 @@ const QuizQuestion = (props) => {
 
     <hr />
 
-    return <>
+    return <View style={{ flex: 1 }}>
         <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={true}
             setQuizPage={props.setQuizPage} />
@@ -119,20 +121,21 @@ const QuizQuestion = (props) => {
 
         {options}
 
-
-        <TouchableHighlight disabled={disabled} style={disabled ?
-            { ...styles.buttonDisabled, width: "90%", alignSelf: 'center', marginTop: 50 } :
-            { ...styles.button, width: "90%", alignSelf: 'center', marginTop: 50 }} onPress={() => {
-                if (answerSelected == props.questionAndAnswers.solution) {
-                    props.setScore(x => x + 1);
-                }
-                props.setAnswers(answers => [...answers, answerSelected]);
-                setAnswerSelected(-1);
-                props.setQuizPage("CorrectOrWrong")
-            }}>
-            <Text style={{ color: 'white', alignSelf: 'center' }}>Confirm</Text>
-        </TouchableHighlight>
-    </>
+        <View style={{ ...styles.bottom }}>
+            <TouchableHighlight disabled={disabled} style={disabled ?
+                { ...styles.buttonDisabled, width: "90%", alignSelf: 'center' } :
+                { ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => {
+                    if (answerSelected == props.questionAndAnswers.solution) {
+                        props.setScore(x => x + 1);
+                    }
+                    props.setAnswers(answers => [...answers, answerSelected]);
+                    setAnswerSelected(-1);
+                    props.setQuizPage("CorrectOrWrong")
+                }}>
+                <Text style={{ color: 'white', alignSelf: 'center' }}>Confirm</Text>
+            </TouchableHighlight>
+        </View>
+    </View>
 }
 
 
@@ -150,20 +153,23 @@ const QuizCorrectOrWrong = (props) => {
 
         <QuizBreadcrumb quizNum={props.quizNum} />
 
-        <Text style={{ color: 'black', marginTop: 80, alignSelf: 'center', fontSize: 40 }}>
+        <Text style={{ color: correct ? 'green' : 'red', marginTop: 80, alignSelf: 'center', fontSize: 40 }}>
             {correct ? "Correct!" : "Wrong!"}
         </Text>
 
         {correct ?
-            <Text style={{ color: 'black', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
+            <Text style={{ color: 'green', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
                 Your answer: {props.questionAndAnswers.options[props.answers[props.quizNum - 1]]}
             </Text>
             :
-            <Text style={{ color: 'black', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
-                Your answer: {props.questionAndAnswers.options[props.answers[props.quizNum - 1]]}
-                {"\n"}
+            <>
+                <Text style={{ color: 'red', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
+                    Your answer: {props.questionAndAnswers.options[props.answers[props.quizNum - 1]]}
+                </Text>
+                <Text style={{ color: 'green', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
                 Correct answer: {props.questionAndAnswers.options[props.questionAndAnswers.solution]}
-            </Text>}
+                </Text>
+            </>}
 
         <Text style={{ color: 'black', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
             {props.questionAndAnswers.question}
@@ -171,22 +177,23 @@ const QuizCorrectOrWrong = (props) => {
         <Text style={{ color: 'black', margin: 20, alignSelf: 'center', fontSize: 20 }}>
             {props.questionAndAnswers.explanation}
         </Text>
-
-        <TouchableHighlight style={{ ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => {
-            if (props.quizNum < 3) {
-                props.setQuizNum(x => x + 1);
-                props.setQuizPage("Question");
-            } else {
-                props.setNumTakenQuiz(x => x + 1);
-                props.setQuizNum(1);
-                props.setQuizPage("Results");
-            }
-        }}>
-            <Text style={{ color: 'white', alignSelf: 'center' }}>{props.quizNum == 3 ?
-                "See results" :
-                "Next question"
-            }</Text>
-        </TouchableHighlight>
+        <View style={{ ...styles.bottom }}>
+            <TouchableHighlight style={{ ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => {
+                if (props.quizNum < 3) {
+                    props.setQuizNum(x => x + 1);
+                    props.setQuizPage("Question");
+                } else {
+                    props.setNumTakenQuiz(x => x + 1);
+                    props.setQuizNum(1);
+                    props.setQuizPage("Results");
+                }
+            }}>
+                <Text style={{ color: 'white', alignSelf: 'center' }}>{props.quizNum == 3 ?
+                    "See results" :
+                    "Next question"
+                }</Text>
+            </TouchableHighlight>
+        </View>
     </>
 }
 
@@ -221,7 +228,7 @@ const QuizResults = (props) => {
             break;
     }
     return <>
-                <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
+        <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={false}
             setQuizPage={props.setQuizPage} />
 

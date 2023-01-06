@@ -126,20 +126,23 @@ const QuizHistoryCorrectOrWrong = (props) => {
             </Text>
         </View>
 
-        <Text style={{ color: 'black', marginTop: 80, alignSelf: 'center', fontSize: 40 }}>
+        <Text style={{ color: correct ? 'green' : 'red', marginTop: 80, alignSelf: 'center', fontSize: 40 }}>
             {correct ? "Correct!" : "Wrong!"}
         </Text>
 
         {correct ?
-            <Text style={{ color: 'black', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
+            <Text style={{ color: 'green', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
                 Your answer: {props.questionAndAnswers.options[props.answers[props.historyNum - 1]]}
             </Text>
             :
-            <Text style={{ color: 'black', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
-                Your answer: {props.questionAndAnswers.options[props.answers[props.historyNum - 1]]}
-                {"\n"}
+            <>
+                <Text style={{ color: 'red', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
+                    Your answer: {props.questionAndAnswers.options[props.answers[props.historyNum - 1]]}
+                </Text>
+                <Text style={{ color: 'green', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
                 Correct answer: {props.questionAndAnswers.options[props.questionAndAnswers.solution]}
-            </Text>}
+                </Text>
+            </>}
 
         <Text style={{ color: 'black', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
             {props.questionAndAnswers.question}
@@ -148,19 +151,22 @@ const QuizHistoryCorrectOrWrong = (props) => {
             {props.questionAndAnswers.explanation}
         </Text>
 
-        <TouchableHighlight style={{ ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => {
-            if (props.historyNum < 3) {
-                props.setHistoryNum(x => x + 1);
-            } else {
-                props.setHistoryNum(1);
-                props.setHistoryPage("Home");
-            }
-        }}>
-            <Text style={{ color: 'white', alignSelf: 'center' }}>{props.historyNum == 3 ?
-                "Back to quiz history" :
-                "Next"
-            }</Text>
-        </TouchableHighlight>
+        <View style={{ ...styles.bottom }}>
+            <TouchableHighlight style={{ ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => {
+                if (props.historyNum < 3) {
+                    props.setHistoryNum(x => x + 1);
+                } else {
+                    props.setHistoryNum(1);
+                    props.setHistoryPage("Home");
+                }
+            }}>
+
+                <Text style={{ color: 'white', alignSelf: 'center' }}>{props.historyNum == 3 ?
+                    "Back to quiz history" :
+                    "Next"
+                }</Text>
+            </TouchableHighlight>
+        </View>
     </>
 }
 
