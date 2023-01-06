@@ -34,7 +34,7 @@ function AchievementIcon(props) {
     };
     return <View margin={5} flexDirection='column' alignItems='center' flexWrap='wrap'>
         <Icon name='trophy' type='font-awesome' size={50} onPress={toggleOverlay} color={props.needed <= props.done ? "black" : "lightgrey"} />
-        <Text style={{ width: 70, color: 'black', alignSelf: 'center', margin: 5, textAlign: 'center' }}>{props.title}</Text>
+        <Text style={{ width: 75, color: 'black', alignSelf: 'center', margin: 5, textAlign: 'center', fontSize: 12 }}>{props.title}</Text>
         <Overlay isVisible={visible} onBackdropPress={toggleOverlay} borderRadius={20}>
             <View>
                 <View flexDirection="row">
