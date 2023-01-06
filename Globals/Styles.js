@@ -105,9 +105,16 @@ const styles = StyleSheet.create({
     height: 40
   },
   bottom: {
-    flex: 1, 
+    flex: 1,
     justifyContent: 'flex-end',
     marginBottom: 15
+  },
+  quizCards: {
+    backgroundColor: "#CCCCCC",
+    marginLeft: 10,
+    marginRight: 10,
+    padding: 10,
+    borderRadius: 40
   }
 });
 

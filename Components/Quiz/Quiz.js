@@ -101,7 +101,7 @@ const QuizQuestion = (props) => {
                 { ...styles.quizSelected, width: "90%", alignSelf: 'center' } :
                 { ...styles.button, height: 40, width: "90%", alignSelf: 'center' }}
                 onPress={() => setAnswerSelected(i)}>
-                <Text style={{ color: 'white', alignSelf: 'center' }}>{props.questionAndAnswers.options[i]}</Text>
+                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 15 }}>{props.questionAndAnswers.options[i]}</Text>
             </TouchableHighlight>
         )
     }
@@ -115,7 +115,7 @@ const QuizQuestion = (props) => {
 
         <QuizBreadcrumb quizNum={props.quizNum} />
 
-        <Text style={{ color: 'black', marginTop: 100, marginBottom: 30, alignSelf: 'center', fontSize: 30 }}>
+        <Text style={{ color: 'black', paddingHorizontal: 20, marginTop: 90, marginBottom: 30, alignSelf: 'flex-start', fontSize: 30 }}>
             {props.questionAndAnswers.question}
         </Text>
 
@@ -140,12 +140,6 @@ const QuizQuestion = (props) => {
 
 
 const QuizCorrectOrWrong = (props) => {
-    let correct;
-    if (props.answers[props.quizNum - 1] == props.questionAndAnswers.solution) {
-        correct = true;
-    } else {
-        correct = false;
-    }
     return <>
         <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={true}
@@ -153,30 +147,9 @@ const QuizCorrectOrWrong = (props) => {
 
         <QuizBreadcrumb quizNum={props.quizNum} />
 
-        <Text style={{ color: correct ? 'green' : 'red', marginTop: 80, alignSelf: 'center', fontSize: 40 }}>
-            {correct ? "Correct!" : "Wrong!"}
-        </Text>
+        <QuizCorrectOrWrongBody answers={props.answers} quizNum={props.quizNum}
+            questionAndAnswers={questionsSunflowers[props.quizNum - 1]} />
 
-        {correct ?
-            <Text style={{ color: 'green', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
-                Your answer: {props.questionAndAnswers.options[props.answers[props.quizNum - 1]]}
-            </Text>
-            :
-            <>
-                <Text style={{ color: 'red', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
-                    Your answer: {props.questionAndAnswers.options[props.answers[props.quizNum - 1]]}
-                </Text>
-                <Text style={{ color: 'green', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
-                Correct answer: {props.questionAndAnswers.options[props.questionAndAnswers.solution]}
-                </Text>
-            </>}
-
-        <Text style={{ color: 'black', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
-            {props.questionAndAnswers.question}
-        </Text>
-        <Text style={{ color: 'black', margin: 20, alignSelf: 'center', fontSize: 20 }}>
-            {props.questionAndAnswers.explanation}
-        </Text>
         <View style={{ ...styles.bottom }}>
             <TouchableHighlight style={{ ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => {
                 if (props.quizNum < 3) {
@@ -212,16 +185,16 @@ const QuizResults = (props) => {
 
     switch (props.score) {
         case 0:
-            resultCommentMessage = "You can definitely do better..."
+            resultCommentMessage = "You can definitely do better...\n"
             break;
         case 1:
-            resultCommentMessage = "There is room for improvement, but one point is always better than none!"
+            resultCommentMessage = "There is room for improvement, but one point is always better than none!\n"
             break;
         case 2:
-            resultCommentMessage = "This is a good result, but you can always challenge yourself to obtain an even higher score by attempting again this quiz!"
+            resultCommentMessage = "This is a good result, but you can always challenge yourself to obtain an even higher score by attempting again this quiz!\n"
             break;
         case 3:
-            resultCommentMessage = "Congratulations! You get them all!"
+            resultCommentMessage = "Congratulations! You get them all!\n"
             break;
         default:
             resultCommentMessage = "This should not happen"
@@ -234,29 +207,39 @@ const QuizResults = (props) => {
 
         <QuizBreadcrumb quizNum={-1} />
 
-        <Text style={{ color: 'black', marginTop: 80, alignSelf: 'center', fontSize: 40 }}>
-            Quiz result
-        </Text>
-        <Text style={{ color: 'black', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
-            You answered correctly at
-        </Text>
-        <Text style={{ color: 'black', alignSelf: 'center', fontSize: 35 }}>
-            {props.score}/3
-        </Text>
-        <Text style={{ color: 'black', alignSelf: 'center', fontSize: 25 }}>
-            proposed questions
-        </Text>
-        <Text style={{ color: 'black', margin: 20, alignSelf: 'center', fontSize: 20 }}>
-            {resultCommentMessage}
-        </Text>
+        <View style={{ ...styles.quizCards, marginTop: 95 }}>
+            <Text style={{ color: 'black', alignSelf: 'center', fontSize: 40 }}>
+                Quiz result
+            </Text>
+            <Text style={{ color: 'black', marginTop: 10, alignSelf: 'center', fontSize: 25 }}>
+                You answered correctly at
+            </Text>
+            <Text style={{ color: 'black', alignSelf: 'center', fontSize: 35 }}>
+                {props.score}/3
+            </Text>
+            <Text style={{ color: 'black', alignSelf: 'center', fontSize: 25 }}>
+                proposed questions
+            </Text>
+        </View>
 
-        <TouchableHighlight style={{ ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => {
-            props.setQuizPage("Home");
-            props.setScore(0);
-            props.setAnswers([]);
-        }}>
-            <Text style={{ color: 'white', alignSelf: 'center' }}>Back to quiz home page</Text>
-        </TouchableHighlight>
+        <View style={{ ...styles.quizCards, marginTop: 10 }}>
+            <Text style={{ color: 'black', marginHorizontal: 10, alignSelf: 'flex-start', fontSize: 20 }}>
+                {resultCommentMessage}
+            </Text>
+            <Text style={{ color: 'black', marginHorizontal: 10, alignSelf: 'flex-start', fontSize: 20 }}>
+                This quiz attempt has been saved into Quiz History.
+            </Text>
+        </View>
+
+        <View style={{ ...styles.bottom }}>
+            <TouchableHighlight style={{ ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => {
+                props.setQuizPage("Home");
+                props.setScore(0);
+                props.setAnswers([]);
+            }}>
+                <Text style={{ color: 'white', alignSelf: 'center' }}>Back to quiz home page</Text>
+            </TouchableHighlight>
+        </View>
     </>
 }
 
@@ -312,6 +295,59 @@ const QuizBreadcrumb = (props) => {
             </Text>
             <Text style={{ color: props.quizNum == -1 ? 'black' : 'gray', fontSize: 15 }}>
                 Results
+            </Text>
+        </View>
+    </>
+}
+
+export const QuizCorrectOrWrongBody = (props) => {
+    let correct;
+    if (props.answers[props.quizNum - 1] == props.questionAndAnswers.solution) {
+        correct = true;
+    } else {
+        correct = false;
+    }
+
+    return <>
+
+        <View style={{ ...styles.quizCards, marginTop: 95 }}>
+            <Text style={{ color: correct ? 'green' : 'red', alignSelf: 'center', fontSize: 40 }}>
+                {correct ? "Correct!" : "Wrong!"}
+            </Text>
+
+            {correct ?
+                <>
+                    <Text style={{ color: 'black', marginLeft: 10, marginRight: 10, alignSelf: 'flex-start', fontSize: 25 }}>
+                        Your answer:
+                    </Text>
+                    <Text style={{ color: 'green', fontStyle: 'italic', marginLeft: 50, marginRight: 10, alignSelf: 'flex-start', fontSize: 20 }}>
+                        {props.questionAndAnswers.options[props.answers[props.quizNum - 1]]}
+                    </Text>
+                </>
+                :
+                <>
+                    <Text style={{ color: 'black', marginLeft: 10, marginRight: 10, alignSelf: 'flex-start', fontSize: 25 }}>
+                        Your answer:
+                    </Text>
+                    <Text style={{ color: 'red', fontStyle: 'italic', marginLeft: 50, marginRight: 10, alignSelf: 'flex-start', fontSize: 20 }}>
+                        {props.questionAndAnswers.options[props.answers[props.quizNum - 1]]}
+                    </Text>
+                    <Text style={{ color: 'black', marginLeft: 10, marginRight: 10, alignSelf: 'flex-start', fontSize: 25 }}>
+                        Correct answer:
+                    </Text>
+                    <Text style={{ color: 'green', fontStyle: 'italic', marginLeft: 50, marginRight: 10, alignSelf: 'flex-start', fontSize: 20 }}>
+                        {props.questionAndAnswers.options[props.questionAndAnswers.solution]}
+                    </Text>
+                </>
+            }
+        </View>
+
+        <View style={{ ...styles.quizCards, marginTop: 10 }}>
+            <Text style={{ color: 'black', marginRight: 10, marginLeft: 10, alignSelf: 'flex-start', fontSize: 25 }}>
+                {props.questionAndAnswers.question}
+            </Text>
+            <Text style={{ color: 'black', fontStyle: 'italic', marginRight: 10, marginLeft: 50, alignSelf: 'flex-start', fontSize: 20 }}>
+                {props.questionAndAnswers.explanation}
             </Text>
         </View>
     </>

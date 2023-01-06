@@ -2,6 +2,7 @@ import { Text } from "@rneui/themed";
 import React, { useState } from 'react';
 import { TouchableHighlight, View, ScrollView } from "react-native";
 import styles from "../../Globals/Styles";
+import { QuizCorrectOrWrongBody } from "../Quiz/Quiz";
 import { questionsSunflowers, givenAnswersSunflowers } from "../Quiz/QuestionsAndAnswers";
 
 const QuizHistory = (props) => {
@@ -126,30 +127,8 @@ const QuizHistoryCorrectOrWrong = (props) => {
             </Text>
         </View>
 
-        <Text style={{ color: correct ? 'green' : 'red', marginTop: 80, alignSelf: 'center', fontSize: 40 }}>
-            {correct ? "Correct!" : "Wrong!"}
-        </Text>
-
-        {correct ?
-            <Text style={{ color: 'green', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
-                Your answer: {props.questionAndAnswers.options[props.answers[props.historyNum - 1]]}
-            </Text>
-            :
-            <>
-                <Text style={{ color: 'red', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
-                    Your answer: {props.questionAndAnswers.options[props.answers[props.historyNum - 1]]}
-                </Text>
-                <Text style={{ color: 'green', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
-                Correct answer: {props.questionAndAnswers.options[props.questionAndAnswers.solution]}
-                </Text>
-            </>}
-
-        <Text style={{ color: 'black', marginTop: 20, alignSelf: 'center', fontSize: 25 }}>
-            {props.questionAndAnswers.question}
-        </Text>
-        <Text style={{ color: 'black', margin: 20, alignSelf: 'center', fontSize: 20 }}>
-            {props.questionAndAnswers.explanation}
-        </Text>
+        <QuizCorrectOrWrongBody answers={props.answers} quizNum={props.historyNum}
+            questionAndAnswers={questionsSunflowers[props.historyNum - 1]} />
 
         <View style={{ ...styles.bottom }}>
             <TouchableHighlight style={{ ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => {
