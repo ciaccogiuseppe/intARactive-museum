@@ -12,6 +12,7 @@ import { Image, Platform, TouchableHighlight, TouchableOpacity } from 'react-nat
 import { Button, PermissionsAndroid } from "react-native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem, } from '@react-navigation/drawer';
+import { getHeaderTitle } from '@react-navigation/elements';
 import SwitchSelector from 'react-native-switch-selector';
 import { givenAnswersSunflowers } from "./Components/Quiz/QuestionsAndAnswers";
 
@@ -45,31 +46,24 @@ import QuizHistory from './Components/QuizHistory/QuizHistory';
 import Achievements from './Components/Achievements/Achievements';
 import { node } from 'prop-types';
 
-const Stack = createNativeStackNavigator();
+//const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
+const RightDrawer = createDrawerNavigator();
 
 const requestCameraPermission = async () => {
   try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.CAMERA,
-      {
-        title: "Cool Photo App Camera Permission",
-        message:
-          "Cool Photo App needs access to your camera " +
-          "so you can take awesome pictures.",
-        buttonNeutral: "Ask Me Later",
-        buttonNegative: "Cancel",
-        buttonPositive: "OK"
-      }
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log("You can use the camera");
-    } else {
-      console.log("Camera permission denied");
-    }
-  } catch (err) {
-    console.warn(err);
-  }
+    const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA, {
+      title: "Cool Photo App Camera Permission",
+      message:
+        "Cool Photo App needs access to your camera " +
+        "so you can take awesome pictures.",
+      buttonNeutral: "Ask Me Later",
+      buttonNegative: "Cancel",
+      buttonPositive: "OK"
+    });
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) { console.log("You can use the camera"); }
+    else { console.log("Camera permission denied"); }
+  } catch (err) { console.warn(err); }
 };
 
 /*************************************
@@ -98,7 +92,46 @@ const CustomSwitchSelector = (props) => {
   />);
 };
 
-const CustomDrawerContent = (props) => {
+const UserInfoText = () => {
+  return (
+    <View>
+      <Text style={{ ...styles.sectionTitle, color: "#417D7A", textAlign: "center", marginTop: 30 }}> Mario Rossi </Text>
+      <Text style={{ fontWeight: "400", fontSize: 13, color: "#555", textAlign: "center", marginTop: 10, marginBottom: 5 }}> mario.rossi@domain.com </Text>
+      <Text style={{ fontWeight: "400", fontSize: 13, color: "#555", textAlign: "center" }}> +39 123 4567890 </Text>
+    </View>
+  );
+};
+
+const CustomHeader = (props) => {
+  return (
+    <View style={{ ...props.style, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+      <MCIcon style={{ paddingVertical: 13, paddingHorizontal: 13 }} size={28} color="#FFF" name="menu" onPress={() => { props.navigation.getParent("MenuDrawer").openDrawer(); }}></MCIcon>
+      <Icon style={{ paddingVertical: 13, paddingHorizontal: 13 }} size={25} color="#FFF" name="user-circle" onPress={() => { props.navigation.getParent("RightDrawer").openDrawer() }}></Icon>
+    </View>
+  );
+};
+
+const RightDrawerContent = () => {
+  return (
+    <SafeAreaView style={{ flex: 1 }} forceInset={{ top: "always", horizontal: "never" }}>
+      <DrawerContentScrollView>
+        <View style={{ flexDirection: "row", justifyContent: 'center', alignItems: "center" }}>
+          <Icon style={{ paddingVertical: 15 }} size={90} color="#777" name="user-tie"></Icon>
+        </View>
+        <View style={{ flexDirection: "row", justifyContent: 'center', alignItems: "center" }}>
+          <UserInfoText />
+        </View>
+      </DrawerContentScrollView >
+      <View>
+        <DrawerItem label="Logout" labelStyle={{ color: "#417D7A", textAlign: "center", marginRight: -32 }} />
+      </View>
+    </SafeAreaView>
+
+  );
+};
+
+// Left drawer
+const LeftDrawerContent = (props) => {
   return (
     <DrawerContentScrollView {...props}>
       <View style={{ flexDirection: "row", alignItems: "center", alignItems: "center" }}>
@@ -124,12 +157,32 @@ const CustomDrawerContent = (props) => {
   );
 };
 
+// Right drawer
+const RightDrawerNavigator = () => {
+  return (
+    <RightDrawer.Navigator id="RightDrawer"
+      drawerContent={(props) => <RightDrawerContent {...props} />}
+      screenOptions={{
+        drawerPosition: 'right', headerShown: false,
+        drawerInactiveTintColor: "#417D7A", drawerInactiveBackgroundColor: "#fff",
+        drawerActiveTintColor: "#417D7A", drawerActiveBackgroundColor: "FFF",
+        drawerItemStyle: { marginLeft: 0 }
+      }}>
+      <RightDrawer.Screen name="MenuDrawer" component={LeftDrawerNavigator} />
+    </RightDrawer.Navigator>
+  );
+};
+
 /* Quiz and Home screens are hidden in the drawer, but still available */
-const DrawerNavigator = () => {
+const LeftDrawerNavigator = () => {
   const [numTakenQuiz, setNumTakenQuiz] = useState(0);
   return (
-    <Drawer.Navigator drawerContent={(props) => <CustomDrawerContent {...props} />} screenOptions={{
+    <Drawer.Navigator id="MenuDrawer" drawerContent={(props) => <LeftDrawerContent {...props} />} screenOptions={{
       drawerPosition: 'left',
+      header: ({ navigation, route, options }) => {
+        const title = getHeaderTitle(options, route.name);
+        return <CustomHeader navigation={navigation} title={title} style={options.headerStyle} />;
+      },
       headerStyle: { backgroundColor: "#417D7A" }, headerTintColor: '#fff', headerTitleAlign: "center",
       drawerInactiveTintColor: "#417D7A", drawerInactiveBackgroundColor: "#fff",
       drawerActiveTintColor: "#417D7A", drawerActiveBackgroundColor: "FFF",
@@ -159,28 +212,10 @@ const App = () => {
   };
 
   return (
-
     <View style={styles.container}>
-      {/*<Button title="request permissions" onPress={requestCameraPermission} />*/}
-      {/*<ARComponent/>*/}
       <NavigationContainer>
-        <DrawerNavigator />
-        {/*<Stack.Navigator>
-          <Stack.Screen name="Menu" component={DrawerNavigator} options={{ headerShown: false }} />
-          
-          <Stack.Screen name="Home" component={HomePage} options={{ headerShown: false, animation: 'fade' }} />
-          <Stack.Screen name="Tips" component={Tips} options={{ headerShown: false, animation: 'fade' }} />
-          <Stack.Screen name="Quiz" options={{ headerShown: false, animation: 'fade' }}>
-            {(props) => <Quiz {...props} numTakenQuiz={numTakenQuiz} setNumTakenQuiz={setNumTakenQuiz} />}
-  </Stack.Screen>
-          <Stack.Screen name="QuizHistory" options={{ headerShown: false, animation: 'fade' }}>
-            {(props) => <QuizHistory {...props} numTakenQuiz={numTakenQuiz} setNumTakenQuiz={setNumTakenQuiz} />}
-          </Stack.Screen>
-          <Stack.Screen name="Achievements" component={Achievements} options={{ headerShown: false, animation: 'fade' }} />
-          <Stack.Screen name="ARObject" component={ARComponent} options={{ headerShown: false, animation: 'fade' }} />          
-        </Stack.Navigator>*/}
+        <RightDrawerNavigator />
       </NavigationContainer>
-
     </View >
   );
 };
