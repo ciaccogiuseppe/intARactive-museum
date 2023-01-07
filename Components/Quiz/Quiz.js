@@ -80,12 +80,12 @@ const QuizHomePage = (props) => {
         </Text>
         <Text style={{ color: 'black', margin: 20, alignSelf: 'center', fontSize: 20 }}>
             There will be 3 questions in this quiz {"\n"}
-            Only one answer is correct
+            Only one answer for each question is correct
         </Text>
 
         <View style={{ ...styles.bottom }}>
             <TouchableHighlight style={{ ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => props.setQuizPage("Question")}>
-                <Text style={{ color: 'white', alignSelf: 'center' }}>Start</Text>
+                <Text style={{ color: 'white', alignSelf: 'center' }}>Start now</Text>
             </TouchableHighlight>
         </View>
     </>
@@ -163,7 +163,7 @@ const QuizCorrectOrWrong = (props) => {
             }}>
                 <Text style={{ color: 'white', alignSelf: 'center' }}>{props.quizNum == 3 ?
                     "See results" :
-                    "Next question"
+                    "Next"
                 }</Text>
             </TouchableHighlight>
         </View>
