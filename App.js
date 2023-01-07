@@ -45,6 +45,7 @@ import Quiz from './Components/Quiz/Quiz';
 import QuizHistory from './Components/QuizHistory/QuizHistory';
 import Achievements from './Components/Achievements/Achievements';
 import { node } from 'prop-types';
+import { achievementsList } from './Components/Achievements/AchievementLists';
 
 //const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -196,7 +197,9 @@ const LeftDrawerNavigator = () => {
       <Drawer.Screen name="Quiz" options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} >
         {(props) => <Quiz {...props} setNumTakenQuiz={setNumTakenQuiz} artifact={"The Great Wave"}/>}
       </Drawer.Screen>
-      <Drawer.Screen name="Achievements" component={Achievements} options={{ drawerIcon: IconComponent('trophy', 0), drawerLabel: "Achievements", title: "IntARactive Museum" }} />
+      <Drawer.Screen name="Achievements" options={{ drawerIcon: IconComponent('trophy', 0), drawerLabel: "Achievements", title: "IntARactive Museum" }}>
+        {(props)=><Achievements {...props} list={achievementsList}/>}
+        </Drawer.Screen>
       <Drawer.Screen name="QuizHistory" options={{ drawerIcon: IconComponent('clipboard-list', 0), drawerLabel: "Quiz History", title: "IntARactive Museum" }} >
         {(props) => <QuizHistory {...props} numTakenQuiz={numTakenQuiz} />}
       </Drawer.Screen>

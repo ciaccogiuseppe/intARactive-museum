@@ -6,22 +6,22 @@ import { ActivityBar } from '../../Globals/Components'
 import { achievementsList, getDone, getNeeded } from './AchievementLists';
 import { ScrollView } from 'react-native-gesture-handler';
 
-const Achievements = ({ navigation }) => {
+const Achievements = (props) => {
     return <>
-        <ActivityBar titleName="Achievements" navigation={navigation} />
+        <ActivityBar titleName="Achievements" navigation={props.navigation} />
         <View style={{ alignItems: 'center', marginTop: 75, flex: 1, flexGrow: 1 }}>
             <Icon name='account-circle' size={150} />
         </View>
         <View style={{ flex: 2 }}>
-            <IconsList />
+            <IconsList list={props.list}/>
         </View>
     </>
 }
 
-function IconsList() {
+function IconsList(props) {
     return <ScrollView>
         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', flexWrap: "wrap" }}>
-            {achievementsList.map((achievement) => <AchievementIcon key={achievement.id} title={achievement.title} theme={achievement.theme}
+            {props.list.map((achievement) => <AchievementIcon key={achievement.id} title={achievement.title} theme={achievement.theme}
                 done={getDone(achievement)} needed={getNeeded(achievement)} date_obtained={achievement.date_obtained} />)}
         </View>
     </ScrollView>;

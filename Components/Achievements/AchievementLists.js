@@ -92,6 +92,16 @@ function updateDone(bestAnswers, oldScore) {
             achievementsList[5].date_obtained = moment().format('MM/DD/YYYY');
         }
         doneByTheme.vanGogh += updateScore;
+    } else {
+        if (bestAnswers.quizID == 2) {
+            if ((doneByTheme.nineteenthCentury < pointPerLevel.novice) && ((doneByTheme.nineteenthCentury + updateScore >= pointPerLevel.novice))) {
+                achievementsList[21].date_obtained = moment().format('MM/DD/YYYY');
+            }
+            if ((doneByTheme.nineteenthCentury < pointPerLevel.expert) && ((doneByTheme.nineteenthCentury + updateScore >= pointPerLevel.expert))) {
+                achievementsList[22].date_obtained = moment().format('MM/DD/YYYY');
+            }
+            doneByTheme.nineteenthCentury += updateScore;
+        }
     }
 }
 

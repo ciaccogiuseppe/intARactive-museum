@@ -19,26 +19,28 @@ const Quiz = (props) => {
 
     const updateBest = () => {
         let correctLocalAnswer = [];
+        let questionSolutions = props.artifact === "Sunflowers" ? questionsSunflowers : questionsGreatWave;
+        let index = props.artifact === "Sunflowers" ? 0 : 1;
         for (let i = 0; i < 3; i++) {
-            correctLocalAnswer[i] = (answers[i] == questionsSunflowers[i].solution ? 1 : 0);
+            correctLocalAnswer[i] = (answers[i] === questionSolutions[i].solution ? 1 : 0);
         }
-        if (quizAnswered[0] == null) {
-            quizAnswered[0] = {
-                quizID: 1,
+        if (quizAnswered[index] == null) {
+            quizAnswered[index] = {
+                quizID: index + 1,
                 correctAnswers: correctLocalAnswer,
                 bestScore: score.valueOf(),
             };
-            updateDone(quizAnswered[0], 0);
+            updateDone(quizAnswered[index], 0);
         } else {
             let count = 0;
-            let oldScore = quizAnswered[0].bestScore;
+            let oldScore = quizAnswered[index].bestScore;
             for (let i = 0; i < 3; i++) {
-                quizAnswered[0].correctAnswers[i] |= correctLocalAnswer[i];
-                count += quizAnswered[0].correctAnswers[i];
+                quizAnswered[index].correctAnswers[i] |= correctLocalAnswer[i];
+                count += quizAnswered[index].correctAnswers[i];
             }
-            if (count > quizAnswered[0].bestScore) {
-                quizAnswered[0].bestScore = count;
-                updateDone(quizAnswered[0], oldScore);
+            if (count > quizAnswered[index].bestScore) {
+                quizAnswered[index].bestScore = count;
+                updateDone(quizAnswered[index], oldScore);
             }
         }
     };
@@ -68,7 +70,7 @@ const Quiz = (props) => {
             return <QuizResults navigation={navigation} setQuizPage={setQuizPage}
                 setAnswers={setAnswers} answers={answers}
                 givenAnswers={givenAnswersArtifact}
-                 setQuizNum={setQuizNum}
+                setQuizNum={setQuizNum}
                 score={score} setScore={setScore} updateBest={updateBest}
                 setOverlay={setOverlay} artifact={props.artifact} />
         default:
@@ -80,7 +82,7 @@ const QuizHomePage = (props) => {
     return <>
         <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={false}
-            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact}/>
+            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact} />
 
         <Image source={props.artifact == "Sunflowers" ?
             require('./../../res/default.jpg') :
@@ -127,7 +129,7 @@ const QuizQuestion = (props) => {
     return <View style={{ flex: 1 }}>
         <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={true}
-            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact}/>
+            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact} />
 
         <QuizBreadcrumb quizNum={props.quizNum} />
 
@@ -163,7 +165,7 @@ const QuizCorrectOrWrong = (props) => {
     return <>
         <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={true}
-            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact}/>
+            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact} />
 
         <QuizBreadcrumb quizNum={props.quizNum} />
 
@@ -230,7 +232,7 @@ const QuizResults = (props) => {
     return <>
         <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={false}
-            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact}/>
+            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact} />
 
         <QuizBreadcrumb quizNum={-1} />
 
