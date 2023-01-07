@@ -70,15 +70,15 @@ export const questionsGreatWave = [
   }
 ];
 
-export var givenAnswersSunflowers = [];
+export var givenAnswersArtifact = [];
     // when the user complete a quiz it will contain objects like this:
     //{
+    //   artifact: "Sunflowers"
     //   answers: [0,1,0] // numbers are the indexes of the given questions
     //   date: 30/12/2022 10:45
     //   score: 3
     //}
-    
-export var givenAnswersGreatWave = [];
+  
 
 export let quizAnswered = [];
     // when the user complete a quiz it will contain objects like this:

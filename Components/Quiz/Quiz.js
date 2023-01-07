@@ -5,7 +5,7 @@ import { TouchableHighlight } from "react-native";
 import styles from "../../Globals/Styles";
 import moment from 'moment';
 import { Overlay } from 'react-native-elements';
-import { questionsSunflowers, givenAnswersSunflowers, quizAnswered } from "./QuestionsAndAnswers";
+import { questionsSunflowers, questionsGreatWave, givenAnswersArtifact, quizAnswered } from "./QuestionsAndAnswers";
 import { updateDone } from '../Achievements/AchievementLists';
 
 const Quiz = (props) => {
@@ -47,25 +47,30 @@ const Quiz = (props) => {
         case "Home":
             return <QuizHomePage setQuizNum={setQuizNum} navigation={navigation}
                 setQuizPage={setQuizPage} setScore={setScore} setAnswers={setAnswers}
-                setOverlay={setOverlay} />
+                setOverlay={setOverlay} artifact={props.artifact} />
         case "Question":
             return <QuizQuestion navigation={navigation} setQuizPage={setQuizPage}
                 quizNum={quizNum} setScore={setScore} answers={answers} score={score}
-                setAnswers={setAnswers} setQuizNum={setQuizNum}
-                questionAndAnswers={questionsSunflowers[quizNum - 1]}
+                setAnswers={setAnswers} setQuizNum={setQuizNum} artifact={props.artifact}
+                questionAndAnswers={props.artifact == "Sunflowers" ?
+                    questionsSunflowers[quizNum - 1] :
+                    questionsGreatWave[quizNum - 1]}
                 setOverlay={setOverlay} overlay={overlay} />
         case "CorrectOrWrong":
             return <QuizCorrectOrWrong navigation={navigation} setQuizPage={setQuizPage}
-                answers={answers} setScore={setScore} setAnswers={setAnswers}
+                answers={answers} setScore={setScore} setAnswers={setAnswers} artifact={props.artifact}
                 quizNum={quizNum} setQuizNum={setQuizNum} setNumTakenQuiz={props.setNumTakenQuiz}
-                questionAndAnswers={questionsSunflowers[quizNum - 1]}
+                questionAndAnswers={props.artifact == "Sunflowers" ?
+                    questionsSunflowers[quizNum - 1] :
+                    questionsGreatWave[quizNum - 1]}
                 setOverlay={setOverlay} overlay={overlay} />
         case "Results":
             return <QuizResults navigation={navigation} setQuizPage={setQuizPage}
                 setAnswers={setAnswers} answers={answers}
-                givenAnswers={givenAnswersSunflowers} setQuizNum={setQuizNum}
+                givenAnswers={givenAnswersArtifact}
+                 setQuizNum={setQuizNum}
                 score={score} setScore={setScore} updateBest={updateBest}
-                setOverlay={setOverlay} />
+                setOverlay={setOverlay} artifact={props.artifact} />
         default:
             return "Should not happen"
     }
@@ -75,16 +80,19 @@ const QuizHomePage = (props) => {
     return <>
         <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={false}
-            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} />
+            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact}/>
 
-        <Image source={require('./../../res/default.jpg')} 
-        style = {{height: 240, width: 180, alignSelf: "center", marginTop: 60}}/>
+        <Image source={props.artifact == "Sunflowers" ?
+            require('./../../res/default.jpg') :
+            require('./../../res/default2.jpg')
+        }
+            style={{ height: 240, width: 180, alignSelf: "center", marginTop: 60 }} />
 
         <Text style={{ color: 'black', marginTop: 10, alignSelf: 'center', fontSize: 40 }}>
             Quiz
         </Text>
         <Text style={{ color: 'black', marginTop: 5, alignSelf: 'center', fontSize: 30 }}>
-            Test your knowledge{"\n"} about "Sunflowers"
+            Test your knowledge{"\n"} about "{props.artifact}"
         </Text>
         <Text style={{ fontStyle: 'italic', color: 'black', marginTop: 5, marginHorizontal: 10, alignSelf: 'center', fontSize: 20 }}>
             There will be 3 questions in this quiz.{"\n"}
@@ -119,7 +127,7 @@ const QuizQuestion = (props) => {
     return <View style={{ flex: 1 }}>
         <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={true}
-            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} />
+            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact}/>
 
         <QuizBreadcrumb quizNum={props.quizNum} />
 
@@ -155,7 +163,7 @@ const QuizCorrectOrWrong = (props) => {
     return <>
         <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={true}
-            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} />
+            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact}/>
 
         <QuizBreadcrumb quizNum={props.quizNum} />
 
@@ -164,7 +172,9 @@ const QuizCorrectOrWrong = (props) => {
             setQuizPage={props.setQuizPage} overlay={props.overlay} />
 
         <QuizCorrectOrWrongBody answers={props.answers} quizNum={props.quizNum}
-            questionAndAnswers={questionsSunflowers[props.quizNum - 1]} />
+            questionAndAnswers={props.artifact == "Sunflowers" ?
+                questionsSunflowers[props.quizNum - 1] :
+                questionsGreatWave[props.quizNum - 1]} />
 
         <View style={{ ...styles.bottom }}>
             <TouchableHighlight style={{ ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => {
@@ -190,6 +200,7 @@ const QuizCorrectOrWrong = (props) => {
 const QuizResults = (props) => {
     props.givenAnswers.push(
         {
+            artifact: props.artifact,
             answers: props.answers,
             date: moment().calendar(),
             score: props.score
@@ -219,7 +230,7 @@ const QuizResults = (props) => {
     return <>
         <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={false}
-            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} />
+            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact}/>
 
         <QuizBreadcrumb quizNum={-1} />
 
@@ -275,8 +286,8 @@ const QuizSecondHeader = (props) => {
             }}>
                 <Text style={{ color: 'white', alignSelf: 'center' }}>Home</Text>
             </TouchableHighlight>
-            <Text style={{ color: 'white', alignSelf: 'center', fontSize: 30 }}>
-                Quiz - Sunflowers
+            <Text style={{ color: 'white', alignSelf: 'center', fontSize: 25 }}>
+                Quiz - {props.artifact}
             </Text>
             {props.xIcon ?
                 <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, padding: 10 }}

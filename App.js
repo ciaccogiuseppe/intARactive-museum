@@ -189,8 +189,12 @@ const LeftDrawerNavigator = () => {
       drawerItemStyle: { marginLeft: 0 }
     }}>
       <Drawer.Screen name="Home" component={HomePage} options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} />
+      {
+        // dalla pagina degli artifact si passa ai quiz prop artifact
+        // uguale a "Sunflowers" o a "The Great Wave"
+      }
       <Drawer.Screen name="Quiz" options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} >
-        {(props) => <Quiz {...props} setNumTakenQuiz={setNumTakenQuiz} />}
+        {(props) => <Quiz {...props} setNumTakenQuiz={setNumTakenQuiz} artifact={"The Great Wave"}/>}
       </Drawer.Screen>
       <Drawer.Screen name="Achievements" component={Achievements} options={{ drawerIcon: IconComponent('trophy', 0), drawerLabel: "Achievements", title: "IntARactive Museum" }} />
       <Drawer.Screen name="QuizHistory" options={{ drawerIcon: IconComponent('clipboard-list', 0), drawerLabel: "Quiz History", title: "IntARactive Museum" }} >

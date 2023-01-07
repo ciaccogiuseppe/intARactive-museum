@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { TouchableHighlight, View, ScrollView } from "react-native";
 import styles from "../../Globals/Styles";
 import { QuizCorrectOrWrongBody } from "../Quiz/Quiz";
-import { questionsSunflowers, givenAnswersSunflowers } from "../Quiz/QuestionsAndAnswers";
+import { questionsSunflowers, questionsGreatWave, givenAnswersArtifact } from "../Quiz/QuestionsAndAnswers";
 
 const QuizHistory = (props) => {
     const { navigation } = props;
@@ -29,7 +29,7 @@ const QuizHistory = (props) => {
                         You have not completed any quiz yet.
                     </Text> :
                     <View style={{ flex: 2 }}>
-                        <CompletedQuizList navigation={navigation} givenAnswers={givenAnswersSunflowers}
+                        <CompletedQuizList navigation={navigation} givenAnswers={givenAnswersArtifact}
                             setHistoryId={setHistoryId} numTakenQuiz={props.numTakenQuiz}
                             setHistoryPage={setHistoryPage} setHistoryNum={setHistoryNum} historyNum={historyNum} />
                     </View>}
@@ -37,9 +37,13 @@ const QuizHistory = (props) => {
             break;
         case "Info":
             return <QuizHistoryCorrectOrWrong navigation={navigation} setHistoryPage={setHistoryPage}
-                answers={givenAnswersSunflowers[historyId].answers}
+                answers={givenAnswersArtifact[historyId].answers}
+                artifact={givenAnswersArtifact[historyId].artifact}
                 historyNum={historyNum} setHistoryNum={setHistoryNum}
-                questionAndAnswers={questionsSunflowers[historyNum - 1]} />
+                questionAndAnswers={givenAnswersArtifact[historyId].artifact == "Sunflowers" ?
+                    questionsSunflowers[historyNum - 1] :
+                    questionsGreatWave[historyNum - 1]
+                } />
             break;
         default:
             return "Should not happen"
@@ -59,13 +63,13 @@ const CompletedQuizList = (props) => {
             }>
             <>
                 <Text style={{ color: 'white', alignSelf: 'center', fontSize: 30, fontWeight: "bold" }}>
-                    Sunflowers
+                    {props.givenAnswers[i].artifact}
                 </Text>
                 <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20 }}>
                     <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, fontWeight: "bold" }}>Date: </Text>{props.givenAnswers[i].date}
                 </Text>
                 <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20 }}>
-                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, fontWeight: "bold" }}>Score: </Text> {props.givenAnswers[i].score}/3
+                    <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, fontWeight: "bold" }}>Score: </Text> {props.givenAnswers[i].score}/3
                 </Text>
             </>
         </TouchableHighlight>
@@ -94,8 +98,8 @@ const QuizHistoryCorrectOrWrong = (props) => {
             }}>
                 <Text style={{ color: 'white', alignSelf: 'center' }}>Home</Text>
             </TouchableHighlight>
-            <Text style={{ color: 'white', alignSelf: 'center', fontSize: 30, paddingRight: 20 }}>
-                Quiz - Sunflowers
+            <Text style={{ color: 'white', alignSelf: 'center', fontSize: 25, paddingRight: 20 }}>
+                Quiz - {props.artifact}
             </Text>
             <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, padding: 10 }}
                 onPress={() => {
@@ -128,7 +132,7 @@ const QuizHistoryCorrectOrWrong = (props) => {
         </View>
 
         <QuizCorrectOrWrongBody answers={props.answers} quizNum={props.historyNum}
-            questionAndAnswers={questionsSunflowers[props.historyNum - 1]} />
+            questionAndAnswers={props.questionAndAnswers} />
 
         <View style={{ ...styles.bottom }}>
             <TouchableHighlight style={{ ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => {
