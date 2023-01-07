@@ -25,7 +25,7 @@ const QuizHistory = (props) => {
                 </View>
 
                 {props.numTakenQuiz == 0 ?
-                    <Text style={{ color: 'black', marginTop: 300, alignSelf: 'center', fontSize: 25 }}>
+                    <Text style={{ color: 'black', marginTop: 250, alignSelf: 'center', fontSize: 20 }}>
                         You have not completed any quiz yet.
                     </Text> :
                     <View style={{ flex: 2 }}>
@@ -58,14 +58,14 @@ const CompletedQuizList = (props) => {
             }
             }>
             <>
-                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 30 }}>
+                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 30, fontWeight: "bold" }}>
                     Sunflowers
                 </Text>
                 <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20 }}>
-                    Date: {props.givenAnswers[i].date}
+                    <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, fontWeight: "bold" }}>Date: </Text>{props.givenAnswers[i].date}
                 </Text>
                 <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20 }}>
-                    Score: {props.givenAnswers[i].score}/3
+                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, fontWeight: "bold" }}>Score: </Text> {props.givenAnswers[i].score}/3
                 </Text>
             </>
         </TouchableHighlight>

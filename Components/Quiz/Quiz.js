@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 import { Text } from "@rneui/themed";
 import { TouchableHighlight } from "react-native";
 import styles from "../../Globals/Styles";
@@ -77,16 +77,18 @@ const QuizHomePage = (props) => {
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={false}
             setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} />
 
+        <Image source={require('./../../res/default.jpg')} 
+        style = {{height: 240, width: 180, alignSelf: "center", marginTop: 60}}/>
 
-        <Text style={{ color: 'black', marginTop: 250, alignSelf: 'center', fontSize: 40 }}>
+        <Text style={{ color: 'black', marginTop: 10, alignSelf: 'center', fontSize: 40 }}>
             Quiz
         </Text>
-        <Text style={{ color: 'black', margin: 20, alignSelf: 'center', fontSize: 30 }}>
+        <Text style={{ color: 'black', marginTop: 5, alignSelf: 'center', fontSize: 30 }}>
             Test your knowledge{"\n"} about "Sunflowers"
         </Text>
-        <Text style={{ color: 'black', margin: 20, alignSelf: 'center', fontSize: 20 }}>
-            There will be 3 questions in this quiz {"\n"}
-            Only one answer for each question is correct
+        <Text style={{ fontStyle: 'italic', color: 'black', marginTop: 5, marginHorizontal: 10, alignSelf: 'center', fontSize: 20 }}>
+            There will be 3 questions in this quiz.{"\n"}
+            Only one answer for each question is correct.
         </Text>
 
         <View style={{ ...styles.bottom }}>
@@ -125,7 +127,7 @@ const QuizQuestion = (props) => {
             setScore={props.setScore} setAnswers={props.setAnswers} navigation={props.navigation}
             setQuizPage={props.setQuizPage} overlay={props.overlay} />
 
-        <Text style={{ color: 'black', paddingHorizontal: 20, marginTop: 90, marginBottom: 30, alignSelf: 'flex-start', fontSize: 30 }}>
+        <Text style={{ color: 'black', paddingHorizontal: 20, marginTop: 90, marginBottom: 30, alignSelf: 'center', fontSize: 30 }}>
             {props.questionAndAnswers.question}
         </Text>
 
@@ -279,7 +281,7 @@ const QuizSecondHeader = (props) => {
             {props.xIcon ?
                 <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, padding: 10 }}
                     onPress={() => {
-                            props.setOverlay(2);
+                        props.setOverlay(2);
                     }}>
                     x
                 </Text> : <Text></Text>}
