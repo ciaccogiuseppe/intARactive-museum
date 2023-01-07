@@ -4,6 +4,7 @@ import { Text } from "@rneui/themed";
 import { TouchableHighlight } from "react-native";
 import styles from "../../Globals/Styles";
 import moment from 'moment';
+import { Overlay } from 'react-native-elements';
 import { questionsSunflowers, givenAnswersSunflowers, quizAnswered } from "./QuestionsAndAnswers";
 import { updateDone } from '../Achievements/AchievementLists';
 
@@ -14,6 +15,7 @@ const Quiz = (props) => {
     const [quizNum, setQuizNum] = useState(1);
     const [answers, setAnswers] = useState([]);
     const [score, setScore] = useState(0);
+    const [overlay, setOverlay] = useState(0); //0 no overlay, 1 overlay home, 2 overlay X button
 
     const updateBest = () => {
         let correctLocalAnswer = [];
@@ -44,22 +46,26 @@ const Quiz = (props) => {
     switch (quizPage) {
         case "Home":
             return <QuizHomePage setQuizNum={setQuizNum} navigation={navigation}
-                setQuizPage={setQuizPage} setScore={setScore} setAnswers={setAnswers} />
+                setQuizPage={setQuizPage} setScore={setScore} setAnswers={setAnswers}
+                setOverlay={setOverlay} />
         case "Question":
             return <QuizQuestion navigation={navigation} setQuizPage={setQuizPage}
                 quizNum={quizNum} setScore={setScore} answers={answers} score={score}
                 setAnswers={setAnswers} setQuizNum={setQuizNum}
-                questionAndAnswers={questionsSunflowers[quizNum - 1]} />
+                questionAndAnswers={questionsSunflowers[quizNum - 1]}
+                setOverlay={setOverlay} overlay={overlay} />
         case "CorrectOrWrong":
             return <QuizCorrectOrWrong navigation={navigation} setQuizPage={setQuizPage}
                 answers={answers} setScore={setScore} setAnswers={setAnswers}
                 quizNum={quizNum} setQuizNum={setQuizNum} setNumTakenQuiz={props.setNumTakenQuiz}
-                questionAndAnswers={questionsSunflowers[quizNum - 1]} />
+                questionAndAnswers={questionsSunflowers[quizNum - 1]}
+                setOverlay={setOverlay} overlay={overlay} />
         case "Results":
             return <QuizResults navigation={navigation} setQuizPage={setQuizPage}
                 setAnswers={setAnswers} answers={answers}
                 givenAnswers={givenAnswersSunflowers} setQuizNum={setQuizNum}
-                score={score} setScore={setScore} updateBest={updateBest} />
+                score={score} setScore={setScore} updateBest={updateBest}
+                setOverlay={setOverlay} />
         default:
             return "Should not happen"
     }
@@ -69,7 +75,7 @@ const QuizHomePage = (props) => {
     return <>
         <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={false}
-            setQuizPage={props.setQuizPage} />
+            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} />
 
 
         <Text style={{ color: 'black', marginTop: 250, alignSelf: 'center', fontSize: 40 }}>
@@ -111,9 +117,13 @@ const QuizQuestion = (props) => {
     return <View style={{ flex: 1 }}>
         <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={true}
-            setQuizPage={props.setQuizPage} />
+            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} />
 
         <QuizBreadcrumb quizNum={props.quizNum} />
+
+        <ConfirmExitOverlay setOverlay={props.setOverlay} setQuizNum={props.setQuizNum}
+            setScore={props.setScore} setAnswers={props.setAnswers} navigation={props.navigation}
+            setQuizPage={props.setQuizPage} overlay={props.overlay} />
 
         <Text style={{ color: 'black', paddingHorizontal: 20, marginTop: 90, marginBottom: 30, alignSelf: 'flex-start', fontSize: 30 }}>
             {props.questionAndAnswers.question}
@@ -143,9 +153,13 @@ const QuizCorrectOrWrong = (props) => {
     return <>
         <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={true}
-            setQuizPage={props.setQuizPage} />
+            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} />
 
         <QuizBreadcrumb quizNum={props.quizNum} />
+
+        <ConfirmExitOverlay setOverlay={props.setOverlay} setQuizNum={props.setQuizNum}
+            setScore={props.setScore} setAnswers={props.setAnswers} navigation={props.navigation}
+            setQuizPage={props.setQuizPage} overlay={props.overlay} />
 
         <QuizCorrectOrWrongBody answers={props.answers} quizNum={props.quizNum}
             questionAndAnswers={questionsSunflowers[props.quizNum - 1]} />
@@ -162,7 +176,7 @@ const QuizCorrectOrWrong = (props) => {
                 }
             }}>
                 <Text style={{ color: 'white', alignSelf: 'center' }}>{props.quizNum == 3 ?
-                    "See results" :
+                    "Submit and see results" :
                     "Next"
                 }</Text>
             </TouchableHighlight>
@@ -203,7 +217,7 @@ const QuizResults = (props) => {
     return <>
         <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={false}
-            setQuizPage={props.setQuizPage} />
+            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} />
 
         <QuizBreadcrumb quizNum={-1} />
 
@@ -247,11 +261,15 @@ const QuizSecondHeader = (props) => {
     return <>
         <View style={{ ...styles.secondHeader }}>
             <TouchableHighlight style={{ ...styles.button, width: "20%", alignSelf: 'center' }} onPress={() => {
-                props.setQuizNum(1);
-                props.setScore(0);
-                props.setAnswers([]);
-                props.navigation.navigate('Home');
-                props.setQuizPage("Home");
+                if (props.xIcon) { //quizQuestion or quizCorrectOrWrong page
+                    props.setOverlay(1);
+                } else { //quizHome or quizResult page
+                    props.setQuizNum(1);
+                    props.setScore(0);
+                    props.setAnswers([]);
+                    props.navigation.navigate('Home');
+                    props.setQuizPage("Home");
+                }
             }}>
                 <Text style={{ color: 'white', alignSelf: 'center' }}>Home</Text>
             </TouchableHighlight>
@@ -261,10 +279,7 @@ const QuizSecondHeader = (props) => {
             {props.xIcon ?
                 <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, padding: 10 }}
                     onPress={() => {
-                        props.setQuizNum(1);
-                        props.setScore(0);
-                        props.setAnswers([]);
-                        props.setQuizPage("Home");
+                            props.setOverlay(2);
                     }}>
                     x
                 </Text> : <Text></Text>}
@@ -351,6 +366,41 @@ export const QuizCorrectOrWrongBody = (props) => {
             </Text>
         </View>
     </>
+}
+
+const ConfirmExitOverlay = (props) => {
+    return <Overlay onBackdropPress={() => props.setOverlay(0)} isVisible={props.overlay != 0} overlayStyle={{ backgroundColor: "#EDE6DB", color: "#EDE6DB" }}>
+        <Text style={{ color: "black", alignSelf: "center", fontSize: 20 }}>
+            Your progress will be lost
+        </Text>
+        <Text style={{ color: "black", alignSelf: "center", fontSize: 20 }}>
+            Are you sure you want to quit?
+        </Text>
+
+        <View style={{ flexDirection: "row", alignSelf: "center" }}>
+            <TouchableHighlight style={{ ...styles.button, backgroundColor: "red", width: "25%" }}
+                onPress={() => {
+                    props.setQuizNum(1);
+                    props.setScore(0);
+                    props.setAnswers([]);
+                    if (props.overlay == 1) {
+                        props.navigation.navigate('Home');
+                    }
+                    props.setQuizPage("Home");
+                    props.setOverlay(0);
+                }}>
+                <Text style={{ color: 'black', alignSelf: 'center', fontSize: 15 }}>
+                    YES
+                </Text>
+            </TouchableHighlight>
+            <TouchableHighlight style={{ ...styles.button, width: "25%" }}
+                onPress={() => props.setOverlay(0)}>
+                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 15 }}>
+                    NO
+                </Text>
+            </TouchableHighlight>
+        </View>
+    </Overlay>
 }
 
 export default Quiz;
