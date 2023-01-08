@@ -25,11 +25,11 @@ const ARWaveWave = (props) => {
 
 
       {/*------------------- DESCRIPTION 1 - ICON -------------------*/}
-      {/*<ViroText
+      <ViroText
         pointerEvents='box-none'
-        text={"Petals"}
+        text={"Height"}
         scale={[0.005, 0.005, 0.005]}
-        position={[-0.005,  0.005, -0.028]}
+        position={[-0.005,  0.005, -0.018]}
         rotation={[-90, 0, 0]}
         outerStroke={{type:"Outline", width:4, color:'rgba(0,0,0, 0.5)'}}   
         style={styles.descriptionTextStyle}
@@ -38,7 +38,7 @@ const ARWaveWave = (props) => {
       <ViroBox
         pointerEvents='box-none'
         scale={[0.005, 0.000, 0.005]}
-        position={[-0.015, 0.005, -0.0295]}
+        position={[-0.015, 0.005, -0.0195]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={["description_icon"]}
         visible={visible2}
@@ -46,7 +46,7 @@ const ARWaveWave = (props) => {
       <ViroBox
         pointerEvents='box-none'
         scale={[0.007, 0.000, 0.007]}
-        position={[-0.005, 0.02, -0.023]}
+        position={[-0.005, 0.02, -0.013]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={[color2]}
         opacity={0.7}
@@ -63,7 +63,7 @@ const ARWaveWave = (props) => {
             setColor2("white");
             setVisible2(false);
           }
-        }}/>*/}
+        }}/>
 
       {/*------------------- DESCRIPTION 2 - ICON -------------------*/}
       {/*<ViroText
@@ -109,45 +109,47 @@ const ARWaveWave = (props) => {
 
 
       {/*------------------- COMPARISON - ICON -------------------*/}
-      {/*<ViroText
+      {/*------------------- VIDEO 1 - ICON -------------------*/}
+      <ViroText
         pointerEvents='box-none'
-        text={"Other sunflowers"}
+        text={"The making of"}
         scale={[0.005, 0.005, 0.005]}
-        position={[0.001,  0.005, 0.019]}
+        position={[-0.005,  0.005, 0.009]}
         rotation={[-90, 0, 0]}
         outerStroke={{type:"Outline", width:4, color:'rgba(0,0,0, 0.5)'}}   
         style={styles.descriptionTextStyle}
-        visible={visible3}/>
+        visible={visible}/>
 
       <ViroBox
         pointerEvents='box-none'
         scale={[0.005, 0.000, 0.005]}
-        position={[-0.021, 0.005, 0.0175]}
+        position={[-0.024, 0.005, 0.0072]}
         animation={{name: "rotate", run: true, loop: true}}
-        materials={["compare_icon"]}
-        visible={visible3}
+        materials={["video_icon"]}
+        visible={visible}
         />
       <ViroBox
         pointerEvents='box-none'
         scale={[0.007, 0.000, 0.007]}
-        position={[0.001, 0.02, 0.024]}
+        position={[-0.005, 0.02, 0.013]}
         animation={{name: "rotate", run: true, loop: true}}
-        materials={[color3]}
+        materials={[color]}
         opacity={0.7}
         visible={curScene.inner=="" && !overlayActive}
         onHover={a => {
           if (a.valueOf() == true){
-            setNextScene({main:"scene7", inner:"comparison"})
-            setColor3("blue");
-            setVisible3(true);              
+            setNextScene({main:"scene7", inner:"video"})
+            setColor("blue");
+            setVisible(true);              
           }
           else{
-            if(nextScene.main == "scene7" && curScene.inner != "comparison")
+            if(nextScene.main == "scene7" && curScene.inner != "video")
             setNextScene({main:"scene7", inner:""})
-            setColor3("white");
-            setVisible3(false);
+            setColor("white");
+            setVisible(false);
           }
-        }}/>*/}
+        }}/>
+
 
         
         {/*------------------- COMPARISON - LEFT -------------------*/}
