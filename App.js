@@ -87,7 +87,7 @@ const CustomSwitchSelector = (props) => {
     selectedColor={"#fff"}
     buttonColor={"#417D7A"}
     borderColor={"#417D7A"}
-    //disabled
+    disabled
     style={{ width: 75, marginLeft: 10 }}
     options={props.opts}
   />);
@@ -107,6 +107,7 @@ const CustomHeader = (props) => {
   return (
     <View style={{ ...props.style, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
       <MCIcon style={{ paddingVertical: 13, paddingHorizontal: 13 }} size={28} color="#FFF" name="menu" onPress={() => { props.navigation.getParent("MenuDrawer").openDrawer(); }}></MCIcon>
+      <Text style={{ fontSize: 20, color: "#FFF" }}> Int<Text style={{ fontWeight: "900", color: "#EDE6DB" }}>AR</Text>active Museum </Text>
       <Icon style={{ paddingVertical: 13, paddingHorizontal: 13 }} size={25} color="#FFF" name="user-circle" onPress={() => { props.navigation.getParent("RightDrawer").openDrawer() }}></Icon>
     </View>
   );
@@ -195,11 +196,11 @@ const LeftDrawerNavigator = () => {
         // uguale a "Sunflowers" o a "The Great Wave"
       }
       <Drawer.Screen name="Quiz" options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} >
-        {(props) => <Quiz {...props} setNumTakenQuiz={setNumTakenQuiz} artifact={"The Great Wave"}/>}
+        {(props) => <Quiz {...props} setNumTakenQuiz={setNumTakenQuiz} artifact={"The Great Wave"} />}
       </Drawer.Screen>
       <Drawer.Screen name="Achievements" options={{ drawerIcon: IconComponent('trophy', 0), drawerLabel: "Achievements", title: "IntARactive Museum" }}>
-        {(props)=><Achievements {...props} list={achievementsList}/>}
-        </Drawer.Screen>
+        {(props) => <Achievements {...props} list={achievementsList} />}
+      </Drawer.Screen>
       <Drawer.Screen name="QuizHistory" options={{ drawerIcon: IconComponent('clipboard-list', 0), drawerLabel: "Quiz History", title: "IntARactive Museum" }} >
         {(props) => <QuizHistory {...props} numTakenQuiz={numTakenQuiz} />}
       </Drawer.Screen>
