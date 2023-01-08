@@ -61,8 +61,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     padding: 10,
     borderRadius: 40
-  }
-});
+  },
     sectionContainer: {
       marginTop: 32,
       paddingHorizontal: 24,
