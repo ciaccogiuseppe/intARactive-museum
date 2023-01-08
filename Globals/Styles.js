@@ -1,13 +1,68 @@
 import { Dimensions, StyleSheet } from "react-native";
 
 const palette = [
-    "#EDE6DB",
-    "#417D7A",
-    "#1D5C63",
-    "#1A3C40"
+  "#EDE6DB",
+  "#417D7A",
+  "#1D5C63",
+  "#1A3C40"
 ]
 
 const styles = StyleSheet.create({
+  breadcrumb: {
+    flex: 1,
+    top: 50,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignContent: 'center',
+    flexWrap: 'nowrap',
+    flexDirection: 'row',
+    position: 'absolute',
+    opacity: 1.0,
+    width: '100%',
+    borderBottomColor: 'gray',
+    borderBottomWidth: 3,
+    height: 35,
+  },
+  button: {
+    borderColor: 'black',
+    borderWidth: 0,
+    borderRadius: 10,
+    backgroundColor: palette[2],
+    padding: 10,
+    margin: 5,
+  },
+  buttonDisabled: {
+    borderColor: 'black',
+    borderWidth: 0,
+    borderRadius: 10,
+    backgroundColor: "#A9A9A9",
+    padding: 10,
+    margin: 5,
+    height: 40
+  },
+  quizSelected: {
+    borderColor: 'black',
+    borderWidth: 0,
+    borderRadius: 10,
+    backgroundColor: "#6082B6",
+    padding: 10,
+    margin: 5,
+    height: 40
+  },
+  bottom: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 15
+  },
+  quizCards: {
+    backgroundColor: "#CCCCCC",
+    marginLeft: 10,
+    marginRight: 10,
+    padding: 10,
+    borderRadius: 40
+  }
+});
     sectionContainer: {
       marginTop: 32,
       paddingHorizontal: 24,
@@ -126,4 +181,4 @@ const styles = StyleSheet.create({
     
   });
 
-  export default styles;
+export default styles;

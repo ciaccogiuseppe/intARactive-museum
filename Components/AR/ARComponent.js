@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { ViroARImageMarker, ViroARScene, ViroARSceneNavigator, ViroARTrackingTargets, ViroBox, ViroCamera, ViroImage, ViroMaterials, ViroOmniLight, ViroSphere, ViroSpotLight, ViroText } from "@viro-community/react-viro"
 import styles from "../../Globals/Styles"
@@ -505,6 +506,5 @@ ViroMaterials.createMaterials({
       type: 'Image'
     }
   });
-
 
 export default ARComponent;
