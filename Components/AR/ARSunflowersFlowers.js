@@ -13,8 +13,11 @@ const ARSunflowersFlowers = (props) => {
     const [visible, setVisible] = useState(false);
     const [visible2, setVisible2] = useState(false);
     const [visible3, setVisible3] = useState(false);
+    const [pauseUpdates, setPauseUpdates] = useState(false);
+
     return <ViroARScene>
       <ViroARImageMarker 
+        pauseUpdates={pauseUpdates}
         target={"logo"}>
         <ViroBox position={[0, 0, 0]}
           animation={{name: "rotate", run: true, loop: true}}
@@ -55,13 +58,15 @@ const ARSunflowersFlowers = (props) => {
           if (a.valueOf() == true){
             setNextScene({main:"scene2", inner:"description1"})
             setColor2("blue");
-            setVisible2(true);              
+            setVisible2(true);  
+            setPauseUpdates(true);            
           }
           else{
             if(nextScene.main == "scene2" && curScene.inner != "description1")
             setNextScene({main:"scene2", inner:""})
             setColor2("white");
             setVisible2(false);
+            setPauseUpdates(false);
           }
         }}/>
 
@@ -96,13 +101,15 @@ const ARSunflowersFlowers = (props) => {
           if (a.valueOf() == true){
             setNextScene({main:"scene2", inner:"description2"})
             setColor("blue");
-            setVisible(true);              
+            setVisible(true);     
+            setPauseUpdates(true);         
           }
           else{
             if(nextScene.main == "scene2" && curScene.inner != "description2")
             setNextScene({main:"scene2", inner:""})
             setColor("white");
             setVisible(false);
+            setPauseUpdates(false);
           }
         }}/>
 
@@ -139,13 +146,15 @@ const ARSunflowersFlowers = (props) => {
           if (a.valueOf() == true){
             setNextScene({main:"scene2", inner:"comparison"})
             setColor3("blue");
-            setVisible3(true);              
+            setVisible3(true);  
+            setPauseUpdates(true);            
           }
           else{
             if(nextScene.main == "scene2" && curScene.inner != "comparison")
             setNextScene({main:"scene2", inner:""})
             setColor3("white");
             setVisible3(false);
+            setPauseUpdates(false);
           }
         }}/>
 

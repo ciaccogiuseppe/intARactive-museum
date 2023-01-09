@@ -9,6 +9,7 @@ const ARSunflowersMain = (props) => {
     const [visible, setVisible] = useState(false);
     const [visible2, setVisible2] = useState(false);
     const [visible3, setVisible3] = useState(false);
+    const [pauseUpdates, setPauseUpdates] = useState(false);
     const curArtifact = props.curArtifact;
     const setCurArtifact = props.setCurArtifact;
     const curScene = props.curScene;
@@ -32,7 +33,8 @@ const ARSunflowersMain = (props) => {
       {(curArtifact == 0 || curArtifact == 1) &&
       <ViroARImageMarker 
       target={"logo"}
-      onAnchorFound={() => setCurArtifact(1)}>
+      onAnchorFound={() => setCurArtifact(1)}
+      pauseUpdates={pauseUpdates}>
       
       {curArtifact == 1 && <>
         <ViroBox 
@@ -114,12 +116,14 @@ const ARSunflowersMain = (props) => {
             setNextScene({main:"scene2", inner:""}) 
             setColor("blue");
             setVisible(true);
+            setPauseUpdates(true);
           }
           else{
             if(nextScene.main == "scene2")
             setNextScene({main:"scene1", inner:""})
             setColor("white");
             setVisible(false);
+            setPauseUpdates(false);
           }
         }}
         />    
@@ -136,13 +140,15 @@ const ARSunflowersMain = (props) => {
           if (a.valueOf() == true){
             setNextScene({main:"scene3", inner:""})
             setColor2("blue");
-            setVisible2(true);              
+            setVisible2(true);    
+            setPauseUpdates(true);          
           }
           else{
             if(nextScene.main == "scene3")
             setNextScene({main:"scene1", inner:""})
             setColor2("white");
             setVisible2(false);
+            setPauseUpdates(false);
           }
         }}
         />
@@ -159,13 +165,15 @@ const ARSunflowersMain = (props) => {
           if (a.valueOf() == true){
             setNextScene({main:"scene4", inner:""})
             setColor3("blue");
-            setVisible3(true);              
+            setVisible3(true);  
+            setPauseUpdates(true);            
           }
           else{
             if(nextScene.main == "scene4")
             setNextScene({main:"scene1", inner:""})
             setColor3("white");
             setVisible3(false);
+            setPauseUpdates(false);
           }
         }}/>
       </>}
@@ -173,7 +181,8 @@ const ARSunflowersMain = (props) => {
     </ViroARImageMarker>}
     {(curArtifact == 0 || curArtifact == 2) && <ViroARImageMarker 
       target={"logo2"}
-      onAnchorFound={() => setCurArtifact(2)}>
+      onAnchorFound={() => setCurArtifact(2)}
+      pauseUpdates={pauseUpdates}>
         {curArtifact == 2 && <>
           <ViroBox 
         pointerEvents='box-none'
@@ -206,7 +215,7 @@ const ARSunflowersMain = (props) => {
       <ViroBox
         pointerEvents='box-none'
         scale={[0.007, 0.000, 0.007]}
-        position={[0, 0.015, 0.01]}
+        position={[0, 0.02, 0.01]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={[color]}
         opacity={0.7}
@@ -216,12 +225,14 @@ const ARSunflowersMain = (props) => {
             setNextScene({main:"scene5", inner:""}) 
             setColor("blue");
             setVisible(true);
+            setPauseUpdates(true);
           }
           else{
             if(nextScene.main == "scene5")
             setNextScene({main:"scene1", inner:""})
             setColor("white");
             setVisible(false);
+            setPauseUpdates(false);
           }
         }}
         />    
@@ -249,7 +260,7 @@ const ARSunflowersMain = (props) => {
       <ViroBox
         pointerEvents='box-none'
         scale={[0.007, 0.000, 0.007]}
-        position={[-0.03, 0.015, -0.015]}
+        position={[-0.03, 0.02, -0.015]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={[color2]}
         opacity={0.7}
@@ -258,13 +269,15 @@ const ARSunflowersMain = (props) => {
           if (a.valueOf() == true){
             setNextScene({main:"scene6", inner:""})
             setColor2("blue");
-            setVisible2(true);              
+            setVisible2(true);   
+            setPauseUpdates(true);           
           }
           else{
             if(nextScene.main == "scene6")
             setNextScene({main:"scene1", inner:""})
             setColor2("white");
             setVisible2(false);
+            setPauseUpdates(false);
           }
         }}
         />
@@ -292,7 +305,7 @@ const ARSunflowersMain = (props) => {
       <ViroBox
         pointerEvents='box-none'
         scale={[0.007, 0.000, 0.007]}
-        position={[0.001, 0.015, -0.012]}
+        position={[0.001, 0.02, -0.012]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={[color3]}
         opacity={0.7}
@@ -301,13 +314,15 @@ const ARSunflowersMain = (props) => {
           if (a.valueOf() == true){
             setNextScene({main:"scene7", inner:""})
             setColor3("blue");
-            setVisible3(true);              
+            setVisible3(true);  
+            setPauseUpdates(true);            
           }
           else{
             if(nextScene.main == "scene7")
             setNextScene({main:"scene1", inner:""})
             setColor3("white");
             setVisible3(false);
+            setPauseUpdates(false);
           }
         }}/>
         

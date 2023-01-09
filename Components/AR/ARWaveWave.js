@@ -13,6 +13,8 @@ const ARWaveWave = (props) => {
     const [visible, setVisible] = useState(false);
     const [visible2, setVisible2] = useState(false);
     const [visible3, setVisible3] = useState(false);
+    const [pauseUpdates, setPauseUpdates] = useState(false);
+
     return <ViroARScene>
       <ViroARImageMarker 
         target={"logo2"}>
@@ -55,13 +57,15 @@ const ARWaveWave = (props) => {
           if (a.valueOf() == true){
             setNextScene({main:"scene7", inner:"description1"})
             setColor2("blue");
-            setVisible2(true);              
+            setVisible2(true);       
+            setPauseUpdates(true);       
           }
           else{
             if(nextScene.main == "scene7" && curScene.inner != "description1")
             setNextScene({main:"scene7", inner:""})
             setColor2("white");
             setVisible2(false);
+            setPauseUpdates(false);
           }
         }}/>
 
@@ -140,13 +144,15 @@ const ARWaveWave = (props) => {
           if (a.valueOf() == true){
             setNextScene({main:"scene7", inner:"video"})
             setColor("blue");
-            setVisible(true);              
+            setVisible(true);    
+            setPauseUpdates(true);          
           }
           else{
             if(nextScene.main == "scene7" && curScene.inner != "video")
             setNextScene({main:"scene7", inner:""})
             setColor("white");
             setVisible(false);
+            setPauseUpdates(false);
           }
         }}/>
 

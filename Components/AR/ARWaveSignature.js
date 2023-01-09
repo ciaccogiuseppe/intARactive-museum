@@ -13,9 +13,11 @@ const ARWaveSignature = (props) => {
     const [visible, setVisible] = useState(false);
     const [visible2, setVisible2] = useState(false);
     const [visible3, setVisible3] = useState(false);
+    const [pauseUpdates, setPauseUpdates] = useState(false);
     return <ViroARScene>
       <ViroARImageMarker 
-        target={"logo2"}>
+        target={"logo2"}
+        pauseUpdates={pauseUpdates}>
         <ViroBox position={[0, 0, 0]}
           animation={{name: "rotate", run: true, loop: true}}
           scale={[.075, .005, .05]}
@@ -55,13 +57,15 @@ const ARWaveSignature = (props) => {
           if (a.valueOf() == true){
             setNextScene({main:"scene6", inner:"description1"})
             setColor2("blue");
-            setVisible2(true);              
+            setVisible2(true);         
+            setPauseUpdates(true);     
           }
           else{
             if(nextScene.main == "scene6" && curScene.inner != "description1")
             setNextScene({main:"scene6", inner:""})
             setColor2("white");
             setVisible2(false);
+            setPauseUpdates(false);
           }
         }}/>
 
@@ -139,13 +143,15 @@ const ARWaveSignature = (props) => {
           if (a.valueOf() == true){
             setNextScene({main:"scene6", inner:"comparison"})
             setColor3("blue");
-            setVisible3(true);              
+            setVisible3(true);    
+            setPauseUpdates(true);          
           }
           else{
             if(nextScene.main == "scene6" && curScene.inner != "comparison")
             setNextScene({main:"scene6", inner:""})
             setColor3("white");
             setVisible3(false);
+            setPauseUpdates(false);
           }
         }}/>
 

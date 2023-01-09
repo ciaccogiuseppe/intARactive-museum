@@ -11,9 +11,11 @@ const ARSunflowersBackground = (props) => {
     const [color2, setColor2] = useState("white");
     const [visible, setVisible] = useState(false);
     const [visible2, setVisible2] = useState(false);
+    const [pauseUpdates, setPauseUpdates] = useState(false);
     return <ViroARScene>
     <ViroARImageMarker 
-      target={"logo"}>
+      target={"logo"}
+      pauseUpdates={pauseUpdates}>
       <ViroBox position={[0, 0, 0]}
         animation={{name: "rotate", run: true, loop: true}}
         scale={[.075, .005, .1]}
@@ -52,13 +54,15 @@ const ARSunflowersBackground = (props) => {
           if (a.valueOf() == true){
             setNextScene({main:"scene3", inner:"video"})
             setColor2("blue");
-            setVisible2(true);              
+            setVisible2(true); 
+            setPauseUpdates(true);            
           }
           else{
             if(nextScene.main == "scene3" && curScene.inner != "video")
             setNextScene({main:"scene3", inner:""})
             setColor2("white");
             setVisible2(false);
+            setPauseUpdates(false);
           }
         }}/>
 
@@ -95,13 +99,15 @@ const ARSunflowersBackground = (props) => {
           if (a.valueOf() == true){
             setNextScene({main:"scene3", inner:"description1"})
             setColor("blue");
-            setVisible(true);              
+            setVisible(true);  
+            setPauseUpdates(true);            
           }
           else{
             if(nextScene.main == "scene3" && curScene.inner != "description1")
             setNextScene({main:"scene3", inner:""})
             setColor("white");
             setVisible(false);
+            setPauseUpdates(false);
           }
         }}/>
     </ViroARImageMarker>

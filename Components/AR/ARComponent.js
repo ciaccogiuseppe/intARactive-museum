@@ -308,7 +308,7 @@ const ARComponent = ({navigation}) => {
         </Svg>
         </View>}
 
-        {showBar && <View pointerEvents='box-none' style={{...styles.viewFinder, height:750}}>
+        {showBar && <View pointerEvents='box-none' style={{...styles.viewFinder, height:750, opacity:0.8}}>
           <ProgressBar
             visible={showBar}
             style={{alignSelf:'center', backgroundColor: 'white'}}
