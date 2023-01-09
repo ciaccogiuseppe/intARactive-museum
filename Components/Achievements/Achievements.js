@@ -8,12 +8,12 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 const Achievements = (props) => {
     return <>
-        <ActivityBar titleName="Achievements" navigation={props.navigation} />
+        <ActivityBar titleName="Achievements" navigation={props.navigation} isHome={true} />
         <View style={{ alignItems: 'center', marginTop: 75, flex: 1, flexGrow: 1 }}>
             <Icon name='account-circle' size={150} />
         </View>
         <View style={{ flex: 2 }}>
-            <IconsList list={props.list}/>
+            <IconsList list={props.list} />
         </View>
     </>
 }

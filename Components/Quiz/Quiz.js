@@ -7,6 +7,7 @@ import moment from 'moment';
 import { Overlay } from 'react-native-elements';
 import { questionsSunflowers, questionsGreatWave, givenAnswersArtifact, quizAnswered } from "./QuestionsAndAnswers";
 import { updateDone } from '../Achievements/AchievementLists';
+import { ActivityBar } from '../../Globals/Components';
 
 const Quiz = (props) => {
     const { navigation } = props;
@@ -88,13 +89,13 @@ const QuizHomePage = (props) => {
             require('./../../res/default.jpg') :
             require('./../../res/default2.jpg')
         }
-            style={{ height: 240, width: 180, alignSelf: "center", marginTop: 60 }} />
+            style={{ height: 240, width: 180, alignSelf: "center", marginTop: 10 }} />
 
-        <Text style={{ color: 'black', marginTop: 10, alignSelf: 'center', fontSize: 40 }}>
+        <Text style={{ color: 'black', marginTop: 10, alignSelf: 'center', fontSize: 40, fontWeight: "bold" }}>
             Quiz
         </Text>
-        <Text style={{ color: 'black', marginTop: 5, alignSelf: 'center', fontSize: 30 }}>
-            Test your knowledge{"\n"} about "{props.artifact}"
+        <Text style={{ color: 'black', marginTop: 5, alignSelf: 'center', fontSize: 27, textAlign: "center" }}>
+            Test your knowledge{"\n"}about "{props.artifact}"
         </Text>
         <Text style={{ fontStyle: 'italic', color: 'black', marginTop: 5, marginHorizontal: 10, alignSelf: 'center', fontSize: 20 }}>
             There will be 3 questions in this quiz.{"\n"}
@@ -102,8 +103,8 @@ const QuizHomePage = (props) => {
         </Text>
 
         <View style={{ ...styles.bottom }}>
-            <TouchableHighlight style={{ ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => props.setQuizPage("Question")}>
-                <Text style={{ color: 'white', alignSelf: 'center' }}>Start now</Text>
+            <TouchableHighlight style={{ ...styles.buttonConfirm, width: "90%", alignSelf: 'center' }} onPress={() => props.setQuizPage("Question")}>
+                <Text style={styles.textButtonConfirm}>START NOW</Text>
             </TouchableHighlight>
         </View>
     </>
@@ -116,10 +117,10 @@ const QuizQuestion = (props) => {
     for (let i = 0; i <= 3; ++i) {
         options.push(
             <TouchableHighlight key={i} style={answerSelected === i ?
-                { ...styles.quizSelected, width: "90%", alignSelf: 'center' } :
-                { ...styles.button, height: 40, width: "90%", alignSelf: 'center' }}
+                { ...styles.quizSelected, width: "90%", alignSelf: 'center', borderWidth: 2 } :
+                { ...styles.button, width: "90%", alignSelf: 'center', backgroundColor: "white", borderWidth: 2 }}
                 onPress={() => setAnswerSelected(i)}>
-                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 15 }}>{props.questionAndAnswers.options[i]}</Text>
+                <Text style={{ color: answerSelected === i ? "white" : "#1D5C63", alignSelf: 'center', fontSize: 16, fontWeight: "600" }}>{props.questionAndAnswers.options[i]}</Text>
             </TouchableHighlight>
         )
     }
@@ -137,7 +138,7 @@ const QuizQuestion = (props) => {
             setScore={props.setScore} setAnswers={props.setAnswers} navigation={props.navigation}
             setQuizPage={props.setQuizPage} overlay={props.overlay} />
 
-        <Text style={{ color: 'black', paddingHorizontal: 20, marginTop: 90, marginBottom: 30, alignSelf: 'center', fontSize: 30 }}>
+        <Text style={{ color: 'black', paddingHorizontal: 20, marginTop: 90, marginBottom: 30, alignSelf: 'center', fontSize: 28, textAlign: "center" }}>
             {props.questionAndAnswers.question}
         </Text>
 
@@ -146,7 +147,7 @@ const QuizQuestion = (props) => {
         <View style={{ ...styles.bottom }}>
             <TouchableHighlight disabled={disabled} style={disabled ?
                 { ...styles.buttonDisabled, width: "90%", alignSelf: 'center' } :
-                { ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => {
+                { ...styles.buttonConfirm, width: "90%", alignSelf: 'center' }} onPress={() => {
                     if (answerSelected == props.questionAndAnswers.solution) {
                         props.setScore(x => x + 1);
                     }
@@ -154,10 +155,10 @@ const QuizQuestion = (props) => {
                     setAnswerSelected(-1);
                     props.setQuizPage("CorrectOrWrong")
                 }}>
-                <Text style={{ color: 'white', alignSelf: 'center' }}>Confirm</Text>
+                <Text style={styles.textButtonConfirm}>CONFIRM</Text>
             </TouchableHighlight>
         </View>
-    </View>
+    </View >
 }
 
 
@@ -179,7 +180,7 @@ const QuizCorrectOrWrong = (props) => {
                 questionsGreatWave[props.quizNum - 1]} />
 
         <View style={{ ...styles.bottom }}>
-            <TouchableHighlight style={{ ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => {
+            <TouchableHighlight style={{ ...styles.buttonConfirm, width: "90%", alignSelf: 'center' }} onPress={() => {
                 if (props.quizNum < 3) {
                     props.setQuizNum(x => x + 1);
                     props.setQuizPage("Question");
@@ -189,9 +190,9 @@ const QuizCorrectOrWrong = (props) => {
                     props.setQuizPage("Results");
                 }
             }}>
-                <Text style={{ color: 'white', alignSelf: 'center' }}>{props.quizNum == 3 ?
-                    "Submit and see results" :
-                    "Next"
+                <Text style={styles.textButtonConfirm}>{props.quizNum == 3 ?
+                    "SUBMIT AND SEE RESULTS" :
+                    "NEXT"
                 }</Text>
             </TouchableHighlight>
         </View>
@@ -236,14 +237,14 @@ const QuizResults = (props) => {
 
         <QuizBreadcrumb quizNum={-1} />
 
-        <View style={{ ...styles.quizCards, marginTop: 95 }}>
-            <Text style={{ color: 'black', alignSelf: 'center', fontSize: 40 }}>
+        <View style={{ ...styles.quizCards, marginTop: 55 }}>
+            <Text style={{ color: 'black', alignSelf: 'center', fontSize: 40, fontWeight: "bold" }}>
                 Quiz result
             </Text>
             <Text style={{ color: 'black', marginTop: 10, alignSelf: 'center', fontSize: 25 }}>
                 You answered correctly at
             </Text>
-            <Text style={{ color: 'black', alignSelf: 'center', fontSize: 35 }}>
+            <Text style={{ color: 'black', alignSelf: 'center', fontSize: 35, fontWeight: "bold" }}>
                 {props.score}/3
             </Text>
             <Text style={{ color: 'black', alignSelf: 'center', fontSize: 25 }}>
@@ -252,21 +253,21 @@ const QuizResults = (props) => {
         </View>
 
         <View style={{ ...styles.quizCards, marginTop: 10 }}>
-            <Text style={{ color: 'black', marginHorizontal: 10, alignSelf: 'flex-start', fontSize: 20 }}>
+            <Text style={{ color: 'black', marginHorizontal: 10, alignSelf: 'flex-start', fontSize: 20, textAlign: "justify" }}>
                 {resultCommentMessage}
             </Text>
-            <Text style={{ color: 'black', marginHorizontal: 10, alignSelf: 'flex-start', fontSize: 20 }}>
-                This quiz attempt has been saved into Quiz History.
+            <Text style={{ color: 'black', marginHorizontal: 10, alignSelf: 'flex-start', fontSize: 20, textAlign: "justify" }}>
+                This quiz attempt has been saved into <Text style={{ fontWeight: "bold" }}>Quiz History</Text>.
             </Text>
         </View>
 
         <View style={{ ...styles.bottom }}>
-            <TouchableHighlight style={{ ...styles.button, width: "90%", alignSelf: 'center' }} onPress={() => {
+            <TouchableHighlight style={{ ...styles.buttonConfirm, width: "90%", alignSelf: 'center' }} onPress={() => {
                 props.setQuizPage("Home");
                 props.setScore(0);
                 props.setAnswers([]);
             }}>
-                <Text style={{ color: 'white', alignSelf: 'center' }}>Back to quiz home page</Text>
+                <Text style={styles.textButtonConfirm}> BACK TO QUIZ HOMEPAGE </Text>
             </TouchableHighlight>
         </View>
     </>
@@ -274,7 +275,27 @@ const QuizResults = (props) => {
 
 const QuizSecondHeader = (props) => {
     return <>
+        <ActivityBar
+            titleName={"Quiz - " + props.artifact}
+            navigation={props.navigation}
+            isHome={true}
+            isClose={props.xIcon ? true : undefined}
+            onCloseOrHelp={() => { props.setOverlay(2); }}    // Overlay "X" button
+            onHomeOrBack={() => {
+                if (props.xIcon) { //quizQuestion or quizCorrectOrWrong page
+                    props.setOverlay(1);
+                } else { //quizHome or quizResult page
+                    props.setQuizNum(1);
+                    props.setScore(0);
+                    props.setAnswers([]);
+                    props.navigation.navigate('Home');
+                    props.setQuizPage("Home");
+                }
+            }}
+        />
+        {/*
         <View style={{ ...styles.secondHeader }}>
+
             <TouchableHighlight style={{ ...styles.button, width: "20%", alignSelf: 'center' }} onPress={() => {
                 if (props.xIcon) { //quizQuestion or quizCorrectOrWrong page
                     props.setOverlay(1);
@@ -299,6 +320,7 @@ const QuizSecondHeader = (props) => {
                     x
                 </Text> : <Text></Text>}
         </View>
+    */}
     </>
 }
 
@@ -339,9 +361,8 @@ export const QuizCorrectOrWrongBody = (props) => {
     }
 
     return <>
-
-        <View style={{ ...styles.quizCards, marginTop: 95 }}>
-            <Text style={{ color: correct ? 'green' : 'red', alignSelf: 'center', fontSize: 40 }}>
+        <View style={{ ...styles.quizCards, marginTop: 55 }}>
+            <Text style={{ color: correct ? 'green' : 'red', alignSelf: 'center', fontSize: 40, fontWeight: "800" }}>
                 {correct ? "Correct!" : "Wrong!"}
             </Text>
 
@@ -356,13 +377,13 @@ export const QuizCorrectOrWrongBody = (props) => {
                 </>
                 :
                 <>
-                    <Text style={{ color: 'black', marginLeft: 10, marginRight: 10, alignSelf: 'flex-start', fontSize: 25 }}>
+                    <Text style={{ color: 'black', marginLeft: 10, marginRight: 10, alignSelf: 'flex-start', fontSize: 23 }}>
                         Your answer:
                     </Text>
                     <Text style={{ color: 'red', fontStyle: 'italic', marginLeft: 50, marginRight: 10, alignSelf: 'flex-start', fontSize: 20 }}>
                         {props.questionAndAnswers.options[props.answers[props.quizNum - 1]]}
                     </Text>
-                    <Text style={{ color: 'black', marginLeft: 10, marginRight: 10, alignSelf: 'flex-start', fontSize: 25 }}>
+                    <Text style={{ color: 'black', marginLeft: 10, marginRight: 10, alignSelf: 'flex-start', fontSize: 23 }}>
                         Correct answer:
                     </Text>
                     <Text style={{ color: 'green', fontStyle: 'italic', marginLeft: 50, marginRight: 10, alignSelf: 'flex-start', fontSize: 20 }}>
@@ -373,10 +394,10 @@ export const QuizCorrectOrWrongBody = (props) => {
         </View>
 
         <View style={{ ...styles.quizCards, marginTop: 10 }}>
-            <Text style={{ color: 'black', marginRight: 10, marginLeft: 10, alignSelf: 'flex-start', fontSize: 25 }}>
+            <Text style={{ color: 'black', marginRight: 10, marginLeft: 10, alignSelf: 'flex-start', fontSize: 23 }}>
                 {props.questionAndAnswers.question}
             </Text>
-            <Text style={{ color: 'black', fontStyle: 'italic', marginRight: 10, marginLeft: 50, alignSelf: 'flex-start', fontSize: 20 }}>
+            <Text style={{ color: 'black', fontStyle: 'italic', marginRight: 10, marginLeft: 50, marginVertical: 10, alignSelf: 'flex-start', fontSize: 18, textAlign: "justify" }}>
                 {props.questionAndAnswers.explanation}
             </Text>
         </View>
@@ -384,16 +405,16 @@ export const QuizCorrectOrWrongBody = (props) => {
 }
 
 const ConfirmExitOverlay = (props) => {
-    return <Overlay onBackdropPress={() => props.setOverlay(0)} isVisible={props.overlay != 0} overlayStyle={{ backgroundColor: "#EDE6DB", color: "#EDE6DB" }}>
-        <Text style={{ color: "black", alignSelf: "center", fontSize: 20 }}>
+    return <Overlay onBackdropPress={() => props.setOverlay(0)} isVisible={props.overlay != 0} overlayStyle={{ backgroundColor: "#EDE6DB", color: "#EDE6DB", borderRadius: 10, padding: 20 }}>
+        <Text style={{ color: "black", alignSelf: "center", fontSize: 22, fontWeight: "700" }}>
             Your progress will be lost
         </Text>
-        <Text style={{ color: "black", alignSelf: "center", fontSize: 20 }}>
+        <Text style={{ color: "black", alignSelf: "center", fontSize: 17, marginTop: 3, marginBottom: 15 }}>
             Are you sure you want to quit?
         </Text>
 
         <View style={{ flexDirection: "row", alignSelf: "center" }}>
-            <TouchableHighlight style={{ ...styles.button, backgroundColor: "red", width: "25%" }}
+            <TouchableHighlight style={{ ...styles.button, backgroundColor: "#ec4646", width: "35%" }}
                 onPress={() => {
                     props.setQuizNum(1);
                     props.setScore(0);
@@ -404,15 +425,11 @@ const ConfirmExitOverlay = (props) => {
                     props.setQuizPage("Home");
                     props.setOverlay(0);
                 }}>
-                <Text style={{ color: 'black', alignSelf: 'center', fontSize: 15 }}>
-                    YES
-                </Text>
+                <Text style={{ color: "#EDE6DB", alignSelf: 'center', fontSize: 18, fontWeight: "900" }}>YES</Text>
             </TouchableHighlight>
-            <TouchableHighlight style={{ ...styles.button, width: "25%" }}
+            <TouchableHighlight style={{ ...styles.button, backgroundColor: "#EDE6DB", borderWidth: 2, width: "35%" }}
                 onPress={() => props.setOverlay(0)}>
-                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 15 }}>
-                    NO
-                </Text>
+                <Text style={{ color: "#1D5C63", alignSelf: 'center', fontSize: 18, fontWeight: "900" }}>NO</Text>
             </TouchableHighlight>
         </View>
     </Overlay>
