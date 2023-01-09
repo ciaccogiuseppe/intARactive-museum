@@ -361,43 +361,53 @@ export const QuizCorrectOrWrongBody = (props) => {
     }
 
     return <>
-        <View style={{ ...styles.quizCards, marginTop: 55 }}>
-            <Text style={{ color: correct ? 'green' : 'red', alignSelf: 'center', fontSize: 40, fontWeight: "800" }}>
+        <View style={{ ...styles.quizCards, marginTop: 45 }}>
+            <Text style={{ color: correct ? 'green' : '#d80303', alignSelf: 'center', fontSize: 35, fontWeight: "800", marginBottom: 10 }}>
                 {correct ? "Correct!" : "Wrong!"}
             </Text>
 
             {correct ?
-                <>
-                    <Text style={{ color: 'black', marginLeft: 10, marginRight: 10, alignSelf: 'flex-start', fontSize: 25 }}>
-                        Your answer:
-                    </Text>
-                    <Text style={{ color: 'green', fontStyle: 'italic', marginLeft: 50, marginRight: 10, alignSelf: 'flex-start', fontSize: 20 }}>
-                        {props.questionAndAnswers.options[props.answers[props.quizNum - 1]]}
-                    </Text>
-                </>
+                <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row", flexWrap: "wrap" }}>
+                    <View>
+                        <Text style={{ marginLeft: 10, marginRight: 10, fontSize: 20 }}>Your answer:</Text>
+                    </View>
+                    <View>
+                        <Text style={{ color: 'green', fontStyle: "italic", fontWeight: "600", fontSize: 20, marginRight: 10 }}>
+                            {props.questionAndAnswers.options[props.answers[props.quizNum - 1]]}
+                        </Text>
+                    </View>
+                </View>
                 :
                 <>
-                    <Text style={{ color: 'black', marginLeft: 10, marginRight: 10, alignSelf: 'flex-start', fontSize: 23 }}>
-                        Your answer:
-                    </Text>
-                    <Text style={{ color: 'red', fontStyle: 'italic', marginLeft: 50, marginRight: 10, alignSelf: 'flex-start', fontSize: 20 }}>
-                        {props.questionAndAnswers.options[props.answers[props.quizNum - 1]]}
-                    </Text>
-                    <Text style={{ color: 'black', marginLeft: 10, marginRight: 10, alignSelf: 'flex-start', fontSize: 23 }}>
-                        Correct answer:
-                    </Text>
-                    <Text style={{ color: 'green', fontStyle: 'italic', marginLeft: 50, marginRight: 10, alignSelf: 'flex-start', fontSize: 20 }}>
-                        {props.questionAndAnswers.options[props.questionAndAnswers.solution]}
-                    </Text>
+                    <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row", flexWrap: "wrap" }}>
+                        <View>
+                            <Text style={{ marginLeft: 10, marginRight: 10, fontSize: 20 }}>Your answer:</Text>
+                        </View>
+                        <View>
+                            <Text style={{ color: '#d80303', fontStyle: "italic", fontWeight: "600", fontSize: 20, marginRight: 10 }}>
+                                {props.questionAndAnswers.options[props.answers[props.quizNum - 1]]}
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={{ justifyContent: "center", alignItems: "center", flexDirection: "row", flexWrap: "wrap" }}>
+                        <View>
+                            <Text style={{ marginLeft: 10, marginRight: 10, fontSize: 20 }}>Correct answer:</Text>
+                        </View>
+                        <View>
+                            <Text style={{ color: 'green', fontStyle: "italic", fontWeight: "600", fontSize: 20, marginRight: 10 }}>
+                                {props.questionAndAnswers.options[props.questionAndAnswers.solution]}
+                            </Text>
+                        </View>
+                    </View>
                 </>
             }
         </View>
 
         <View style={{ ...styles.quizCards, marginTop: 10 }}>
-            <Text style={{ color: 'black', marginRight: 10, marginLeft: 10, alignSelf: 'flex-start', fontSize: 23 }}>
+            <Text style={{ color: 'black', marginHorizontal: 10, alignSelf: 'center', fontSize: 23, textAlign: "center", fontWeight: "900" }}>
                 {props.questionAndAnswers.question}
             </Text>
-            <Text style={{ color: 'black', fontStyle: 'italic', marginRight: 10, marginLeft: 50, marginVertical: 10, alignSelf: 'flex-start', fontSize: 18, textAlign: "justify" }}>
+            <Text style={{ color: 'black', fontStyle: 'italic', marginVertical: 10, marginHorizontal: 10, alignSelf: 'center', fontSize: 18, textAlign: "justify" }}>
                 {props.questionAndAnswers.explanation}
             </Text>
         </View>
@@ -414,6 +424,10 @@ const ConfirmExitOverlay = (props) => {
         </Text>
 
         <View style={{ flexDirection: "row", alignSelf: "center" }}>
+            <TouchableHighlight style={{ ...styles.button, backgroundColor: "#EDE6DB", borderWidth: 2, width: "35%" }}
+                onPress={() => props.setOverlay(0)}>
+                <Text style={{ color: "#1D5C63", alignSelf: 'center', fontSize: 18, fontWeight: "900" }}>CANCEL</Text>
+            </TouchableHighlight>
             <TouchableHighlight style={{ ...styles.button, backgroundColor: "#ec4646", width: "35%" }}
                 onPress={() => {
                     props.setQuizNum(1);
@@ -425,11 +439,7 @@ const ConfirmExitOverlay = (props) => {
                     props.setQuizPage("Home");
                     props.setOverlay(0);
                 }}>
-                <Text style={{ color: "#EDE6DB", alignSelf: 'center', fontSize: 18, fontWeight: "900" }}>YES</Text>
-            </TouchableHighlight>
-            <TouchableHighlight style={{ ...styles.button, backgroundColor: "#EDE6DB", borderWidth: 2, width: "35%" }}
-                onPress={() => props.setOverlay(0)}>
-                <Text style={{ color: "#1D5C63", alignSelf: 'center', fontSize: 18, fontWeight: "900" }}>NO</Text>
+                <Text style={{ color: "#EDE6DB", alignSelf: 'center', fontSize: 18, fontWeight: "900" }}>QUIT</Text>
             </TouchableHighlight>
         </View>
     </Overlay>

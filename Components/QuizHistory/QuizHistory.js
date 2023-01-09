@@ -48,24 +48,23 @@ const CompletedQuizList = (props) => {
 
     let list = [];
     for (let i = 0; i < props.numTakenQuiz; ++i) {
-        list.push(<TouchableHighlight key={i} style={{ ...styles.button, marginTop: i == 0 ? 60 : 0, width: "95%", alignSelf: 'center' }}
+        list.push(<TouchableHighlight key={i} style={{ ...styles.button, marginTop: i == 0 ? 10 : 0, width: "95%", alignSelf: 'center' }}
             onPress={() => {
                 props.setHistoryPage("Info");
                 props.setHistoryNum(1);
                 props.setHistoryId(i);
-            }
-            }>
-            <>
-                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 30, fontWeight: "bold" }}>
+            }}>
+            <View>
+                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 30, fontWeight: "bold", textAlignVertical: "center" }}>
                     {props.givenAnswers[i].artifact}
                 </Text>
-                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20 }}>
+                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, textAlignVertical: "center" }}>
                     <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, fontWeight: "bold" }}>Date: </Text>{props.givenAnswers[i].date}
                 </Text>
-                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20 }}>
+                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, textAlignVertical: "center" }}>
                     <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, fontWeight: "bold" }}>Score: </Text> {props.givenAnswers[i].score}/3
                 </Text>
-            </>
+            </View>
         </TouchableHighlight>
         );
     }
