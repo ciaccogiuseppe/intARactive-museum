@@ -14,17 +14,16 @@ import { TIPS_DATA } from "./TipsData";
 import { ActivityBar } from "../../Globals/Components";
 
 
-const Tips = ({ navigation }) => {
-    return <>
-        <TipsItems navigation={navigation}/>
-    </>
-}
-
-const TipsItems = (props) => {
-    const [curPage, setCurPage] = React.useState(0);
+const Tips = ({ navigation, isFirstVisit }) => {
     const { width } = useWindowDimensions();
+
+    const [curPage, setCurPage] = React.useState(0);
+    const [newPage, setNewPage] = React.useState(1);
+
     const scrollX = React.useRef(new Animated.Value(0)).current;
     const flatListRef = React.useRef(null);
+
+    const keyExtractor = React.useCallback((item) => item.key, []);
     const changeCurrentPage = React.useCallback(({ viewableItems, changed }) => {
         if (viewableItems && viewableItems.length > 0) {
             setCurPage(viewableItems[0].index);
@@ -41,11 +40,19 @@ const TipsItems = (props) => {
         }, [width],
     );
 
-    const keyExtractor = React.useCallback((item) => item.key, []);
+    React.useEffect(() => {
+        if (newPage == 1) {
+            flatListRef.current.scrollToIndex({ animated: true, index: 0 });
+            setNewPage(0);
+        }
+    }, [newPage]);
 
     return <>
-        <ActivityBar titleName="Tips" navigation={props.navigation}/>
-        <View style={{...otherStyles.container, marginTop:50}}>
+        {isFirstVisit === false ? <ActivityBar titleName="Tips" navigation={navigation} onCloseOrHelp={() => {
+            setNewPage(1);
+            navigation.navigate("Home");
+        }} isClose={true} /> : <></>}
+        <View style={{ ...otherStyles.container, marginTop: 50 }}>
             <FlatList
                 flex={1}
                 ref={flatListRef}
@@ -67,22 +74,29 @@ const TipsItems = (props) => {
                 onViewableItemsChanged={changeCurrentPage}
             />
         </View>
-        <View style={{ flex: 1, alignContent: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-            <TouchableHighlight style={{ ...otherStyles.button, width: "40%", alignSelf: 'center' }} onPress={() => {
+        <View style={{ flex: 1, alignContent: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+            {/*<TouchableHighlight style={{ ...otherStyles.button, width: "40%", alignSelf: 'center' }} onPress={() => {
                 flatListRef.current.scrollToIndex({ animated: true, index: (curPage > 0 ? (curPage - 1) : 0) });
             }}>
                 <Text style={{ color: 'white', alignSelf: 'center' }}>Back</Text>
-            </TouchableHighlight>
-            <PaginationDot
-                activeDotColor={'black'}
-                curPage={curPage}
-                maxPage={4}
-            />
-            <TouchableHighlight style={{ ...otherStyles.button, width: "40%", alignSelf: 'center' }} onPress={() => {
-                flatListRef.current.scrollToIndex({ animated: true, index: (curPage < 3 ? (curPage + 1) : 3) });
+        </TouchableHighlight>*/}
+            <View alignSelf={'center'}>
+                <PaginationDot
+                    activeDotColor={'black'}
+                    curPage={curPage}
+                    maxPage={4}
+                />
+            </View>
+            {curPage < 3 ? <TouchableHighlight style={{ ...otherStyles.button, width: "40%", alignSelf: 'center' }} onPress={() => {
+                flatListRef.current.scrollToIndex({ animated: true, index: (curPage + 1) });
             }}>
                 <Text style={{ color: 'white', alignSelf: 'center' }}>Next</Text>
-            </TouchableHighlight>
+            </TouchableHighlight> : (isFirstVisit === true ? <TouchableHighlight style={{ ...otherStyles.button, width: "40%", alignSelf: 'center' }} onPress={() => {
+                setNewPage(1);
+                navigation.navigate("Home");
+            }}>
+                <Text style={{ color: 'white', alignSelf: 'center' }}>Start now</Text>
+            </TouchableHighlight> : <></>)}
         </View>
     </>;
 }

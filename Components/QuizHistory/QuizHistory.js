@@ -4,6 +4,7 @@ import { TouchableHighlight, View, ScrollView } from "react-native";
 import styles from "../../Globals/Styles";
 import { QuizCorrectOrWrongBody } from "../Quiz/Quiz";
 import { questionsSunflowers, questionsGreatWave, givenAnswersArtifact } from "../Quiz/QuestionsAndAnswers";
+import { ActivityBar } from "../../Globals/Components";
 
 const QuizHistory = (props) => {
     const { navigation } = props;
@@ -15,14 +16,7 @@ const QuizHistory = (props) => {
     switch (historyPage) {
         case "Home":
             return <>
-                <View style={{ ...styles.secondHeader, flex: 1, flexGrow: 1, zIndex: 999 }}>
-                    <TouchableHighlight style={{ ...styles.button, width: "20%", alignSelf: 'center' }} onPress={() => navigation.navigate('Home')}>
-                        <Text style={{ color: 'white', alignSelf: 'center' }}>Home</Text>
-                    </TouchableHighlight>
-                    <Text style={{ color: 'white', alignSelf: 'center', fontSize: 30 }}>
-                        Quiz history
-                    </Text>
-                </View>
+                <ActivityBar titleName={'Quiz history'} navigation={props.navigation} isHome={true} onHomeOrBack={() => navigation.navigate('Home')} />
 
                 {props.numTakenQuiz == 0 ?
                     <Text style={{ color: 'black', marginTop: 250, alignSelf: 'center', fontSize: 20 }}>
@@ -54,24 +48,23 @@ const CompletedQuizList = (props) => {
 
     let list = [];
     for (let i = 0; i < props.numTakenQuiz; ++i) {
-        list.push(<TouchableHighlight key={i} style={{ ...styles.button, marginTop: i == 0 ? 60 : 0, width: "95%", alignSelf: 'center' }}
+        list.push(<TouchableHighlight key={i} style={{ ...styles.button, marginTop: i == 0 ? 10 : 0, width: "95%", alignSelf: 'center' }}
             onPress={() => {
                 props.setHistoryPage("Info");
                 props.setHistoryNum(1);
                 props.setHistoryId(i);
-            }
-            }>
-            <>
-                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 30, fontWeight: "bold" }}>
+            }}>
+            <View>
+                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 30, fontWeight: "bold", textAlignVertical: "center" }}>
                     {props.givenAnswers[i].artifact}
                 </Text>
-                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20 }}>
+                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, textAlignVertical: "center" }}>
                     <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, fontWeight: "bold" }}>Date: </Text>{props.givenAnswers[i].date}
                 </Text>
-                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20 }}>
+                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, textAlignVertical: "center" }}>
                     <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, fontWeight: "bold" }}>Score: </Text> {props.givenAnswers[i].score}/3
                 </Text>
-            </>
+            </View>
         </TouchableHighlight>
         );
     }
@@ -90,25 +83,14 @@ const QuizHistoryCorrectOrWrong = (props) => {
         correct = false;
     }
     return <>
-        <View style={{ ...styles.secondHeader }}>
-            <TouchableHighlight style={{ ...styles.button, width: "20%", alignSelf: 'center' }} onPress={() => {
-                props.navigation.navigate('Home');
-                props.setHistoryNum(1);
-                props.setHistoryPage("Home");
-            }}>
-                <Text style={{ color: 'white', alignSelf: 'center' }}>Home</Text>
-            </TouchableHighlight>
-            <Text style={{ color: 'white', alignSelf: 'center', fontSize: 25, paddingRight: 20 }}>
-                Quiz - {props.artifact}
-            </Text>
-            <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, padding: 10 }}
-                onPress={() => {
-                    props.setHistoryNum(1);
-                    props.setHistoryPage("Home");
-                }}>
-                x
-            </Text>
-        </View>
+        <ActivityBar titleName={'Quiz - ' + props.artifact} isClose={true} onCloseOrHelp={() => {
+            props.setHistoryNum(1);
+            props.setHistoryPage("Home");
+        }} isHome={true} onHomeOrBack={() => {
+            props.navigation.navigate('Home');
+            props.setHistoryNum(1);
+            props.setHistoryPage("Home");
+        }} />
 
         <View style={{ ...styles.breadcrumb }}>
             <Text style={{ color: props.historyNum == 1 ? 'black' : 'gray', fontSize: 15, paddingRight: 15 }}

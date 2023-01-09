@@ -1,36 +1,36 @@
 export const questionsSunflowers = [
   {
-    question: "Why are these flowers called 'sunflowers'?",
+    question: "Where did Van Gogh paint them?",
     options: [
-      "Because they turn toward the sun",
-      "Because they only grow during summer",
-      "Because their shape resembles the sun",
-      "Because they only appear when sunny"
+      "Arles",
+      "Paris",
+      "Marseille",
+      "Lyon"
     ],
     solution: 0,
-    explanation: "The name sunflower comes from the Greek helios 'sun' and anthos 'flower'.\nSunflower got its name because the flowers turn toward the sun."
+    explanation: "Van Gogh painted them at Arles. This artwork belongs to \"the Arles Sunflowers\", in particular to the group \"the Repetitions\"."
   },
   {
-    question: "How long can sunflowers live?",
+    question: "When did Van Gogh paint this series?",
     options: [
-      "From 10 to 20 days",
-      "From 8 to 12 weeks",
-      "From 5 to 6 months",
-      "About a year"
+      "1887",
+      "1889",
+      "1898",
+      "1878"
     ],
     solution: 1,
-    explanation: "They are tough plants that offer 8-12 weeks of flowers.\nRather than sending up a giant flower head, like many of the annual types, these sunflowers form clumps with many smaller flowers."
+    explanation: "\"Sunflowers\" is the title of two series of still life paintings by Vincent van Gogh.\nThe first series, executed in Paris in 1887, depicts the flowers lying on the ground, while the second set, made a year later (1888-1889) in Arles, shows a bouquet of sunflowers in a vase."
   },
   {
-    question: "How do sunflowers use energy?",
+    question: "What technique did the artist use?",
     options: [
-      "Generating oxygen and biomass",
-      "Creating free electricity",
-      "Generating the sunflower fruit",
-      "Warming the surrounding environment"
+      "Impasto",
+      "Sfumato",
+      "Pointillism",
+      "Oil sketch"
     ],
     solution: 0,
-    explanation: "Sunflowers capture sunlight during the day, they transform it into chemical energy, and by consuming carbon dioxide and water they generate biomass and oxygen."
+    explanation: "Impasto: it is a technique used in painting, where paint is laid on an area of the surface thickly, usually thick enough that the brush or painting-knife strokes are visible.\nPaint can also be mixed right on the canvas. When dry, impasto provides texture; the paint appears to be coming out of the canvas."
   }
 ];
 

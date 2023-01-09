@@ -107,7 +107,8 @@ const CustomHeader = (props) => {
   return (
     <View style={{ ...props.style, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
       <MCIcon style={{ paddingVertical: 13, paddingHorizontal: 13 }} size={28} color="#FFF" name="menu" onPress={() => { props.navigation.getParent("MenuDrawer").openDrawer(); }}></MCIcon>
-      <Text style={{ fontSize: 20, color: "#FFF" }}> int<Text style={{ fontWeight: "900", color: "#EDE6DB" }}>AR</Text>active Museum </Text>
+      <Text style={{ fontSize: 20, color: "#FFF" }}> int<Text style={{ fontWeight: "900", color: "#EDE6DB" }}>AR</Text>active museum </Text>
+
       <Icon style={{ paddingVertical: 13, paddingHorizontal: 13 }} size={25} color="#FFF" name="user-circle" onPress={() => { props.navigation.getParent("RightDrawer").openDrawer() }}></Icon>
     </View>
   );
@@ -204,7 +205,9 @@ const LeftDrawerNavigator = () => {
       <Drawer.Screen name="QuizHistory" options={{ drawerIcon: IconComponent('clipboard-list', 0), drawerLabel: "Quiz History", title: "IntARactive Museum" }} >
         {(props) => <QuizHistory {...props} numTakenQuiz={numTakenQuiz} />}
       </Drawer.Screen>
-      <Drawer.Screen name="Tips" component={Tips} options={{ drawerIcon: IconComponent('lightbulb-on-outline', 1), drawerLabel: "Tips", title: "IntARactive Museum" }} />
+      <Drawer.Screen name="Tips" options={{ drawerIcon: IconComponent('lightbulb-on-outline', 1), drawerLabel: "Tips", title: "IntARactive Museum" }} >
+        {(props) => <Tips {...props} isFirstVisit={false} />}
+      </Drawer.Screen>
       <Drawer.Screen name="ARObject" component={ARComponent} />
 
     </Drawer.Navigator>)

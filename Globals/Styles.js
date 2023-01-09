@@ -10,7 +10,7 @@ const palette = [
 const styles = StyleSheet.create({
   breadcrumb: {
     flex: 1,
-    top: 50,
+    top: 45,
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
@@ -20,48 +20,58 @@ const styles = StyleSheet.create({
     position: 'absolute',
     opacity: 1.0,
     width: '100%',
-    borderBottomColor: 'gray',
-    borderBottomWidth: 3,
-    height: 35,
+    borderColor: "#AAA",
+    borderBottomWidth: 1,
+    height: 35
   },
   button: {
-    borderColor: 'black',
+    borderColor: palette[2],
     borderWidth: 0,
     borderRadius: 10,
     backgroundColor: palette[2],
-    padding: 10,
-    margin: 5,
-  },
-  buttonDisabled: {
-    borderColor: 'black',
-    borderWidth: 0,
-    borderRadius: 10,
-    backgroundColor: "#A9A9A9",
-    padding: 10,
-    margin: 5,
-    height: 40
+    padding: 13,
+    margin: 5
   },
   quizSelected: {
-    borderColor: 'black',
+    borderColor: "#6082B6",
     borderWidth: 0,
     borderRadius: 10,
     backgroundColor: "#6082B6",
-    padding: 10,
-    margin: 5,
-    height: 40
+    padding: 13,
+    margin: 5
+  },
+  buttonConfirm: {
+    borderColor: palette[2],
+    borderWidth: 0,
+    borderRadius: 10,
+    backgroundColor: palette[2],
+    padding: 15,
+    margin: 5
+  },
+  buttonDisabled: {
+    borderColor: "#A9A9A9",
+    borderWidth: 0,
+    borderRadius: 10,
+    backgroundColor: "#A9A9A9",
+    padding: 15,
+    margin: 5
   },
   bottom: {
     flex: 1,
     justifyContent: 'flex-end',
-    marginBottom: 15
   },
   quizCards: {
-    backgroundColor: "#CCCCCC",
+    backgroundColor: "#EEE",
     marginLeft: 10,
     marginRight: 10,
     padding: 10,
-    borderRadius: 40
-  },
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1, },
+    shadowOpacity: 1,
+    shadowRadius: 5,
+    elevation: 4
+    },
     sectionContainer: {
       marginTop: 32,
       paddingHorizontal: 24,
@@ -179,5 +189,4 @@ const styles = StyleSheet.create({
     }
     
   });
-
 export default styles;
