@@ -204,7 +204,9 @@ const LeftDrawerNavigator = () => {
       <Drawer.Screen name="QuizHistory" options={{ drawerIcon: IconComponent('clipboard-list', 0), drawerLabel: "Quiz History", title: "IntARactive Museum" }} >
         {(props) => <QuizHistory {...props} numTakenQuiz={numTakenQuiz} />}
       </Drawer.Screen>
-      <Drawer.Screen name="Tips" component={Tips} options={{ drawerIcon: IconComponent('lightbulb-on-outline', 1), drawerLabel: "Tips", title: "IntARactive Museum" }} />
+      <Drawer.Screen name="Tips" options={{ drawerIcon: IconComponent('lightbulb-on-outline', 1), drawerLabel: "Tips", title: "IntARactive Museum" }} >
+        {(props) => <Tips {...props} isFirstVisit={false} />}
+      </Drawer.Screen>
     </Drawer.Navigator>)
 };
 
