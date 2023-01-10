@@ -1,9 +1,10 @@
 import { Button, Text } from "@rneui/themed";
-import { TouchableHighlight } from "react-native";
+import { TouchableHighlight, View } from "react-native";
 import styles from "../../Globals/Styles";
 
 const HomePage = ({navigation}) => {
     return <>
+    <View style={{height:"100%"}}>
     <Text style={{color:'black', margin:20, alignSelf:'center', fontSize:30}}>
         Home page sample
     </Text>
@@ -22,6 +23,7 @@ const HomePage = ({navigation}) => {
     <TouchableHighlight style={{...styles.button, width:"40%", alignSelf:'center'}} onPress={() => navigation.navigate('Achievements')}>
             <Text style={{color:'white', alignSelf:'center'}}>Achievements</Text>
     </TouchableHighlight>
+    </View>
     </>
 }
 

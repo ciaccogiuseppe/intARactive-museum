@@ -187,7 +187,7 @@ const ARComponent = ({navigation}) => {
     openLarge: false,
     showCloseButton: true,
     style: {
-      backgroundColor:"#EDE6DB"
+      backgroundColor:styles.palette._0
     },
     barStyle:{
       backgroundColor:"#000000",
@@ -341,12 +341,12 @@ const ARComponent = ({navigation}) => {
         
 
 
-        {curArtifact>0 && secondFooter &&<View pointerEvents='box-none' style={{position:'absolute', bottom:45, alignContent:'center', alignItems:'center', alignSelf:'center', justifyContent:'center',  backgroundColor:"#417D7A", width:"100%"}}>
+        {curArtifact>0 && secondFooter &&<View pointerEvents='box-none' style={{position:'absolute', bottom:45, alignContent:'center', alignItems:'center', alignSelf:'center', justifyContent:'center',  backgroundColor:styles.palette._1, width:"100%"}}>
         
         <Switch
           onValueChange={val => setSwitchC(val)}
-          thumbColor="#1D5C63"
-          trackColor="#EDE6DB"
+          thumbColor={styles.palette._2}
+          trackColor={styles.palette._0}
           opacity={1}
           style={{alignSelf:'center'}}
           value={switchC}
@@ -356,7 +356,7 @@ const ARComponent = ({navigation}) => {
         </Text></View>}
 
         
-        <Overlay onBackdropPress={() => getBack()} isVisible={curScene.inner == "description1" || curScene.inner == "description2"} overlayStyle={{backgroundColor:"#EDE6DB", color:"#EDE6DB"}}>
+        <Overlay onBackdropPress={() => getBack()} isVisible={curScene.inner == "description1" || curScene.inner == "description2"} overlayStyle={{backgroundColor:styles.palette._0, color:styles.palette._0}}>
         <Text style={{color:"black", alignSelf:"center", fontSize:25, fontWeight:"bold"}}>{aritfactName[curArtifact]}</Text>
         <Text style={{color:"black", alignSelf:"center", fontSize:17}}>{authorDate[curArtifact]}</Text>
         

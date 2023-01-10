@@ -4,7 +4,7 @@ import { Text, Icon } from "@rneui/themed";
 import { TouchableHighlight } from "react-native";
 import styles from "../../Globals/Styles";
 import moment from 'moment';
-import { Overlay } from 'react-native-elements';
+import { Divider, Overlay } from 'react-native-elements';
 import { questionsSunflowers, questionsGreatWave, givenAnswersArtifact, quizAnswered } from "./QuestionsAndAnswers";
 import { updateDone } from '../Achievements/AchievementLists';
 import { ActivityBar } from '../../Globals/Components';
@@ -116,7 +116,9 @@ const QuizHomePage = (props) => {
         </Text>
 
         <View style={{ ...styles.bottom }}>
-            <TouchableHighlight style={{ ...styles.buttonConfirm, width: "90%", alignSelf: 'center' }} onPress={() => props.setQuizPage("Question")}>
+            <TouchableHighlight 
+                underlayColor={styles.palette._3}
+                style={{ ...styles.buttonConfirm, width: "90%", alignSelf: 'center' }} onPress={() => props.setQuizPage("Question")}>
                 <Text style={styles.textButtonConfirm}>START NOW</Text>
             </TouchableHighlight>
         </View>
@@ -129,11 +131,13 @@ const QuizQuestion = (props) => {
     let disabled = answerSelected === -1;
     for (let i = 0; i <= 3; ++i) {
         options.push(
-            <TouchableHighlight key={i} style={answerSelected === i ?
-                { ...styles.quizSelected, width: "90%", alignSelf: 'center', borderWidth: 2 } :
-                { ...styles.button, width: "90%", alignSelf: 'center', backgroundColor: "white", borderWidth: 2 }}
+            <TouchableHighlight key={i} 
+                underlayColor={styles.palette._4}
+                style={answerSelected === i ?
+                { ...styles.quizSelected, width: "90%", alignSelf: 'center' } :
+                { ...styles.button, width: "90%", alignSelf: 'center', backgroundColor: "white", borderWidth: 3 }}
                 onPress={() => setAnswerSelected(i)}>
-                <Text style={{ color: answerSelected === i ? "white" : "#1D5C63", alignSelf: 'center', fontSize: 16, fontWeight: "600" }}>{props.questionAndAnswers.options[i]}</Text>
+                <Text style={{ color: answerSelected === i ? "white" : styles.palette._2, alignSelf: 'center', fontSize: 16, fontWeight: "600" }}>{props.questionAndAnswers.options[i]}</Text>
             </TouchableHighlight>
         )
     }
@@ -158,7 +162,9 @@ const QuizQuestion = (props) => {
         {options}
 
         <View style={{ ...styles.bottom }}>
-            <TouchableHighlight disabled={disabled} style={disabled ?
+            <TouchableHighlight disabled={disabled} 
+                underlayColor={styles.palette._3}
+                style={disabled ?
                 { ...styles.buttonDisabled, width: "90%", alignSelf: 'center' } :
                 { ...styles.buttonConfirm, width: "90%", alignSelf: 'center' }} onPress={() => {
                     if (answerSelected == props.questionAndAnswers.solution) {
@@ -193,7 +199,9 @@ const QuizCorrectOrWrong = (props) => {
                 questionsGreatWave[props.quizNum - 1]} />
 
         <View style={{ ...styles.bottom }}>
-            <TouchableHighlight style={{ ...styles.buttonConfirm, width: "90%", alignSelf: 'center' }} onPress={() => {
+            <TouchableHighlight 
+                underlayColor={styles.palette._3}
+                style={{ ...styles.buttonConfirm, width: "90%", alignSelf: 'center' }} onPress={() => {
                 if (props.quizNum < 3) {
                     props.setQuizNum(x => x + 1);
                     props.setQuizPage("Question");
@@ -249,8 +257,8 @@ const QuizResults = (props) => {
             setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact} />
 
         <QuizBreadcrumb quizNum={-1} />
-
-        <View style={{ ...styles.quizCards, marginTop: 55 }}>
+        
+        <View  style={{ ...styles.quizCards, marginTop: 55 }}>
             <Text style={{ color: 'black', alignSelf: 'center', fontSize: 40, fontWeight: "bold" }}>
                 Quiz result
             </Text>
@@ -275,7 +283,9 @@ const QuizResults = (props) => {
         </View>
 
         <View style={{ ...styles.bottom }}>
-            <TouchableHighlight style={{ ...styles.buttonConfirm, width: "90%", alignSelf: 'center' }} onPress={() => {
+            <TouchableHighlight 
+                underlayColor={styles.palette._3}
+                style={{ ...styles.buttonConfirm, width: "90%", alignSelf: 'center' }} onPress={() => {
                 props.setQuizPage("Home");
                 props.setScore(0);
                 props.setAnswers([]);
@@ -283,7 +293,7 @@ const QuizResults = (props) => {
                 <Text style={styles.textButtonConfirm}> BACK TO QUIZ HOMEPAGE </Text>
             </TouchableHighlight>
         </View>
-        {props.newAchieved.length !== 0 ? <Overlay isVisible={props.overlayAchieved} onBackdropPress={props.toggleOverlay} overlayStyle={{ backgroundColor: "#EDE6DB", color: "#EDE6DB", borderRadius: 15, width: '65%', height: '20%' }}>
+        {props.newAchieved.length !== 0 ? <Overlay isVisible={props.overlayAchieved} onBackdropPress={props.toggleOverlay} overlayStyle={{ backgroundColor: styles.palette._0, color: styles.palette._0, borderRadius: 15, width: '65%', height: '20%' }}>
             <View>
                 <Icon name='close' type='material' onPress={props.toggleOverlay} style={{ color: 'black', marginLeft: 'auto' }}></Icon>
                 <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 20, margin: 5, alignSelf: "center", alignContent: 'center', position: 'absolute' }}>New Achievements!</Text>
@@ -438,20 +448,20 @@ export const QuizCorrectOrWrongBody = (props) => {
 }
 
 const ConfirmExitOverlay = (props) => {
-    return <Overlay onBackdropPress={() => props.setOverlay(0)} isVisible={props.overlay != 0} overlayStyle={{ backgroundColor: "#EDE6DB", color: "#EDE6DB", borderRadius: 10, padding: 20 }}>
+    return <Overlay onBackdropPress={() => props.setOverlay(0)} isVisible={props.overlay != 0} overlayStyle={{ backgroundColor: styles.palette._0, color: styles.palette._0, borderRadius: 10, padding: 20 }}>
         <Text style={{ color: "black", alignSelf: "center", fontSize: 22, fontWeight: "700" }}>
             Your progress will be lost
         </Text>
-        <Text style={{ color: "black", alignSelf: "center", fontSize: 17, marginTop: 3, marginBottom: 15 }}>
+        <Text style={{ color: "black", alignSelf: "center", fontSize: 17, marginTop: 5, marginBottom: 15 }}>
             Are you sure you want to quit?
         </Text>
 
         <View style={{ flexDirection: "row", alignSelf: "center" }}>
-            <TouchableHighlight style={{ ...styles.button, backgroundColor: "#EDE6DB", borderWidth: 2, width: "35%" }}
+            <TouchableHighlight underlayColor={styles.palette._4} style={{ ...styles.button, backgroundColor: styles.palette._0, borderColor:styles.palette._2, borderWidth: 2, width: "35%" }}
                 onPress={() => props.setOverlay(0)}>
-                <Text style={{ color: "#1D5C63", alignSelf: 'center', fontSize: 18, fontWeight: "900" }}>CANCEL</Text>
+                <Text style={{ color: styles.palette._2, alignSelf: 'center', fontSize: 18, fontWeight: "900" }}>CANCEL</Text>
             </TouchableHighlight>
-            <TouchableHighlight style={{ ...styles.button, backgroundColor: "#ec4646", width: "35%" }}
+            <TouchableHighlight underlayColor={"#a32a2a"} style={{ ...styles.button, backgroundColor: "#EC4646", width: "35%" }}
                 onPress={() => {
                     props.setQuizNum(1);
                     props.setScore(0);
@@ -462,7 +472,7 @@ const ConfirmExitOverlay = (props) => {
                     props.setQuizPage("Home");
                     props.setOverlay(0);
                 }}>
-                <Text style={{ color: "#EDE6DB", alignSelf: 'center', fontSize: 18, fontWeight: "900" }}>QUIT</Text>
+                <Text style={{ color: styles.palette._0, alignSelf: 'center', fontSize: 18, fontWeight: "900" }}>QUIT</Text>
             </TouchableHighlight>
         </View>
     </Overlay>

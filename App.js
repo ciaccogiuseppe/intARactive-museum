@@ -28,6 +28,7 @@ import {
 } from 'react-native';
 import styles from './Globals/Styles'
 
+
 import {
   Colors,
   DebugInstructions,
@@ -74,8 +75,8 @@ const requestCameraPermission = async () => {
 
 const IconComponent = (name, useMCIcons) => {
   return ({ color, size }) => useMCIcons ?
-    <View style={{ width: 30, height: 25, marginRight: -10 }}><MCIcon color="#417D7A" size={size} name={name} style={{ marginLeft: 1, alignSelf: 'center' }}></MCIcon></View> :
-    <View style={{ width: 30, height: 25, marginRight: -10 }}><Icon color="#417D7A" size={size} name={name} style={{ marginLeft: 1, alignSelf: 'center' }} /></View>;
+    <View style={{ width: 30, height: 25, marginRight: -10 }}><MCIcon color={styles.palette._1} size={size} name={name} style={{ marginLeft: 1, alignSelf: 'center' }}></MCIcon></View> :
+    <View style={{ width: 30, height: 25, marginRight: -10 }}><Icon color={styles.palette._1} size={size} name={name} style={{ marginLeft: 1, alignSelf: 'center' }} /></View>;
 };
 
 const CustomSwitchSelector = (props) => {
@@ -84,10 +85,10 @@ const CustomSwitchSelector = (props) => {
     height={20}
     initial={0}
     fontSize={8}
-    textColor={"#417D7A"}
+    textColor={styles.palette._1}
     selectedColor={"#fff"}
-    buttonColor={"#417D7A"}
-    borderColor={"#417D7A"}
+    buttonColor={styles.palette._1}
+    borderColor={styles.palette._1}
     disabled
     style={{ width: 75, marginLeft: 10 }}
     options={props.opts}
@@ -97,7 +98,7 @@ const CustomSwitchSelector = (props) => {
 const UserInfoText = () => {
   return (
     <View>
-      <Text style={{ ...styles.sectionTitle, color: "#417D7A", textAlign: "center", marginTop: 30 }}> Mario Rossi </Text>
+      <Text style={{ ...styles.sectionTitle, color: styles.palette._1, textAlign: "center", marginTop: 30 }}> Mario Rossi </Text>
       <Text style={{ fontWeight: "400", fontSize: 13, color: "#555", textAlign: "center", marginTop: 10, marginBottom: 5 }}> mario.rossi@domain.com </Text>
       <Text style={{ fontWeight: "400", fontSize: 13, color: "#555", textAlign: "center" }}> +39 123 4567890 </Text>
     </View>
@@ -107,10 +108,13 @@ const UserInfoText = () => {
 const CustomHeader = (props) => {
   return (
     <View style={{ ...props.style, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-      <MCIcon style={{ paddingVertical: 13, paddingHorizontal: 13 }} size={28} color="#FFF" name="menu" onPress={() => { props.navigation.getParent("MenuDrawer").openDrawer(); }}></MCIcon>
-      <Text style={{ fontSize: 20, color: "#FFF" }}> int<Text style={{ fontWeight: "900", color: "#EDE6DB" }}>AR</Text>active museum </Text>
-
-      <Icon style={{ paddingVertical: 13, paddingHorizontal: 13 }} size={25} color="#FFF" name="user-circle" onPress={() => { props.navigation.getParent("RightDrawer").openDrawer() }}></Icon>
+      <TouchableOpacity>
+        <MCIcon style={{ paddingVertical: 13, paddingHorizontal: 13 }} size={28} color="#FFF" name="menu" onPress={() => { props.navigation.getParent("MenuDrawer").openDrawer(); }}></MCIcon>
+      </TouchableOpacity>
+      <Text style={{ fontSize: 20, color: "#FFF" }}> int<Text style={{ fontWeight: "900", color: styles.palette._0 }}>AR</Text>active museum </Text>
+      <TouchableOpacity>
+        <Icon style={{ paddingVertical: 13, paddingHorizontal: 13 }} size={25} color="#FFF" name="user-circle" onPress={() => { props.navigation.getParent("RightDrawer").openDrawer() }}></Icon>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -127,7 +131,7 @@ const RightDrawerContent = () => {
         </View>
       </DrawerContentScrollView >
       <View>
-        <DrawerItem label="Logout" labelStyle={{ color: "#417D7A", textAlign: "center", marginRight: -32 }} />
+        <DrawerItem label="Logout" labelStyle={{ color: styles.palette._1, textAlign: "center", marginRight: -32 }} />
       </View>
     </SafeAreaView>
 
@@ -139,24 +143,24 @@ const LeftDrawerContent = (props) => {
   return (
     <DrawerContentScrollView {...props}>
       <View style={{ flexDirection: "row", alignItems: "center", alignItems: "center" }}>
-        <DrawerItem label="Language" style={{ flex: 4, marginLeft: 0 }} labelStyle={{ color: "#417D7A" }} icon={IconComponent('globe', 0) /* also "language" icon */} />
+        <DrawerItem label="Language" style={{ flex: 4, marginLeft: 0 }} labelStyle={{ color: styles.palette._1 }} icon={IconComponent('globe', 0) /* also "language" icon */} />
         <View style={{ flex: 2 }}><CustomSwitchSelector opts={[
           { label: "ENG", value: 0, },
           { label: "ITA", value: 1 }
         ]} /></View>
       </View>
       <View style={{ flexDirection: "row", justifyContent: 'center', alignItems: "center" }}>
-        <DrawerItem label="Audio description" style={{ flex: 5, marginLeft: 0 }} labelStyle={{ color: "#417D7A" }} icon={IconComponent('volume-up', 0) /* also "audio-description" icon */} />
+        <DrawerItem label="Audio description" style={{ flex: 5, marginLeft: 0 }} labelStyle={{ color: styles.palette._1 }} icon={IconComponent('volume-up', 0) /* also "audio-description" icon */} />
         <Switch value='false' style={{ flex: 1 }}></Switch>
       </View>
       <View style={{ flexDirection: "row", justifyContent: 'center', alignItems: "center" }}>
-        <DrawerItem label="Text size" style={{ flex: 4, marginLeft: 0 }} labelStyle={{ color: "#417D7A" }} icon={IconComponent('text-height', 0)} />
+        <DrawerItem label="Text size" style={{ flex: 4, marginLeft: 0 }} labelStyle={{ color: styles.palette._1 }} icon={IconComponent('text-height', 0)} />
         <View style={{ flex: 2 }}><CustomSwitchSelector opts={[
           { label: "SMALL", value: 0, },
           { label: "BIG", value: 1 }
         ]} /></View>
       </View>
-      <DrawerItemList {...props} activeBackgroundColor="#417D7A" />
+      <DrawerItemList {...props} activeBackgroundColor={styles.palette._1} />
     </DrawerContentScrollView >
   );
 };
@@ -168,8 +172,8 @@ const RightDrawerNavigator = () => {
       drawerContent={(props) => <RightDrawerContent {...props} />}
       screenOptions={{
         drawerPosition: 'right', headerShown: false,
-        drawerInactiveTintColor: "#417D7A", drawerInactiveBackgroundColor: "#fff",
-        drawerActiveTintColor: "#417D7A", drawerActiveBackgroundColor: "FFF",
+        drawerInactiveTintColor: styles.palette._1, drawerInactiveBackgroundColor: "#fff",
+        drawerActiveTintColor: styles.palette._1, drawerActiveBackgroundColor: "FFF",
         drawerItemStyle: { marginLeft: 0 }
       }}>
       <RightDrawer.Screen name="MenuDrawer" component={LeftDrawerNavigator} />
@@ -189,9 +193,9 @@ const LeftDrawerNavigator = () => {
         const title = getHeaderTitle(options, route.name);
         return <CustomHeader navigation={navigation} title={title} style={options.headerStyle} />;
       },
-      headerStyle: { backgroundColor: "#417D7A" }, headerTintColor: '#fff', headerTitleAlign: "center",
-      drawerInactiveTintColor: "#417D7A", drawerInactiveBackgroundColor: "#fff",
-      drawerActiveTintColor: "#417D7A", drawerActiveBackgroundColor: "FFF",
+      headerStyle: { backgroundColor: styles.palette._1 }, headerTintColor: '#fff', headerTitleAlign: "center",
+      drawerInactiveTintColor: styles.palette._1, drawerInactiveBackgroundColor: "#fff",
+      drawerActiveTintColor: styles.palette._1, drawerActiveBackgroundColor: "FFF",
       drawerItemStyle: { marginLeft: 0 }
     }}>
       <Drawer.Screen name="Home" component={HomePage} options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} />

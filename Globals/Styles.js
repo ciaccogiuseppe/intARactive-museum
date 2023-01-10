@@ -4,10 +4,20 @@ const palette = [
   "#EDE6DB",
   "#417D7A",
   "#1D5C63",
-  "#1A3C40"
+  "#1A3C40",
+  "#ADC4C3",
+  "#F6F2ED",
 ]
 
 const styles = StyleSheet.create({
+  palette: {
+    _0:palette[0],
+    _1:palette[1],
+    _2:palette[2],
+    _3:palette[3],
+    _4:palette[4],
+    _5:palette[5],
+  },
   breadcrumb: {
     flex: 1,
     top: 45,
@@ -33,10 +43,10 @@ const styles = StyleSheet.create({
     margin: 5
   },
   quizSelected: {
-    borderColor: "#6082B6",
+    borderColor: palette[1],
     borderWidth: 0,
     borderRadius: 10,
-    backgroundColor: "#6082B6",
+    backgroundColor: palette[1],
     padding: 13,
     margin: 5
   },

@@ -5,7 +5,8 @@ import { TouchableHighlight } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import styles from "./Styles";
+import {styles} from "./Styles";
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 /********************** PROPS ********************** 
 - titleName: title of the header
@@ -29,13 +30,29 @@ function ActivityBar(props) {
             flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingVertical: 5, height: 45,
             backgroundColor: "#417D7AAA" /* The last two hex digits are the alpha channel of the color */
         }}>
-            {props.isHome === true ? <Icon name='home' size={25} style={{ color: "#FFF", marginLeft: 13 }} onPress={props.onHomeOrBack !== undefined ? props.onHomeOrBack : () => props.navigation.navigate('Home')}></Icon> :
-                props.isHome === false ? <IonIcon name='arrow-back' size={25} style={{ color: "#FFF", marginLeft: 13 }} onPress={props.onHomeOrBack !== undefined ? props.onHomeOrBack : () => props.navigation.goBack()}></IonIcon>
-                    : <IonIcon name='arrow-back' size={25} style={{ opacity: 0, marginLeft: 13 }}></IonIcon>}
+            {props.isHome === true ? 
+                <TouchableOpacity>
+                    <Icon name='home' size={25} style={{ color: "#FFF", marginLeft: 13 }} onPress={props.onHomeOrBack !== undefined ? props.onHomeOrBack : () => props.navigation.navigate('Home')}></Icon>
+                </TouchableOpacity>
+                :
+                props.isHome === false ? 
+                <TouchableOpacity>
+                    <IonIcon name='arrow-back' size={25} style={{ color: "#FFF", marginLeft: 13 }} onPress={props.onHomeOrBack !== undefined ? props.onHomeOrBack : () => props.navigation.goBack()}></IonIcon>
+                </TouchableOpacity>
+                    : 
+                <TouchableOpacity> 
+                    <IonIcon name='arrow-back' size={25} style={{ opacity: 0, marginLeft: 13 }}></IonIcon>
+                </TouchableOpacity>}
             <Text style={{ alignSelf: 'center', fontSize: 23, color: "#FFF", opacity: 1 }}>{props.titleName}</Text>
             {props.isClose !== undefined && props.onCloseOrHelp !== undefined ?
-                <MCIcon name={props.isClose ? 'close-circle' : "question-circle"} size={25} onPress={props.onCloseOrHelp} style={{ color: "#FFF", marginRight: 13 }} alignSelf={"flex-end"}></MCIcon> :
-                <Icon name="question-circle" size={25} style={{ opacity: 0, marginRight: 13 }}></Icon>}
+                <TouchableOpacity>
+                                    <MCIcon name={props.isClose ? 'close-circle' : "question-circle"} size={25} onPress={props.onCloseOrHelp} style={{ color: "#FFF", marginRight: 13 }} alignSelf={"flex-end"}></MCIcon>
+                </TouchableOpacity>
+                :
+                <TouchableOpacity>
+                                    <Icon name="question-circle" size={25} style={{ opacity: 0, marginRight: 13 }}></Icon>
+                </TouchableOpacity>
+                }
         </View>
     );
 }
