@@ -48,8 +48,8 @@ const ARSunflowersMain = (props) => {
       <ViroText
         pointerEvents='box-none'
         text={"Flower"}
-        scale={[0.005, 0.005, 0.005]}
-        position={[0, 0.005, -0.005]}
+        scale={[0.01, 0.01, 0.001]}
+        position={[0, 0.005, -0.01]}
         rotation={[-90, 0, 0]}
         outerStroke={{type:"Outline", width:4, color:'rgba(0,0,0, 0.5)'}}   
         style={styles.descriptionTextStyle}
@@ -57,8 +57,8 @@ const ARSunflowersMain = (props) => {
 
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.005, 0.000, 0.005]}
-        position={[-0.01, 0.005, -0.0065]}
+        scale={[0.01, 0.000, 0.01]}
+        position={[-0.02, 0.005, -0.013]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={["mglass_icon"]}
         visible={visible}
@@ -68,8 +68,8 @@ const ARSunflowersMain = (props) => {
       <ViroText
         pointerEvents='box-none'
         text={"Background"}
-        scale={[0.005, 0.005, 0.005]}
-        position={[-0.02, 0.005, -0.035]}
+        scale={[0.01, 0.01, 0.001]}
+        position={[-0.02, 0.005, -0.0395]}
         rotation={[-90, 0, 0]}
         outerStroke={{type:"Outline", width:4, color:'rgba(0,0,0, 0.5)'}}   
         style={styles.descriptionTextStyle}
@@ -77,8 +77,8 @@ const ARSunflowersMain = (props) => {
 
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.005, 0.000, 0.005]}
-        position={[-0.036, 0.005, -0.0365]}
+        scale={[0.01, 0.000, 0.01]}
+        position={[-0.052, 0.005, -0.042]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={["mglass_icon"]}
         visible={visible2}
@@ -87,7 +87,7 @@ const ARSunflowersMain = (props) => {
       <ViroText
         pointerEvents='box-none'
         text={"Pot"}
-        scale={[0.005, 0.005, 0.005]}
+        scale={[0.01, 0.01, 0.001]}
         position={[0.001,  0.005, 0.019]}
         rotation={[-90, 0, 0]}
         outerStroke={{type:"Outline", width:4, color:'rgba(0,0,0, 0.5)'}}   
@@ -96,8 +96,8 @@ const ARSunflowersMain = (props) => {
 
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.005, 0.000, 0.005]}
-        position={[-0.0055, 0.005, 0.0175]}
+        scale={[0.01, 0.000, 0.01]}
+        position={[-0.012, 0.005, 0.0165]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={["mglass_icon"]}
         visible={visible3}
@@ -105,8 +105,8 @@ const ARSunflowersMain = (props) => {
 
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.007, 0.000, 0.007]}
-        position={[0, 0.02, 0]}
+        scale={[0.014, 0.000, 0.014]}
+        position={[0, 0.02, 0.001]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={[color]}
         opacity={0.7}
@@ -130,7 +130,7 @@ const ARSunflowersMain = (props) => {
 
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.007, 0.000, 0.007]}
+        scale={[0.014, 0.000, 0.014]}
         position={[-0.02, 0.02, -0.03]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={[color2]}
@@ -155,8 +155,8 @@ const ARSunflowersMain = (props) => {
 
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.007, 0.000, 0.007]}
-        position={[0.001, 0.02, 0.024]}
+        scale={[0.014, 0.000, 0.014]}
+        position={[0.001, 0.02, 0.026]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={[color3]}
         opacity={0.7}

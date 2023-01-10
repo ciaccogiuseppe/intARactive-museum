@@ -31,8 +31,8 @@ const ARSunflowersFlowers = (props) => {
       <ViroText
         pointerEvents='box-none'
         text={"Petals"}
-        scale={[0.005, 0.005, 0.005]}
-        position={[-0.005,  0.005, -0.028]}
+        scale={[0.01, 0.01, 0.001]}
+        position={[-0.005,  0.005, -0.033]}
         rotation={[-90, 0, 0]}
         outerStroke={{type:"Outline", width:4, color:'rgba(0,0,0, 0.5)'}}   
         style={styles.descriptionTextStyle}
@@ -40,15 +40,15 @@ const ARSunflowersFlowers = (props) => {
 
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.005, 0.000, 0.005]}
-        position={[-0.015, 0.005, -0.0295]}
+        scale={[0.01, 0.000, 0.01]}
+        position={[-0.025, 0.005, -0.0355]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={["description_icon"]}
         visible={visible2}
         />
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.007, 0.000, 0.007]}
+        scale={[0.014, 0.000, 0.014]}
         position={[-0.005, 0.02, -0.023]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={[color2]}
@@ -74,8 +74,8 @@ const ARSunflowersFlowers = (props) => {
       <ViroText
         pointerEvents='box-none'
         text={"The Repetitions"}
-        scale={[0.005, 0.005, 0.005]}
-        position={[0.03,  0.005, -0.018]}
+        scale={[0.01, 0.01, 0.001]}
+        position={[0.03,  0.005, -0.007]}
         rotation={[-90, 0, 0]}
         outerStroke={{type:"Outline", width:4, color:'rgba(0,0,0, 0.5)'}}   
         style={styles.descriptionTextStyle}
@@ -83,16 +83,16 @@ const ARSunflowersFlowers = (props) => {
 
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.005, 0.000, 0.005]}
-        position={[0.01, 0.005, -0.0195]}
+        scale={[0.01, 0.000, 0.01]}
+        position={[-0.01, 0.005, -0.01]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={["description_icon"]}
         visible={visible}
         />
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.007, 0.000, 0.007]}
-        position={[0.03, 0.02, -0.013]}
+        scale={[0.014, 0.000, 0.014]}
+        position={[0.03, 0.02, 0.002]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={[color]}
         opacity={0.7}
@@ -119,8 +119,8 @@ const ARSunflowersFlowers = (props) => {
       <ViroText
         pointerEvents='box-none'
         text={"Other sunflowers"}
-        scale={[0.005, 0.005, 0.005]}
-        position={[0.001,  0.005, 0.019]}
+        scale={[0.01, 0.01, 0.001]}
+        position={[0.001,  0.005, 0.015]}
         rotation={[-90, 0, 0]}
         outerStroke={{type:"Outline", width:4, color:'rgba(0,0,0, 0.5)'}}   
         style={styles.descriptionTextStyle}
@@ -128,15 +128,15 @@ const ARSunflowersFlowers = (props) => {
 
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.005, 0.000, 0.005]}
-        position={[-0.021, 0.005, 0.0175]}
+        scale={[0.01, 0.000, 0.01]}
+        position={[-0.046, 0.005, 0.0125]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={["compare_icon"]}
         visible={visible3}
         />
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.007, 0.000, 0.007]}
+        scale={[0.014, 0.000, 0.014]}
         position={[0.001, 0.02, 0.024]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={[color3]}

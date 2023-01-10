@@ -27,8 +27,8 @@ const ARSunflowersPot = (props) => {
       <ViroText
         pointerEvents='box-none'
         text={"The Vase"}
-        scale={[0.005, 0.005, 0.005]}
-        position={[0.015,  0.005, -0.016]}
+        scale={[0.01, 0.01, 0.001]}
+        position={[0.015,  0.005, -0.021]}
         rotation={[-90, 0, 0]}
         outerStroke={{type:"Outline", width:4, color:'rgba(0,0,0, 0.5)'}}   
         style={styles.descriptionTextStyle}
@@ -36,15 +36,15 @@ const ARSunflowersPot = (props) => {
 
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.005, 0.000, 0.005]}
-        position={[0.0, 0.005, -0.0175]}
+        scale={[0.01, 0.000, 0.01]}
+        position={[-0.012, 0.005, -0.0245]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={["description_icon"]}
         visible={visible}
         />
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.007, 0.000, 0.007]}
+        scale={[0.014, 0.000, 0.014]}
         position={[0.015, 0.02, -0.011]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={[color]}
@@ -72,8 +72,8 @@ const ARSunflowersPot = (props) => {
       <ViroText
         pointerEvents='box-none'
         text={"Other Vases"}
-        scale={[0.005, 0.005, 0.005]}
-        position={[-0.011,  0.005, 0.019]}
+        scale={[0.01, 0.01, 0.001]}
+        position={[-0.011,  0.005, 0.016]}
         rotation={[-90, 0, 0]}
         outerStroke={{type:"Outline", width:4, color:'rgba(0,0,0, 0.5)'}}   
         style={styles.descriptionTextStyle}
@@ -81,15 +81,15 @@ const ARSunflowersPot = (props) => {
 
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.005, 0.000, 0.005]}
-        position={[-0.033, 0.005, 0.0175]}
+        scale={[0.01, 0.000, 0.01]}
+        position={[-0.044, 0.005, 0.0125]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={["compare_icon"]}
         visible={visible2}
         />
       <ViroBox
         pointerEvents='box-none'
-        scale={[0.007, 0.000, 0.007]}
+        scale={[0.014, 0.000, 0.014]}
         position={[-0.011, 0.02, 0.024]}
         animation={{name: "rotate", run: true, loop: true}}
         materials={[color2]}
