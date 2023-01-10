@@ -19,23 +19,23 @@ const QuizHistory = (props) => {
             return <>
                 <ActivityBar titleName={'Quiz history'} navigation={props.navigation} isHome={true} onHomeOrBack={() => navigation.navigate('Home')} />
 
-                {props.numTakenQuiz == 0 ?
+                {props.takenQuiz.length === 0 ?
                     <Text style={{ color: 'black', marginTop: 250, alignSelf: 'center', fontSize: 20 }}>
                         You have not completed any quiz yet.
                     </Text> :
                     <View style={{ flex: 2 }}>
-                        <CompletedQuizList navigation={navigation} givenAnswers={givenAnswersArtifact}
-                            setHistoryId={setHistoryId} numTakenQuiz={props.numTakenQuiz}
+                        <CompletedQuizList navigation={navigation}
+                            setHistoryId={setHistoryId} takenQuiz={props.takenQuiz}
                             setHistoryPage={setHistoryPage} setHistoryNum={setHistoryNum} historyNum={historyNum} />
                     </View>}
             </>
             break;
         case "Info":
             return <QuizHistoryCorrectOrWrong navigation={navigation} setHistoryPage={setHistoryPage}
-                answers={givenAnswersArtifact[historyId].answers}
-                artifact={givenAnswersArtifact[historyId].artifact}
+                answers={props.takenQuiz[historyId].answers}
+                artifact={props.takenQuiz[historyId].artifact}
                 historyNum={historyNum} setHistoryNum={setHistoryNum}
-                questionAndAnswers={givenAnswersArtifact[historyId].artifact == "Sunflowers" ?
+                questionAndAnswers={props.takenQuiz[historyId].artifact == "Sunflowers" ?
                     questionsSunflowers[historyNum - 1] :
                     questionsGreatWave[historyNum - 1]
                 } />
@@ -55,7 +55,7 @@ const CompletedQuizList = (props) => {
     }, [isFocused]);
 
     let list = [];
-    for (let i = 0; i < props.numTakenQuiz; ++i) {
+    for (let i = 0; i < props.takenQuiz.length; ++i) {
         list.push(<TouchableHighlight key={i} style={{ ...styles.button, marginTop: i == 0 ? 10 : 0, width: "95%", alignSelf: 'center' }}
             onPress={() => {
                 props.setHistoryPage("Info");
@@ -64,13 +64,13 @@ const CompletedQuizList = (props) => {
             }}>
             <View>
                 <Text style={{ color: 'white', alignSelf: 'center', fontSize: 30, fontWeight: "bold", textAlignVertical: "center" }}>
-                    {props.givenAnswers[i].artifact}
+                    {props.takenQuiz[i].artifact}
                 </Text>
                 <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, textAlignVertical: "center" }}>
-                    <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, fontWeight: "bold" }}>Date: </Text>{props.givenAnswers[i].date}
+                    <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, fontWeight: "bold" }}>Date: </Text>{props.takenQuiz[i].date}
                 </Text>
                 <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, textAlignVertical: "center" }}>
-                    <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, fontWeight: "bold" }}>Score: </Text> {props.givenAnswers[i].score}/3
+                    <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, fontWeight: "bold" }}>Score: </Text> {props.takenQuiz[i].score}/3
                 </Text>
             </View>
         </TouchableHighlight>

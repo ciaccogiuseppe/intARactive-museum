@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 import 'react-native-gesture-handler';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Node } from 'react';
 import { Image, Platform, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { Button, PermissionsAndroid } from "react-native";
@@ -46,6 +46,7 @@ import QuizHistory from './Components/QuizHistory/QuizHistory';
 import Achievements from './Components/Achievements/Achievements';
 import { node } from 'prop-types';
 import { achievementsList } from './Components/Achievements/AchievementLists';
+import { pathStrings, readFromFile } from './Globals/storageFunctions';
 
 //const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -177,7 +178,11 @@ const RightDrawerNavigator = () => {
 
 /* Quiz and Home screens are hidden in the drawer, but still available */
 const LeftDrawerNavigator = () => {
-  const [numTakenQuiz, setNumTakenQuiz] = useState(0);
+  const [takenQuiz, setTakenQuiz] = useState([]);
+  useEffect(() => {
+    readFromFile(pathStrings.path_givenAnswers).then((success) => { setTakenQuiz(success) });
+  }, []);
+
   return (
     <Drawer.Navigator id="MenuDrawer" drawerContent={(props) => <LeftDrawerContent {...props} />} screenOptions={{
       drawerPosition: 'left',
@@ -196,13 +201,13 @@ const LeftDrawerNavigator = () => {
         // uguale a "Sunflowers" o a "The Great Wave"
       }
       <Drawer.Screen name="Quiz" options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} >
-        {(props) => <Quiz {...props} setNumTakenQuiz={setNumTakenQuiz} artifact={"The Great Wave"} />}
+        {(props) => <Quiz {...props} takenQuiz={takenQuiz} setTakenQuiz={setTakenQuiz} artifact={"The Great Wave"} />}
       </Drawer.Screen>
       <Drawer.Screen name="Achievements" options={{ drawerIcon: IconComponent('trophy', 0), drawerLabel: "Achievements", title: "IntARactive Museum" }}>
         {(props) => <Achievements {...props} list={achievementsList} />}
       </Drawer.Screen>
       <Drawer.Screen name="QuizHistory" options={{ drawerIcon: IconComponent('clipboard-list', 0), drawerLabel: "Quiz History", title: "IntARactive Museum" }} >
-        {(props) => <QuizHistory {...props} numTakenQuiz={numTakenQuiz} />}
+        {(props) => <QuizHistory {...props} takenQuiz={takenQuiz} />}
       </Drawer.Screen>
       <Drawer.Screen name="Tips" options={{ drawerIcon: IconComponent('lightbulb-on-outline', 1), drawerLabel: "Tips", title: "IntARactive Museum" }} >
         {(props) => <Tips {...props} isFirstVisit={false} />}
@@ -216,7 +221,6 @@ const LeftDrawerNavigator = () => {
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [place, setPlace] = useState(true);
-  const [numTakenQuiz, setNumTakenQuiz] = useState(0);
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };

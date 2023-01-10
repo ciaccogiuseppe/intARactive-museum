@@ -5,9 +5,10 @@ import { TouchableHighlight } from "react-native";
 import styles from "../../Globals/Styles";
 import moment from 'moment';
 import { Overlay } from 'react-native-elements';
-import { questionsSunflowers, questionsGreatWave, givenAnswersArtifact, quizAnswered } from "./QuestionsAndAnswers";
+import { questionsSunflowers, questionsGreatWave, quizAnswered } from "./QuestionsAndAnswers";
 import { updateDone } from '../Achievements/AchievementLists';
 import { ActivityBar } from '../../Globals/Components';
+import { pathStrings, writeToFile } from '../../Globals/storageFunctions';
 
 const Quiz = (props) => {
     const { navigation } = props;
@@ -56,6 +57,19 @@ const Quiz = (props) => {
         }
     };
 
+    const addAnswers = () => {
+        let newObj = {
+            artifact: props.artifact,
+            answers: answers,
+            date: moment().calendar(),
+            score: score
+        };
+        writeToFile(pathStrings.path_givenAnswers, props.takenQuiz.concat(newObj))
+        props.setTakenQuiz((oldList) =>
+            oldList.concat(newObj)
+        );
+    }
+
     switch (quizPage) {
         case "Home":
             return <QuizHomePage setQuizNum={setQuizNum} navigation={navigation}
@@ -72,7 +86,7 @@ const Quiz = (props) => {
         case "CorrectOrWrong":
             return <QuizCorrectOrWrong navigation={navigation} setQuizPage={setQuizPage}
                 answers={answers} setScore={setScore} setAnswers={setAnswers} artifact={props.artifact}
-                quizNum={quizNum} setQuizNum={setQuizNum} setNumTakenQuiz={props.setNumTakenQuiz}
+                quizNum={quizNum} setQuizNum={setQuizNum} addAnswers={addAnswers}
                 updateBest={updateBest}
                 questionAndAnswers={props.artifact == "Sunflowers" ?
                     questionsSunflowers[quizNum - 1] :
@@ -81,7 +95,6 @@ const Quiz = (props) => {
         case "Results":
             return <QuizResults navigation={navigation} setQuizPage={setQuizPage}
                 setAnswers={setAnswers} answers={answers}
-                givenAnswers={givenAnswersArtifact}
                 setQuizNum={setQuizNum}
                 score={score} setScore={setScore}
                 overlayAchieved={overlayAchieved} toggleOverlay={() => { setOverlayAchieved(false) }}
@@ -198,9 +211,9 @@ const QuizCorrectOrWrong = (props) => {
                     props.setQuizNum(x => x + 1);
                     props.setQuizPage("Question");
                 } else {
-                    props.setNumTakenQuiz(x => x + 1);
                     props.setQuizNum(1);
                     props.updateBest();
+                    props.addAnswers();
                     props.setQuizPage("Results");
                 }
             }}>
@@ -215,15 +228,6 @@ const QuizCorrectOrWrong = (props) => {
 
 
 const QuizResults = (props) => {
-    props.givenAnswers.push(
-        {
-            artifact: props.artifact,
-            answers: props.answers,
-            date: moment().calendar(),
-            score: props.score
-        }
-    );
-
     let resultCommentMessage = "";
 
     switch (props.score) {
