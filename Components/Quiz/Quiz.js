@@ -97,7 +97,7 @@ const QuizHomePage = (props) => {
         <Text style={{ color: 'black', marginTop: 5, alignSelf: 'center', fontSize: 27, textAlign: "center" }}>
             Test your knowledge{"\n"}about "{props.artifact}"
         </Text>
-        <Text style={{ fontStyle: 'italic', color: 'black', marginTop: 5, marginHorizontal: 10, alignSelf: 'center', fontSize: 20 }}>
+        <Text style={{ fontStyle: 'italic', color: 'black', marginTop: 5, marginHorizontal: 10, alignSelf: 'center', textAlign: 'center', fontSize: 20 }}>
             There will be 3 questions in this quiz.{"\n"}
             Only one answer for each question is correct.
         </Text>
