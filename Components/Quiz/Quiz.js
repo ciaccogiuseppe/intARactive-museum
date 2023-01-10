@@ -283,7 +283,7 @@ const QuizResults = (props) => {
                 <Text style={styles.textButtonConfirm}> BACK TO QUIZ HOMEPAGE </Text>
             </TouchableHighlight>
         </View>
-        {props.newAchieved.length !== 0 ? <Overlay isVisible={props.overlayAchieved} onBackdropPress={props.toggleOverlay} overlayStyle={{ backgroundColor: "#EDE6DB", color: "#EDE6DB", borderRadius: 15, width: '65%', height: '20%' }}>
+        {props.newAchieved.length !== 0 ? <Overlay isVisible={props.overlayAchieved} onBackdropPress={props.toggleOverlay} overlayStyle={{ backgroundColor: "#EDE6DB", color: "#EDE6DB", borderRadius: 15, width: '65%' }}>
             <View>
                 <Icon name='close' type='material' onPress={props.toggleOverlay} style={{ color: 'black', marginLeft: 'auto' }}></Icon>
                 <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 20, margin: 5, alignSelf: "center", alignContent: 'center', position: 'absolute' }}>New Achievements!</Text>
