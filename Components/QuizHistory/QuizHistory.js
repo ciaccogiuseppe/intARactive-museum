@@ -1,10 +1,11 @@
 import { Text } from "@rneui/themed";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableHighlight, View, ScrollView } from "react-native";
 import styles from "../../Globals/Styles";
 import { QuizCorrectOrWrongBody } from "../Quiz/Quiz";
 import { questionsSunflowers, questionsGreatWave, givenAnswersArtifact } from "../Quiz/QuestionsAndAnswers";
 import { ActivityBar } from "../../Globals/Components";
+import { useIsFocused } from '@react-navigation/native';
 
 const QuizHistory = (props) => {
     const { navigation } = props;
@@ -45,6 +46,13 @@ const QuizHistory = (props) => {
 }
 
 const CompletedQuizList = (props) => {
+    const scrollViewRef = React.useRef(null);
+    const isFocused = useIsFocused();
+    useEffect(() => {
+        if (!isFocused) {
+            scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: false });
+        }
+    }, [isFocused]);
 
     let list = [];
     for (let i = 0; i < props.numTakenQuiz; ++i) {
@@ -68,7 +76,7 @@ const CompletedQuizList = (props) => {
         </TouchableHighlight>
         );
     }
-    return <ScrollView>
+    return <ScrollView ref={scrollViewRef}>
         <View>
             {list}
         </View>
