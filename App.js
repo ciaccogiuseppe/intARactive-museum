@@ -38,7 +38,7 @@ import { Header as HeaderRNE, HeaderProps } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ARComponent from './Components/AR/ARComponent';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, StackActions } from '@react-navigation/native';
 import HomePage from './Components/HomePage/HomePage';
 import Tips from './Components/Tips/Tips';
 import Quiz from './Components/Quiz/Quiz';
@@ -49,6 +49,7 @@ import { achievementsList } from './Components/Achievements/AchievementLists';
 
 //const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
 const RightDrawer = createDrawerNavigator();
 
 const requestCameraPermission = async () => {
@@ -172,6 +173,7 @@ const RightDrawerNavigator = () => {
         drawerItemStyle: { marginLeft: 0 }
       }}>
       <RightDrawer.Screen name="MenuDrawer" component={LeftDrawerNavigator} />
+      
     </RightDrawer.Navigator>
   );
 };
@@ -180,8 +182,9 @@ const RightDrawerNavigator = () => {
 const LeftDrawerNavigator = () => {
   const [numTakenQuiz, setNumTakenQuiz] = useState(0);
   return (
-    <Drawer.Navigator id="MenuDrawer" drawerContent={(props) => <LeftDrawerContent {...props} />} screenOptions={{
+    <Drawer.Navigator  id="MenuDrawer" drawerContent={(props) => <LeftDrawerContent {...props} />} screenOptions={{
       drawerPosition: 'left',
+      unmountOnBlur:true,
       header: ({ navigation, route, options }) => {
         const title = getHeaderTitle(options, route.name);
         return <CustomHeader navigation={navigation} title={title} style={options.headerStyle} />;
@@ -208,7 +211,7 @@ const LeftDrawerNavigator = () => {
       <Drawer.Screen name="Tips" options={{ drawerIcon: IconComponent('lightbulb-on-outline', 1), drawerLabel: "Tips", title: "IntARactive Museum" }} >
         {(props) => <Tips {...props} isFirstVisit={false} />}
       </Drawer.Screen>
-      <Drawer.Screen name="ARObject" component={ARComponent} />
+      <Stack.Screen name="ARObject" component={ARComponent} options={{drawerItemStyle: { height: 0 }}}/>
 
     </Drawer.Navigator>)
 };
@@ -227,7 +230,11 @@ const App = () => {
   return (
     <View style={styles.container}>
       <NavigationContainer>
-        <RightDrawerNavigator />
+        <Drawer.Navigator>
+        
+        <Drawer.Screen name="RightDrawer" component={RightDrawerNavigator} options={{ headerShown: false }}/>
+        
+        </Drawer.Navigator>
       </NavigationContainer>
     </View >
   );

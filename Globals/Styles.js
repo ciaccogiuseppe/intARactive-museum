@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: palette[2],
     padding: 15,
-    margin: 5
+    margin: 25
   },
   buttonDisabled: {
     borderColor: "#A9A9A9",
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#A9A9A9",
     padding: 15,
-    margin: 5
+    margin: 25
   },
   bottom: {
     flex: 1,
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
         height: 112,
         width: 112
       }
-    }
-    
+    },
+    textButtonConfirm: { color: 'white', alignSelf: 'center', fontSize: 18, fontWeight: "700", letterSpacing: 1.5 }
   });
 export default styles;
