@@ -81,28 +81,35 @@ function getNeeded(achievement) {
 
 function updateDone(bestAnswers, oldScore) {
     let updateScore = bestAnswers.bestScore - oldScore;
+    let newAchieved = [];
     if (bestAnswers.quizID == 1) {
         if ((doneByTheme.vanGogh < pointPerLevel.enjoyer) && ((doneByTheme.vanGogh + updateScore >= pointPerLevel.enjoyer))) {
             achievementsList[0].date_obtained = moment().format('MM/DD/YYYY');
+            newAchieved.push(achievementsList[0]);
         }
         if ((doneByTheme.vanGogh < pointPerLevel.fan) && ((doneByTheme.vanGogh + updateScore >= pointPerLevel.fan))) {
             achievementsList[2].date_obtained = moment().format('MM/DD/YYYY');
+            newAchieved.push(achievementsList[2]);
         }
         if ((doneByTheme.vanGogh < pointPerLevel.expert) && ((doneByTheme.vanGogh + updateScore >= pointPerLevel.expert))) {
             achievementsList[5].date_obtained = moment().format('MM/DD/YYYY');
+            newAchieved.push(achievementsList[5]);
         }
         doneByTheme.vanGogh += updateScore;
     } else {
         if (bestAnswers.quizID == 2) {
             if ((doneByTheme.nineteenthCentury < pointPerLevel.novice) && ((doneByTheme.nineteenthCentury + updateScore >= pointPerLevel.novice))) {
                 achievementsList[21].date_obtained = moment().format('MM/DD/YYYY');
+                newAchieved.push(achievementsList[21]);
             }
             if ((doneByTheme.nineteenthCentury < pointPerLevel.expert) && ((doneByTheme.nineteenthCentury + updateScore >= pointPerLevel.expert))) {
                 achievementsList[22].date_obtained = moment().format('MM/DD/YYYY');
+                newAchieved.push(achievementsList[22]);
             }
             doneByTheme.nineteenthCentury += updateScore;
         }
     }
+    return newAchieved;
 }
 
 let achievementsList = [

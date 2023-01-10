@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image } from 'react-native';
-import { Text } from "@rneui/themed";
+import { Text, Icon } from "@rneui/themed";
 import { TouchableHighlight } from "react-native";
 import styles from "../../Globals/Styles";
 import moment from 'moment';
@@ -17,6 +17,8 @@ const Quiz = (props) => {
     const [answers, setAnswers] = useState([]);
     const [score, setScore] = useState(0);
     const [overlay, setOverlay] = useState(0); //0 no overlay, 1 overlay home, 2 overlay X button
+    const [newAchieved, setNewAchieved] = useState([]);
+    const [overlayAchieved, setOverlayAchieved] = useState(false);
 
     const updateBest = () => {
         let correctLocalAnswer = [];
@@ -31,7 +33,11 @@ const Quiz = (props) => {
                 correctAnswers: correctLocalAnswer,
                 bestScore: score.valueOf(),
             };
-            updateDone(quizAnswered[index], 0);
+            let res = updateDone(quizAnswered[index], 0);
+            if (res.length !== 0) {
+                setNewAchieved(res);
+                setOverlayAchieved(true);
+            }
         } else {
             let count = 0;
             let oldScore = quizAnswered[index].bestScore;
@@ -41,7 +47,11 @@ const Quiz = (props) => {
             }
             if (count > quizAnswered[index].bestScore) {
                 quizAnswered[index].bestScore = count;
-                updateDone(quizAnswered[index], oldScore);
+                let res = updateDone(quizAnswered[index], 0);
+                if (res.length !== 0) {
+                    setNewAchieved(res);
+                    setOverlayAchieved(true);
+                }
             }
         }
     };
@@ -63,6 +73,7 @@ const Quiz = (props) => {
             return <QuizCorrectOrWrong navigation={navigation} setQuizPage={setQuizPage}
                 answers={answers} setScore={setScore} setAnswers={setAnswers} artifact={props.artifact}
                 quizNum={quizNum} setQuizNum={setQuizNum} setNumTakenQuiz={props.setNumTakenQuiz}
+                updateBest={updateBest}
                 questionAndAnswers={props.artifact == "Sunflowers" ?
                     questionsSunflowers[quizNum - 1] :
                     questionsGreatWave[quizNum - 1]}
@@ -72,7 +83,9 @@ const Quiz = (props) => {
                 setAnswers={setAnswers} answers={answers}
                 givenAnswers={givenAnswersArtifact}
                 setQuizNum={setQuizNum}
-                score={score} setScore={setScore} updateBest={updateBest}
+                score={score} setScore={setScore}
+                overlayAchieved={overlayAchieved} toggleOverlay={() => { setOverlayAchieved(false) }}
+                newAchieved={newAchieved}
                 setOverlay={setOverlay} artifact={props.artifact} />
         default:
             return "Should not happen"
@@ -187,6 +200,7 @@ const QuizCorrectOrWrong = (props) => {
                 } else {
                     props.setNumTakenQuiz(x => x + 1);
                     props.setQuizNum(1);
+                    props.updateBest();
                     props.setQuizPage("Results");
                 }
             }}>
@@ -210,7 +224,6 @@ const QuizResults = (props) => {
         }
     );
 
-    props.updateBest();
     let resultCommentMessage = "";
 
     switch (props.score) {
@@ -270,6 +283,16 @@ const QuizResults = (props) => {
                 <Text style={styles.textButtonConfirm}> BACK TO QUIZ HOMEPAGE </Text>
             </TouchableHighlight>
         </View>
+        {props.newAchieved.length !== 0 ? <Overlay isVisible={props.overlayAchieved} onBackdropPress={props.toggleOverlay} overlayStyle={{ backgroundColor: "#EDE6DB", color: "#EDE6DB", borderRadius: 15, width: '65%', height: '20%' }}>
+            <View>
+                <Icon name='close' type='material' onPress={props.toggleOverlay} style={{ color: 'black', marginLeft: 'auto' }}></Icon>
+                <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 20, margin: 5, alignSelf: "center", alignContent: 'center', position: 'absolute' }}>New Achievements!</Text>
+                <Text style={{ textAlign: "center", fontSize: 14, margin: 10 }}>{"You have obtained " + props.newAchieved.length + " new achievement" + (props.newAchieved.length > 1 ? "s" : "") + ": "}</Text>
+                {props.newAchieved.map((item) => {
+                    return <Text key={item["id"]} style={{ fontWeight: 'bold', textAlign: "center", fontSize: 16, color: "black" }}>{item["title"]}</Text>;
+                })}
+            </View>
+        </Overlay> : <></>}
     </>
 }
 
