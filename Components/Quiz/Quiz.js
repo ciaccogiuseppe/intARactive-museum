@@ -57,6 +57,12 @@ const Quiz = (props) => {
         }
     };
 
+    useEffect(() => {
+        if (props.newAchieved.length !== 0) {
+            setOverlayAchieved(true);
+        }
+    }, [props.newAchieved.length]);
+
     const addAnswers = () => {
         let newObj = {
             artifact: props.artifact,
@@ -64,7 +70,6 @@ const Quiz = (props) => {
             date: moment().calendar(),
             score: score
         };
-        writeToFile(pathStrings.path_givenAnswers, props.takenQuiz.concat(newObj))
         props.setTakenQuiz((oldList) =>
             oldList.concat(newObj)
         );
@@ -87,7 +92,8 @@ const Quiz = (props) => {
             return <QuizCorrectOrWrong navigation={navigation} setQuizPage={setQuizPage}
                 answers={answers} setScore={setScore} setAnswers={setAnswers} artifact={props.artifact}
                 quizNum={quizNum} setQuizNum={setQuizNum} addAnswers={addAnswers}
-                updateBest={updateBest}
+                updateState={props.updateState}
+                score={score}
                 questionAndAnswers={props.artifact == "Sunflowers" ?
                     questionsSunflowers[quizNum - 1] :
                     questionsGreatWave[quizNum - 1]}
@@ -98,7 +104,7 @@ const Quiz = (props) => {
                 setQuizNum={setQuizNum}
                 score={score} setScore={setScore}
                 overlayAchieved={overlayAchieved} toggleOverlay={() => { setOverlayAchieved(false) }}
-                newAchieved={newAchieved}
+                newAchieved={props.newAchieved}
                 setOverlay={setOverlay} artifact={props.artifact} />
         default:
             return "Should not happen"
@@ -212,7 +218,12 @@ const QuizCorrectOrWrong = (props) => {
                     props.setQuizPage("Question");
                 } else {
                     props.setQuizNum(1);
-                    props.updateBest();
+                    props.updateState({
+                        artifact: props.artifact,
+                        answers: props.answers,
+                        date: moment().calendar(),
+                        score: props.score
+                    });
                     props.addAnswers();
                     props.setQuizPage("Results");
                 }

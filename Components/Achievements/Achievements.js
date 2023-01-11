@@ -14,7 +14,7 @@ const Achievements = (props) => {
             <Icon name='account-circle' size={150} />
         </View>
         <View style={{ flex: 2 }}>
-            <IconsList list={props.list} />
+            <IconsList list={props.list} getDone={props.getDone} />
         </View>
     </>
 }
@@ -31,7 +31,7 @@ function IconsList(props) {
     return <ScrollView ref={scrollViewRef}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', flexWrap: "wrap" }}>
             {props.list.map((achievement) => <AchievementIcon key={achievement.id} title={achievement.title} theme={achievement.theme}
-                done={getDone(achievement)} needed={getNeeded(achievement)} date_obtained={achievement.date_obtained} />)}
+                done={props.getDone(achievement.theme)} needed={getNeeded(achievement)} date_obtained={achievement.date_obtained} />)}
         </View>
     </ScrollView>;
 }

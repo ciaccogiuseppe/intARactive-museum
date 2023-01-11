@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { TouchableHighlight, View, ScrollView } from "react-native";
 import styles from "../../Globals/Styles";
 import { QuizCorrectOrWrongBody } from "../Quiz/Quiz";
-import { questionsSunflowers, questionsGreatWave, givenAnswersArtifact } from "../Quiz/QuestionsAndAnswers";
+import { questionsSunflowers, questionsGreatWave } from "../Quiz/QuestionsAndAnswers";
 import { ActivityBar } from "../../Globals/Components";
 import { useIsFocused } from '@react-navigation/native';
 
