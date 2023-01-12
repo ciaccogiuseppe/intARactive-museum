@@ -140,15 +140,16 @@ const RightDrawerContent = () => {
 const LeftDrawerContent = (props) => {
   return (
     <DrawerContentScrollView {...props}>
+      {/*
       <View style={{ flexDirection: "row", alignItems: "center", alignItems: "center" }}>
-        <DrawerItem label="Language" style={{ flex: 4, marginLeft: 0 }} labelStyle={{ color: "#417D7A" }} icon={IconComponent('globe', 0) /* also "language" icon */} />
+        <DrawerItem label="Language" style={{ flex: 4, marginLeft: 0 }} labelStyle={{ color: "#417D7A" }} icon={IconComponent('globe', 0)} />
         <View style={{ flex: 2 }}><CustomSwitchSelector opts={[
           { label: "ENG", value: 0, },
           { label: "ITA", value: 1 }
         ]} /></View>
       </View>
       <View style={{ flexDirection: "row", justifyContent: 'center', alignItems: "center" }}>
-        <DrawerItem label="Audio description" style={{ flex: 5, marginLeft: 0 }} labelStyle={{ color: "#417D7A" }} icon={IconComponent('volume-up', 0) /* also "audio-description" icon */} />
+        <DrawerItem label="Audio description" style={{ flex: 5, marginLeft: 0 }} labelStyle={{ color: "#417D7A" }} icon={IconComponent('volume-up', 0)} />
         <Switch value='false' style={{ flex: 1 }}></Switch>
       </View>
       <View style={{ flexDirection: "row", justifyContent: 'center', alignItems: "center" }}>
@@ -158,6 +159,7 @@ const LeftDrawerContent = (props) => {
           { label: "BIG", value: 1 }
         ]} /></View>
       </View>
+       */}
       <DrawerItemList {...props} activeBackgroundColor="#417D7A" />
     </DrawerContentScrollView >
   );
