@@ -29,14 +29,103 @@ const Tips = ({ navigation, isFirstVisit }) => {
             setCurPage(viewableItems[0].index);
         }
     }, []);
+
+    const renderItemStyles = StyleSheet.create({
+        container: {
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            width: width
+        },
+        title: {
+            width: '80%',
+            textAlign: 'center',
+            fontSize: 20,
+            fontWeight: 'bold'
+        },
+        image_page1: {
+            height: 80,
+            width: 40,
+            alignSelf: "center",
+            marginTop: 10
+        },
+        itemRowGroup: {
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignContent: 'center',
+            flexWrap: 'nowrap'
+        },
+        itemRowGroup_text: {
+            width: '40%'
+        },
+        itemRowGroup_image: {
+            height: 80,
+            width: 40,
+            alignSelf: "center",
+            marginTop: 10
+        }
+    });
+
     const renderItem = React.useCallback(
         ({ item }) => {
-            return (
-                <View style={[otherStyles.itemContainer, { width: width - 80 }]}>
-                    <Text>{item.title}</Text>
-                    <Animated.Text>{item.description}</Animated.Text>
-                </View>
-            );
+            switch (item.key) {
+                case '1':
+                    return (
+                        <View style={renderItemStyles.container}>
+                            <Text style={renderItemStyles.title}>{item.title}</Text>
+                            <Animated.Image source={item.image} style={renderItemStyles.image_page1} />
+                        </View>
+                    );
+                case '2':
+                    return (<View style={renderItemStyles.container}>
+                        <Text style={renderItemStyles.title}>{item.title}</Text>
+                        <View style={renderItemStyles.itemRowGroup}>
+                            <Animated.Text style={renderItemStyles.itemRowGroup_text}>{item.description1}</Animated.Text>
+                            <Animated.Image source={item.image1} style={renderItemStyles.itemRowGroup_image} />
+                        </View>
+                        <View style={renderItemStyles.itemRowGroup}>
+                            <Animated.Image source={item.image2} style={renderItemStyles.itemRowGroup_image} />
+                            <Animated.Text style={renderItemStyles.itemRowGroup_text}>{item.description2}</Animated.Text>
+                        </View>
+                    </View>);
+                case '3':
+                    return (<View style={renderItemStyles.container}>
+                        <Text style={renderItemStyles.title}>{item.title}</Text>
+                        <View style={renderItemStyles.itemRowGroup}>
+                            <Animated.Text style={renderItemStyles.itemRowGroup_text}>{item.description1}</Animated.Text>
+                            <Animated.Image source={item.image1} style={renderItemStyles.itemRowGroup_image} />
+                        </View>
+                        <View style={renderItemStyles.itemRowGroup}>
+                            <View>
+                                <Animated.Image source={item.image2} style={renderItemStyles.itemRowGroup_image} />
+                            </View>
+                            <View style={{ flexDirection: 'column' }}>
+                                <Animated.Text style={renderItemStyles.itemRowGroup_text}>{item.description2}</Animated.Text>
+                                {item.items.map((e, i) =>
+                                    <View key={i} style={{ flexDirection: 'row' }}>
+                                        <Animated.Image source={e.icon} style={{ height: 5, width: 5, marginTop: 10 }} />
+                                        <Animated.Text style={{ width: '30%' }}>{e.label}</Animated.Text>
+                                    </View>
+                                )}
+                            </View>
+                        </View>
+                    </View>);
+                case '4':
+                    return (<View style={renderItemStyles.container}>
+                        <Text style={renderItemStyles.title}>{item.title}</Text>
+                        <View style={renderItemStyles.itemRowGroup}>
+                            <Animated.Text style={renderItemStyles.itemRowGroup_text}>{item.description1}</Animated.Text>
+                            <Animated.Image source={item.image1} style={renderItemStyles.itemRowGroup_image} />
+                        </View>
+                        <View style={renderItemStyles.itemRowGroup}>
+                            <Animated.Image source={item.image2} style={renderItemStyles.itemRowGroup_image} />
+                            <Animated.Text style={renderItemStyles.itemRowGroup_text}>{item.description2}</Animated.Text>
+                        </View>
+                    </View>);
+                default:
+                    return (<View style={renderItemStyles.container}>
+                        <Text style={renderItemStyles.title}>{item.title}</Text>
+                    </View>);
+            }
         }, [width],
     );
 
@@ -52,7 +141,7 @@ const Tips = ({ navigation, isFirstVisit }) => {
             setNewPage(1);
             navigation.navigate("Home");
         }} isClose={true} /> : <></>}
-        <View style={{ ...otherStyles.container, marginTop: 50 }}>
+        <View style={{ ...otherStyles.container }}/* marginTop: 50*/>
             <FlatList
                 flex={1}
                 ref={flatListRef}
@@ -75,36 +164,37 @@ const Tips = ({ navigation, isFirstVisit }) => {
             />
         </View>
         <View style={{ flex: 1, alignContent: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-            {/*<TouchableHighlight style={{ ...otherStyles.button, width: "40%", alignSelf: 'center' }} onPress={() => {
+            {/*<TouchableHighlight style={{ ...otherStyles.button }} onPress={() => {
                 flatListRef.current.scrollToIndex({ animated: true, index: (curPage > 0 ? (curPage - 1) : 0) });
             }}>
                 <Text style={{ color: 'white', alignSelf: 'center' }}>Back</Text>
         </TouchableHighlight>*/}
-            <View alignSelf={'center'}>
+            <View alignSelf={'center'} margin={10}>
                 <PaginationDot
                     activeDotColor={'black'}
                     curPage={curPage}
                     maxPage={4}
                 />
             </View>
-            {curPage < 3 ? <TouchableHighlight style={{ ...otherStyles.button, width: "40%", alignSelf: 'center' }} onPress={() => {
+            {curPage < 3 ? <TouchableHighlight style={{ ...otherStyles.button }} onPress={() => {
                 flatListRef.current.scrollToIndex({ animated: true, index: (curPage + 1) });
             }}>
                 <Text style={{ color: 'white', alignSelf: 'center' }}>Next</Text>
-            </TouchableHighlight> : (isFirstVisit === true ? <TouchableHighlight style={{ ...otherStyles.button, width: "40%", alignSelf: 'center' }} onPress={() => {
+            </TouchableHighlight> : (isFirstVisit === true ? <TouchableHighlight style={{ ...otherStyles.button }} onPress={() => {
                 setNewPage(1);
                 navigation.navigate("Home");
             }}>
                 <Text style={{ color: 'white', alignSelf: 'center' }}>Start now</Text>
-            </TouchableHighlight> : <></>)}
+            </TouchableHighlight> : <TouchableHighlight style={{ ...otherStyles.button, opacity: 0 }} >
+                <Text></Text>
+            </TouchableHighlight>)}
         </View>
     </>;
 }
 
 const otherStyles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#e7e7e7',
+        flex: 3,
     },
     text: {
         flex: 1,
@@ -142,6 +232,8 @@ const otherStyles = StyleSheet.create({
         backgroundColor: "#1D5C63",
         padding: 10,
         margin: 5,
+        width: "40%",
+        alignSelf: 'center'
     }
 });
 
