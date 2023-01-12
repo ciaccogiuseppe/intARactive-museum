@@ -23,18 +23,30 @@ const Achievements = (props) => {
     </>
 }
 
+const achievementsColors = {
+    fill_active: 'black',
+    stroke_active: 'black',
+    fill_inactive: 'lightgrey',
+    stroke_inactive: 'lightgrey'
+}
+
 const CustomIcon = (props) => {
     switch (props.level) {
         case levels.enjoyer:
-            return <LV1 {...props} fill={props.active ? 'black' : 'lightgrey'} />;
+            return <LV1 {...props} fill={props.active ? achievementsColors.fill_active : achievementsColors.fill_inactive}
+                stroke={props.active ? achievementsColors.stroke_active : achievementsColors.stroke_inactive} />;
         case levels.novice:
-            return <LV2 {...props} fill={props.active ? 'black' : 'lightgrey'} />;
+            return <LV2 {...props} fill={props.active ? achievementsColors.fill_active : achievementsColors.fill_inactive}
+                stroke={props.active ? achievementsColors.stroke_active : achievementsColors.stroke_inactive} />;
         case levels.fan:
-            return <LV3 {...props} fill={props.active ? 'black' : 'lightgrey'} />;
+            return <LV3 {...props} fill={props.active ? achievementsColors.fill_active : achievementsColors.fill_inactive}
+                stroke={props.active ? achievementsColors.stroke_active : achievementsColors.stroke_inactive} />;
         case levels.expert:
-            return <LV4 {...props} fill={props.active ? 'black' : 'lightgrey'} />;
+            return <LV4 {...props} fill={props.active ? achievementsColors.fill_active : achievementsColors.fill_inactive}
+                stroke={props.active ? achievementsColors.stroke_active : achievementsColors.stroke_inactive} />;
         default:
-            return <Icon name='trophy' type='font-awesome' size={50} color={props.active ? "black" : "lightgrey"}{...props} />;
+            return <Icon name='trophy' type='font-awesome' size={50}
+                color={props.active ? achievementsColors.fill_active : achievementsColors.fill_inactive}{...props} />;
     }
 }
 
