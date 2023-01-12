@@ -108,6 +108,7 @@ const UserInfoText = () => {
 
 const CustomHeader = (props) => {
   return (
+    props.isQuizOpen === false &&
     <View style={{ ...props.style, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
       <MCIcon style={{ paddingVertical: 13, paddingHorizontal: 13 }} size={28} color="#FFF" name="menu" onPress={() => { props.navigation.getParent("MenuDrawer").openDrawer(); }}></MCIcon>
       <Text style={{ fontSize: 20, color: "#FFF" }}> int<Text style={{ fontWeight: "900", color: "#EDE6DB" }}>AR</Text>active museum </Text>
@@ -164,6 +165,7 @@ const LeftDrawerContent = (props) => {
 
 // Right drawer
 const RightDrawerNavigator = () => {
+  const [isQuizOpen, setIsQuizOpen] = useState(false);
   return (
     <RightDrawer.Navigator id="RightDrawer"
       drawerContent={(props) => <RightDrawerContent {...props} />}
@@ -171,20 +173,25 @@ const RightDrawerNavigator = () => {
         drawerPosition: 'right', headerShown: false,
         drawerInactiveTintColor: "#417D7A", drawerInactiveBackgroundColor: "#fff",
         drawerActiveTintColor: "#417D7A", drawerActiveBackgroundColor: "FFF",
-        drawerItemStyle: { marginLeft: 0 }
+        drawerItemStyle: { marginLeft: 0 },
+        swipeEnabled: isQuizOpen ? false : true
       }}>
-      <RightDrawer.Screen name="MenuDrawer" component={LeftDrawerNavigator} />
+      <RightDrawer.Screen name="MenuDrawer">
+        {(props) => <LeftDrawerNavigator {...props} isQuizOpen={isQuizOpen} setIsQuizOpen={setIsQuizOpen} />}
+      </RightDrawer.Screen>
     </RightDrawer.Navigator>
   );
 };
 
 /* Quiz and Home screens are hidden in the drawer, but still available */
-const LeftDrawerNavigator = () => {
+const LeftDrawerNavigator = (props) => {
   const [takenQuiz, setTakenQuiz] = useState([]);
   const [doneByTheme, setDoneByTheme] = useState({});
   const [achievementsList, setAchievementsList] = useState([]);
   const [quizAnswered, setQuizAnswered] = useState([]);
   const [newAchieved, setNewAchieved] = useState([]);
+  const isQuizOpen = props.isQuizOpen, setIsQuizOpen = props.setIsQuizOpen;
+
 
   // USE THIS FOR KEEPING THE STATE
   useEffect(() => {
@@ -218,8 +225,8 @@ const LeftDrawerNavigator = () => {
     setDoneByTheme(dbt);
     setQuizAnswered(qa);
     setTakenQuiz(gaa);
-  }, []);
-  */
+  }, []);*/
+
   const getDone = (theme) => {
     let index = getIndexByTheme(theme);
     return doneByTheme[index];
@@ -329,20 +336,23 @@ const LeftDrawerNavigator = () => {
       drawerPosition: 'left',
       header: ({ navigation, route, options }) => {
         const title = getHeaderTitle(options, route.name);
-        return <CustomHeader navigation={navigation} title={title} style={options.headerStyle} />;
+        return <CustomHeader navigation={navigation} title={title} style={options.headerStyle} isQuizOpen={isQuizOpen} />;
       },
       headerStyle: { backgroundColor: "#417D7A" }, headerTintColor: '#fff', headerTitleAlign: "center",
       drawerInactiveTintColor: "#417D7A", drawerInactiveBackgroundColor: "#fff",
-      drawerActiveTintColor: "#417D7A", drawerActiveBackgroundColor: "FFF",
-      drawerItemStyle: { marginLeft: 0 }
+      drawerActiveTintColor: "#417D7A", drawerActiveBackgroundColor: "#FFF",
+      drawerItemStyle: { marginLeft: 0 },
+      swipeEnabled: isQuizOpen ? false : true
     }}>
-      <Drawer.Screen name="Home" component={HomePage} options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} />
+      <Drawer.Screen name="Home" options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }}>
+        {(props) => <HomePage {...props} setIsQuizOpen={setIsQuizOpen} />}
+      </Drawer.Screen>
       {
         // dalla pagina degli artifact si passa ai quiz prop artifact
         // uguale a "Sunflowers" o a "The Great Wave"
       }
       <Drawer.Screen name="Quiz" options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} >
-        {(props) => <Quiz {...props} takenQuiz={takenQuiz} setTakenQuiz={setTakenQuiz} updateState={updateState} artifact={"The Great Wave"}
+        {(props) => <Quiz {...props} isQuizOpen={isQuizOpen} setIsQuizOpen={setIsQuizOpen} takenQuiz={takenQuiz} setTakenQuiz={setTakenQuiz} updateState={updateState} artifact={"The Great Wave"}
           newAchieved={newAchieved} setNewAchieved={setNewAchieved} />}
       </Drawer.Screen>
       <Drawer.Screen name="Achievements" options={{ drawerIcon: IconComponent('trophy', 0), drawerLabel: "Achievements", title: "IntARactive Museum" }}>
