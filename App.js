@@ -181,7 +181,7 @@ const RightDrawerNavigator = () => {
         drawerPosition: 'right', headerShown: false,
         drawerInactiveTintColor: styles.palette._1, drawerInactiveBackgroundColor: "#fff",
         drawerActiveTintColor: styles.palette._1, drawerActiveBackgroundColor: "FFF",
-        drawerItemStyle: { marginLeft: 0 }
+        drawerItemStyle: { marginLeft: 0 },
         swipeEnabled: isQuizOpen ? false : true
       }}>
       <RightDrawer.Screen name="MenuDrawer">
@@ -203,6 +203,7 @@ const LeftDrawerNavigator = (props) => {
 
   // USE THIS FOR KEEPING THE STATE
   useEffect(() => {
+
     readFromFile(pathStrings.path_givenAnswers).then((success) => { setTakenQuiz(success) });
     readFromFile(pathStrings.path_doneByTheme).then((success) => { setDoneByTheme(success) });
     readFromFile(pathStrings.path_achievementsList).then((success) => { setAchievementsList(success) });
@@ -210,24 +211,29 @@ const LeftDrawerNavigator = (props) => {
   }, []);
 
   useEffect(() => {
+    if(takenQuiz.length != 0)
     writeToFile(pathStrings.path_givenAnswers, takenQuiz);
   }, [takenQuiz]);
 
   useEffect(() => {
+    if(achievementsList.length != 0)
     writeToFile(pathStrings.path_achievementsList, achievementsList);
   }, [achievementsList]);
 
   useEffect(() => {
+    if(doneByTheme.length != 0)
     writeToFile(pathStrings.path_doneByTheme, doneByTheme);
   }, [doneByTheme]);
 
   useEffect(() => {
+    if(quizAnswered.length != 0)
     writeToFile(pathStrings.path_quizAnswered, quizAnswered);
+    console.log(quizAnswered)
   }, [quizAnswered]);
 
-  /*
+  
   // USE THIS FOR RESET
-  useEffect(() => {
+  /*useEffect(() => {
     resetFiles();
     setAchievementsList(al);
     setDoneByTheme(dbt);
@@ -265,7 +271,7 @@ const LeftDrawerNavigator = (props) => {
     let correctLocalAnswer = [];
     let quizAnsweredToUpdate = quizAnswered.find(q => q.quizID === quizDetails.index);
 
-    if (quizAnsweredToUpdate.bestScore === 3) {
+    if (quizAnsweredToUpdate && quizAnsweredToUpdate.bestScore === 3) {
       return {
         result: quizAnsweredToUpdate,
         oldScore: 3
@@ -274,8 +280,14 @@ const LeftDrawerNavigator = (props) => {
 
     for (let i = 0; i < 3; i++) {
       correctLocalAnswer[i] = (lastQuiz.answers[i] === quizDetails.questionSolutions[i].solution ? 1 : 0);
-      oldScore += quizAnsweredToUpdate.correctAnswers[i];
-      updatedAnswers[i] = quizAnsweredToUpdate.correctAnswers[i] | correctLocalAnswer[i];
+      if(quizAnsweredToUpdate){
+        oldScore += quizAnsweredToUpdate.correctAnswers[i];
+        updatedAnswers[i] = quizAnsweredToUpdate.correctAnswers[i] | correctLocalAnswer[i];
+      }
+      else{
+        updatedAnswers[i] = correctLocalAnswer[i]
+      }
+        
       count += updatedAnswers[i];
     }
 
@@ -330,7 +342,8 @@ const LeftDrawerNavigator = (props) => {
     if (scoreDelta !== 0) {
       let res = updateAchievementList(details.theme, scoreDelta);
       setNewAchieved(res);
-      setQuizAnswered(list => list.map((q) => (q.quizID === details.index ? updatedQuizAnswered.result : q)));
+      setQuizAnswered([...quizAnswered, updatedQuizAnswered.result]);
+      //setQuizAnswered(list => list.map((q) => (q.quizID === details.index ? updatedQuizAnswered.result : q)));
       setDoneByTheme(obj => {
         let updated = {};
         updated[details.theme] = obj[details.theme] + scoreDelta;
@@ -350,7 +363,7 @@ const LeftDrawerNavigator = (props) => {
       headerStyle: { backgroundColor: styles.palette._1 }, headerTintColor: '#fff', headerTitleAlign: "center",
       drawerInactiveTintColor: styles.palette._1, drawerInactiveBackgroundColor: "#fff",
       drawerActiveTintColor: styles.palette._1, drawerActiveBackgroundColor: "FFF",
-      drawerItemStyle: { marginLeft: 0 }
+      drawerItemStyle: { marginLeft: 0 },
       swipeEnabled: isQuizOpen ? false : true
     }}>
       <Drawer.Screen name="Home" options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }}>
@@ -361,7 +374,7 @@ const LeftDrawerNavigator = (props) => {
         // uguale a "Sunflowers" o a "The Great Wave"
       }
       <Drawer.Screen name="Quiz" options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} >
-        {(props) => <Quiz {...props} isQuizOpen={isQuizOpen} setIsQuizOpen={setIsQuizOpen} takenQuiz={takenQuiz} setTakenQuiz={setTakenQuiz} updateState={updateState} artifact={"The Great Wave"}
+        {(props) => <Quiz {...props} isQuizOpen={isQuizOpen} setIsQuizOpen={setIsQuizOpen} takenQuiz={takenQuiz} setTakenQuiz={setTakenQuiz} updateState={updateState} artifact={"Sunflowers"}
           newAchieved={newAchieved} setNewAchieved={setNewAchieved} />}
       </Drawer.Screen>
       <Drawer.Screen name="Achievements" options={{ drawerIcon: IconComponent('trophy', 0), drawerLabel: "Achievements", title: "IntARactive Museum" }}>

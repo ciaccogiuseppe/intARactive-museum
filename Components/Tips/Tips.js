@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { TIPS_DATA } from "./TipsData";
 import { ActivityBar } from "../../Globals/Components";
+import { Divider } from "react-native-paper";
 
 
 const Tips = ({ navigation, isFirstVisit }) => {
@@ -34,19 +35,25 @@ const Tips = ({ navigation, isFirstVisit }) => {
         container: {
             justifyContent: 'space-around',
             alignItems: 'center',
-            width: width - 40,
-            marginHorizontal: 20
+            width: width,
+            marginHorizontal: 0,
+            backgroundColor: styles.palette._5
         },
         title: {
-            width: '80%',
+            width: '95%',
             textAlign: 'center',
             fontSize: 20,
             fontWeight: 'bold',
-            margin: 10,
-            textAlignVertical: 'center'
+            fontFamily: 'sans-serif-thin',
+            margin: 20,
+            textAlignVertical: 'center',
+            color:"#3D3D3D",
+            textShadowColor: 'grey',
+            textShadowOffset: { width: 1, height: 1 },
+            textShadowRadius: 3
         },
         image_page1: {
-            height: 360,
+            height: 380,
             width: 270,
             alignSelf: "center",
         },
@@ -54,17 +61,19 @@ const Tips = ({ navigation, isFirstVisit }) => {
             flexDirection: 'row',
             justifyContent: 'space-around',
             alignSelf: 'stretch',
-            flexWrap: 'nowrap'
+            flexWrap: 'nowrap',
+            margin:5
         },
         itemRowGroup_text: {
             width: '50%',
-            fontSize: 16,
+            fontSize: 18,
             textAlign: 'center',
-            textAlignVertical: 'center'
+            textAlignVertical: 'center',
+            color: '#3D3D3D'
         },
         itemRowGroup_image: {
-            height: 148,
-            width: 111,
+            height: 190,
+            width: 141,
             alignSelf: "center",
             margin: 10
         }
@@ -87,6 +96,7 @@ const Tips = ({ navigation, isFirstVisit }) => {
                             <Animated.Text style={renderItemStyles.itemRowGroup_text}>{item.description1}</Animated.Text>
                             <Animated.Image source={item.image1} style={renderItemStyles.itemRowGroup_image} />
                         </View>
+                        <Divider style={{color:"black", margin:5}} bold={true} width="100%"/>
                         <View style={renderItemStyles.itemRowGroup}>
                             <Animated.Image source={item.image2} style={renderItemStyles.itemRowGroup_image} />
                             <Animated.Text style={renderItemStyles.itemRowGroup_text}>{item.description2}</Animated.Text>
@@ -99,16 +109,16 @@ const Tips = ({ navigation, isFirstVisit }) => {
                             <Animated.Text style={renderItemStyles.itemRowGroup_text}>{item.description1}</Animated.Text>
                             <Animated.Image source={item.image1} style={renderItemStyles.itemRowGroup_image} />
                         </View>
+                        <Divider style={{color:"black", margin:5}} bold={true} width="100%"/>
                         <View style={renderItemStyles.itemRowGroup}>
-                            <View style={{ flex: 1, justifyContent: 'center' }}>
-                                <Animated.Image source={item.image2} style={[renderItemStyles.itemRowGroup_image, { margin: 0 }]} />
-                            </View>
-                            <View style={{ flexDirection: 'column', flex: 1, width: '50%' }}>
-                                <Animated.Text style={[renderItemStyles.itemRowGroup_text, { width: '100%' }]}>{item.description2}</Animated.Text>
+                            
+                            <Animated.Image source={item.image2} style={[renderItemStyles.itemRowGroup_image]} />
+                            <View style={{ flexDirection: 'column', flex: 1, width: '50%', alignItems:'flex-start', marginTop:5, justifyContent: 'center', alignItems: 'flex-start'}}>
+                                <Animated.Text style={{...renderItemStyles.itemRowGroup_text, width: '100%', textAlignVertical:'center', justifyContent: 'flex-start',textAlign: 'left',}}>{item.description2}</Animated.Text>
                                 {item.items.map((e, i) =>
                                     <View key={i} style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                                        <Animated.Image source={e.icon} style={{ height: 20, width: 20, margin: 10 }} />
-                                        <Animated.Text style={{ textAlignVertical: 'center' }}>{e.label}</Animated.Text>
+                                        <Animated.Image source={e.icon} style={{ height: 25, width: 25, margin: 2 }} />
+                                        <Animated.Text style={{ textAlignVertical: 'center', color:'black' }}>{e.label}</Animated.Text>
                                     </View>
                                 )}
                             </View>
@@ -117,10 +127,12 @@ const Tips = ({ navigation, isFirstVisit }) => {
                 case '4':
                     return (<View style={renderItemStyles.container}>
                         <Text style={renderItemStyles.title}>{item.title}</Text>
+                        
                         <View style={renderItemStyles.itemRowGroup}>
                             <Animated.Text style={renderItemStyles.itemRowGroup_text}>{item.description1}</Animated.Text>
                             <Animated.Image source={item.image1} style={renderItemStyles.itemRowGroup_image} />
                         </View>
+                        <Divider style={{color:"black", margin:5}} bold={true} width="100%"/>
                         <View style={renderItemStyles.itemRowGroup}>
                             <Animated.Image source={item.image2} style={renderItemStyles.itemRowGroup_image} />
                             <Animated.Text style={renderItemStyles.itemRowGroup_text}>{item.description2}</Animated.Text>
@@ -168,7 +180,7 @@ const Tips = ({ navigation, isFirstVisit }) => {
                 onViewableItemsChanged={changeCurrentPage}
             />
         </View>
-        <View style={{ flex: 1, alignContent: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+        <View style={{ flex: 1, alignContent: 'center', justifyContent: 'center', flexDirection: 'column', backgroundColor: styles.palette._5 }}>
             {/*<TouchableHighlight style={{ ...otherStyles.button }} onPress={() => {
                 flatListRef.current.scrollToIndex({ animated: true, index: (curPage > 0 ? (curPage - 1) : 0) });
             }}>

@@ -1,15 +1,32 @@
 import { themes, levels } from '../Components/Achievements/AchievementLists'
 import moment from 'moment';
+import { PermissionsAndroid } from 'react-native';
 const RNFS = require('react-native-fs');
 
 const pathStrings = {
-    path_doneByTheme: RNFS.DocumentDirectoryPath + '/storage_doneByTheme.json',
-    path_givenAnswers: RNFS.DocumentDirectoryPath + '/storage_givenAnswers.json',
-    path_quizAnswered: RNFS.DocumentDirectoryPath + '/storage_quizAnswered.json',
-    path_achievementsList: RNFS.DocumentDirectoryPath + '/storage_achievementsList.json'
+    path_doneByTheme: RNFS.ExternalDirectoryPath  + '/storage_doneByTheme.json',
+    path_givenAnswers: RNFS.ExternalDirectoryPath  + '/storage_givenAnswers.json',
+    path_quizAnswered: RNFS.ExternalDirectoryPath  + '/storage_quizAnswered.json',
+    path_achievementsList: RNFS.ExternalDirectoryPath  + '/storage_achievementsList.json'
 };
 
+
 const readFromFile = async (path) => {
+    try {
+        const granted = await PermissionsAndroid.requestMultiple([
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        ]);
+      } catch (err) {
+        console.warn(err);
+      }
+      const readGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE); 
+      const writeGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+      if(!readGranted || !writeGranted) {
+        console.log('Read and write permissions have not been granted');
+        return;
+      }
+
     try {
         const fileContent = await RNFS.readFile(path, 'utf8');
         const obj = JSON.parse(fileContent);
@@ -22,6 +39,20 @@ const readFromFile = async (path) => {
 };
 
 const writeToFile = async (path, obj) => {
+    try {
+        const granted = await PermissionsAndroid.requestMultiple([
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        ]);
+      } catch (err) {
+        console.warn(err);
+      }
+      const readGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE); 
+      const writeGranted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+      if(!readGranted || !writeGranted) {
+        console.log('Read and write permissions have not been granted');
+        return;
+      }
     try {
         const objJSON = JSON.stringify(obj);
         await RNFS.writeFile(path, objJSON, 'utf8');

@@ -13,7 +13,6 @@ const QuizHistory = (props) => {
     const [historyPage, setHistoryPage] = useState("Home");
     const [historyNum, setHistoryNum] = useState(1);
     const [historyId, setHistoryId] = useState(0);
-
     switch (historyPage) {
         case "Home":
             return <>
@@ -53,9 +52,9 @@ const CompletedQuizList = (props) => {
             scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: false });
         }
     }, [isFocused]);
-
+    console.log(props);
     let list = [];
-    for (let i = 0; i < props.numTakenQuiz; ++i) {
+    for (let i = 0; i < props.takenQuiz.length; ++i) {
         list.push(<TouchableHighlight  underlayColor={styles.palette._4} key={i} style={{ ...styles.button, borderColor:styles.palette._3, borderWidth:3, backgroundColor:styles.palette._0, marginTop: i == 0 ? 20 : 5, width: "90%", alignSelf: 'center' }}
 
             onPress={() => {
@@ -65,14 +64,14 @@ const CompletedQuizList = (props) => {
             }}>
 
             <View >
-                <Text style={{ color: styles.palette._3, alignSelf: 'center', fontSize: 30, fontWeight: "bold", textAlignVertical: "center" }}>
-                    {props.givenAnswers[i].artifact}
+                <Text style={{ color: styles.palette._3, alignSelf: 'center', fontSize: 25, fontWeight: "bold", textAlignVertical: "center" }}>
+                    {props.takenQuiz[i].artifact}
                 </Text>
-                <Text style={{ color: styles.palette._3, alignSelf: 'center', fontSize: 20, textAlignVertical: "center" }}>
-                    <Text style={{ color: styles.palette._3, alignSelf: 'center', fontSize: 20, fontWeight: "bold" }}>Date: </Text>{props.givenAnswers[i].date}
+                <Text style={{ color: styles.palette._3, alignSelf: 'center', fontSize: 15, textAlignVertical: "center" }}>
+                    <Text style={{ color: styles.palette._3, alignSelf: 'center', fontSize: 15, fontWeight: "bold" }}>Date: </Text>{props.takenQuiz[i].date}
                 </Text>
-                <Text style={{ color: styles.palette._3, alignSelf: 'center', fontSize: 20, textAlignVertical: "center" }}>
-                    <Text style={{ color: styles.palette._3, alignSelf: 'center', fontSize: 20, fontWeight: "bold" }}>Score: </Text> {props.givenAnswers[i].score}/3
+                <Text style={{ color: styles.palette._3, alignSelf: 'center', fontSize: 15, textAlignVertical: "center" }}>
+                    <Text style={{ color: styles.palette._3, alignSelf: 'center', fontSize: 15, fontWeight: "bold" }}>Score: </Text> {props.takenQuiz[i].score}/3
 
                 </Text>
             </View>

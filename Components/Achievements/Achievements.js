@@ -59,7 +59,7 @@ function IconsList(props) {
             scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: false });
         }
     }, [isFocused]);
-
+    console.log(props.list);
     return <ScrollView ref={scrollViewRef}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', flexWrap: "wrap" }}>
             {props.list.map((achievement) => <AchievementIcon key={achievement.id} title={achievement.title} theme={achievement.theme}

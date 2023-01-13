@@ -67,7 +67,7 @@ const Quiz = (props) => {
         let newObj = {
             artifact: props.artifact,
             answers: answers,
-            date: moment().calendar(),
+            date: moment().format("YYYY/MM/DD [at] hh:mm A"),
             score: score
         };
         props.setTakenQuiz((oldList) =>
@@ -220,6 +220,7 @@ const QuizCorrectOrWrong = (props) => {
             setScore={props.setScore} setAnswers={props.setAnswers} navigation={props.navigation}
             setQuizPage={props.setQuizPage} overlay={props.overlay} setIsQuizOpen={props.setIsQuizOpen} />
 
+    
         <QuizCorrectOrWrongBody answers={props.answers} quizNum={props.quizNum}
             questionAndAnswers={props.artifact == "Sunflowers" ?
                 questionsSunflowers[props.quizNum - 1] :
@@ -237,7 +238,7 @@ const QuizCorrectOrWrong = (props) => {
                     props.updateState({
                         artifact: props.artifact,
                         answers: props.answers,
-                        date: moment().calendar(),
+                        date: moment().format("YYYY/MM/DD [at] hh:mm A"),
                         score: props.score
                     });
                     props.addAnswers();

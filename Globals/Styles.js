@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1, },
     shadowOpacity: 1,
     shadowRadius: 5,
-    elevation: 4
+    elevation: 4,
     },
     sectionContainer: {
       marginTop: 32,
