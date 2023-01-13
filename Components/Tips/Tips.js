@@ -234,7 +234,7 @@ const otherStyles = StyleSheet.create({
         borderColor: 'black',
         borderWidth: 0,
         borderRadius: 10,
-        backgroundColor: "#1D5C63",
+        backgroundColor: styles.palette._2,
         padding: 10,
         margin: 5,
         width: "40%",

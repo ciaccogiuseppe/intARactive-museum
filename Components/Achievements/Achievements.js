@@ -10,11 +10,12 @@ import LV1 from '../../res/lv1';
 import LV2 from '../../res/lv2';
 import LV3 from '../../res/lv3';
 import LV4 from '../../res/lv4';
+import styles from '../../Globals/Styles';
 
 const Achievements = (props) => {
     return <>
         <ActivityBar titleName="Achievements" navigation={props.navigation} isHome={true} />
-        <View style={{ alignItems: 'center', marginTop: 20, flex: 1, flexGrow: 1 }}>
+        <View style={{ alignItems: 'center', paddingTop: 20, flex: 1, flexGrow: 1 }}>
             <Icon name='account-circle' size={150} />
         </View>
         <View style={{ flex: 2 }}>
@@ -76,7 +77,7 @@ function AchievementIcon(props) {
     return <View margin={5} flexDirection='column' alignItems='center' flexWrap='wrap'>
         <CustomIcon level={props.level} onPress={toggleOverlay} active={props.needed <= props.done} />
         <Text style={{ width: 75, color: 'black', alignSelf: 'center', margin: 5, textAlign: 'center', fontSize: 12 }}>{props.title}</Text>
-        <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={{ backgroundColor: "#EDE6DB", color: "#EDE6DB", borderRadius: 15, width: '65%', height: '20%' }}>
+        <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={{ backgroundColor: styles.palette._0, color: styles.palette._0, borderRadius: 15, width: '65%', height: '20%' }}>
             <View>
                 <Icon name='close' type='material' onPress={toggleOverlay} style={{ color: 'black', marginLeft: 'auto' }}></Icon>
                 <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 20, margin: 5, alignSelf: "center", alignContent: 'center', position: 'absolute' }}>{props.title}</Text>

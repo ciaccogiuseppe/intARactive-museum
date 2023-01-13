@@ -8,3 +8,5 @@
 - Navigation: https://reactnavigation.org/docs/navigating
 - Overlay: https://reactnativeelements.com/docs/3.4.2/overlay
 - Devices: https://developers.google.com/ar/devices
+- Progress bar: https://callstack.github.io/react-native-paper
+- Bottom drawer: https://github.com/enesozturk/rn-swipeable-panel
