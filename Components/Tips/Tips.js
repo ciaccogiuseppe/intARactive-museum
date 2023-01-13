@@ -32,36 +32,41 @@ const Tips = ({ navigation, isFirstVisit }) => {
 
     const renderItemStyles = StyleSheet.create({
         container: {
-            justifyContent: 'flex-start',
+            justifyContent: 'space-around',
             alignItems: 'center',
-            width: width
+            width: width - 40,
+            marginHorizontal: 20
         },
         title: {
             width: '80%',
             textAlign: 'center',
             fontSize: 20,
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            margin: 10,
+            textAlignVertical: 'center'
         },
         image_page1: {
-            height: 80,
-            width: 40,
+            height: 360,
+            width: 270,
             alignSelf: "center",
-            marginTop: 10
         },
         itemRowGroup: {
             flexDirection: 'row',
             justifyContent: 'space-around',
-            alignContent: 'center',
+            alignSelf: 'stretch',
             flexWrap: 'nowrap'
         },
         itemRowGroup_text: {
-            width: '40%'
+            width: '50%',
+            fontSize: 16,
+            textAlign: 'center',
+            textAlignVertical: 'center'
         },
         itemRowGroup_image: {
-            height: 80,
-            width: 40,
+            height: 148,
+            width: 111,
             alignSelf: "center",
-            marginTop: 10
+            margin: 10
         }
     });
 
@@ -95,15 +100,15 @@ const Tips = ({ navigation, isFirstVisit }) => {
                             <Animated.Image source={item.image1} style={renderItemStyles.itemRowGroup_image} />
                         </View>
                         <View style={renderItemStyles.itemRowGroup}>
-                            <View>
-                                <Animated.Image source={item.image2} style={renderItemStyles.itemRowGroup_image} />
+                            <View style={{ flex: 1, justifyContent: 'center' }}>
+                                <Animated.Image source={item.image2} style={[renderItemStyles.itemRowGroup_image, { margin: 0 }]} />
                             </View>
-                            <View style={{ flexDirection: 'column' }}>
-                                <Animated.Text style={renderItemStyles.itemRowGroup_text}>{item.description2}</Animated.Text>
+                            <View style={{ flexDirection: 'column', flex: 1, width: '50%' }}>
+                                <Animated.Text style={[renderItemStyles.itemRowGroup_text, { width: '100%' }]}>{item.description2}</Animated.Text>
                                 {item.items.map((e, i) =>
-                                    <View key={i} style={{ flexDirection: 'row' }}>
-                                        <Animated.Image source={e.icon} style={{ height: 5, width: 5, marginTop: 10 }} />
-                                        <Animated.Text style={{ width: '30%' }}>{e.label}</Animated.Text>
+                                    <View key={i} style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                                        <Animated.Image source={e.icon} style={{ height: 20, width: 20, margin: 10 }} />
+                                        <Animated.Text style={{ textAlignVertical: 'center' }}>{e.label}</Animated.Text>
                                     </View>
                                 )}
                             </View>
