@@ -3,9 +3,13 @@ import { View } from 'react-native';
 import { Text, Icon } from "@rneui/themed";
 import { Overlay } from 'react-native-elements';
 import { ActivityBar } from '../../Globals/Components'
-import { achievementsList, getDone, getNeeded } from './AchievementLists';
+import { achievementsList, getDone, getNeeded, levels } from './AchievementLists';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useIsFocused } from '@react-navigation/native';
+import LV1 from '../../res/lv1';
+import LV2 from '../../res/lv2';
+import LV3 from '../../res/lv3';
+import LV4 from '../../res/lv4';
 import styles from '../../Globals/Styles';
 
 const Achievements = (props) => {
@@ -15,9 +19,36 @@ const Achievements = (props) => {
             <Icon name='account-circle' size={150} />
         </View>
         <View style={{ flex: 2 }}>
-            <IconsList list={props.list} />
+            <IconsList list={props.list} getDone={props.getDone} />
         </View>
     </>
+}
+
+const achievementsColors = {
+    fill_active: 'black',
+    stroke_active: 'black',
+    fill_inactive: 'lightgrey',
+    stroke_inactive: 'lightgrey'
+}
+
+const CustomIcon = (props) => {
+    switch (props.level) {
+        case levels.enjoyer:
+            return <LV1 {...props} fill={props.active ? achievementsColors.fill_active : achievementsColors.fill_inactive}
+                stroke={props.active ? achievementsColors.stroke_active : achievementsColors.stroke_inactive} />;
+        case levels.novice:
+            return <LV2 {...props} fill={props.active ? achievementsColors.fill_active : achievementsColors.fill_inactive}
+                stroke={props.active ? achievementsColors.stroke_active : achievementsColors.stroke_inactive} />;
+        case levels.fan:
+            return <LV3 {...props} fill={props.active ? achievementsColors.fill_active : achievementsColors.fill_inactive}
+                stroke={props.active ? achievementsColors.stroke_active : achievementsColors.stroke_inactive} />;
+        case levels.expert:
+            return <LV4 {...props} fill={props.active ? achievementsColors.fill_active : achievementsColors.fill_inactive}
+                stroke={props.active ? achievementsColors.stroke_active : achievementsColors.stroke_inactive} />;
+        default:
+            return <Icon name='trophy' type='font-awesome' size={50}
+                color={props.active ? achievementsColors.fill_active : achievementsColors.fill_inactive}{...props} />;
+    }
 }
 
 function IconsList(props) {
@@ -32,7 +63,8 @@ function IconsList(props) {
     return <ScrollView ref={scrollViewRef}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', flexWrap: "wrap" }}>
             {props.list.map((achievement) => <AchievementIcon key={achievement.id} title={achievement.title} theme={achievement.theme}
-                done={getDone(achievement)} needed={getNeeded(achievement)} date_obtained={achievement.date_obtained} />)}
+                done={props.getDone(achievement.theme)} needed={getNeeded(achievement)} date_obtained={achievement.date_obtained}
+                level={achievement.level} />)}
         </View>
     </ScrollView>;
 }
@@ -43,7 +75,7 @@ function AchievementIcon(props) {
         setVisible(visible => !visible);
     };
     return <View margin={5} flexDirection='column' alignItems='center' flexWrap='wrap'>
-        <Icon name='trophy' type='font-awesome' size={50} onPress={toggleOverlay} color={props.needed <= props.done ? "black" : "lightgrey"} />
+        <CustomIcon level={props.level} onPress={toggleOverlay} active={props.needed <= props.done} />
         <Text style={{ width: 75, color: 'black', alignSelf: 'center', margin: 5, textAlign: 'center', fontSize: 12 }}>{props.title}</Text>
         <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={{ backgroundColor: styles.palette._0, color: styles.palette._0, borderRadius: 15, width: '65%', height: '20%' }}>
             <View>

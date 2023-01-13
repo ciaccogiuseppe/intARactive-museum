@@ -8,6 +8,7 @@ import { Divider, Overlay } from 'react-native-elements';
 import { questionsSunflowers, questionsGreatWave, givenAnswersArtifact, quizAnswered } from "./QuestionsAndAnswers";
 import { updateDone } from '../Achievements/AchievementLists';
 import { ActivityBar } from '../../Globals/Components';
+import { pathStrings, writeToFile } from '../../Globals/storageFunctions';
 
 const Quiz = (props) => {
     const { navigation } = props;
@@ -56,13 +57,31 @@ const Quiz = (props) => {
         }
     };
 
+    useEffect(() => {
+        if (props.newAchieved.length !== 0) {
+            setOverlayAchieved(true);
+        }
+    }, [props.newAchieved.length]);
+
+    const addAnswers = () => {
+        let newObj = {
+            artifact: props.artifact,
+            answers: answers,
+            date: moment().calendar(),
+            score: score
+        };
+        props.setTakenQuiz((oldList) =>
+            oldList.concat(newObj)
+        );
+    }
+
     switch (quizPage) {
         case "Home":
-            return <QuizHomePage setQuizNum={setQuizNum} navigation={navigation}
+            return <QuizHomePage setQuizNum={setQuizNum} navigation={navigation} setIsQuizOpen={props.setIsQuizOpen} isQuizOpen={props.isQuizOpen}
                 setQuizPage={setQuizPage} setScore={setScore} setAnswers={setAnswers}
                 setOverlay={setOverlay} artifact={props.artifact} />
         case "Question":
-            return <QuizQuestion navigation={navigation} setQuizPage={setQuizPage}
+            return <QuizQuestion navigation={navigation} setQuizPage={setQuizPage} setIsQuizOpen={props.setIsQuizOpen} isQuizOpen={props.isQuizOpen}
                 quizNum={quizNum} setScore={setScore} answers={answers} score={score}
                 setAnswers={setAnswers} setQuizNum={setQuizNum} artifact={props.artifact}
                 questionAndAnswers={props.artifact == "Sunflowers" ?
@@ -70,22 +89,22 @@ const Quiz = (props) => {
                     questionsGreatWave[quizNum - 1]}
                 setOverlay={setOverlay} overlay={overlay} />
         case "CorrectOrWrong":
-            return <QuizCorrectOrWrong navigation={navigation} setQuizPage={setQuizPage}
+            return <QuizCorrectOrWrong navigation={navigation} setQuizPage={setQuizPage} setIsQuizOpen={props.setIsQuizOpen} isQuizOpen={props.isQuizOpen}
                 answers={answers} setScore={setScore} setAnswers={setAnswers} artifact={props.artifact}
-                quizNum={quizNum} setQuizNum={setQuizNum} setNumTakenQuiz={props.setNumTakenQuiz}
-                updateBest={updateBest}
+                quizNum={quizNum} setQuizNum={setQuizNum} addAnswers={addAnswers}
+                updateState={props.updateState}
+                score={score}
                 questionAndAnswers={props.artifact == "Sunflowers" ?
                     questionsSunflowers[quizNum - 1] :
                     questionsGreatWave[quizNum - 1]}
                 setOverlay={setOverlay} overlay={overlay} />
         case "Results":
-            return <QuizResults navigation={navigation} setQuizPage={setQuizPage}
+            return <QuizResults navigation={navigation} setQuizPage={setQuizPage} setIsQuizOpen={props.setIsQuizOpen} isQuizOpen={props.isQuizOpen}
                 setAnswers={setAnswers} answers={answers}
-                givenAnswers={givenAnswersArtifact}
                 setQuizNum={setQuizNum}
                 score={score} setScore={setScore}
                 overlayAchieved={overlayAchieved} toggleOverlay={() => { setOverlayAchieved(false) }}
-                newAchieved={newAchieved}
+                newAchieved={props.newAchieved}
                 setOverlay={setOverlay} artifact={props.artifact} />
         default:
             return "Should not happen"
@@ -94,7 +113,7 @@ const Quiz = (props) => {
 
 const QuizHomePage = (props) => {
     return <>
-        <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
+        <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum} setIsQuizOpen={props.setIsQuizOpen} isQuizOpen={props.isQuizOpen}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={false}
             setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact} />
 
@@ -126,6 +145,10 @@ const QuizHomePage = (props) => {
 }
 
 const QuizQuestion = (props) => {
+    useEffect(() => {
+        props.setIsQuizOpen(true);
+    }, []);
+
     let [answerSelected, setAnswerSelected] = useState(-1); // -1 means no answer selected yet
     let options = [];
     let disabled = answerSelected === -1;
@@ -145,13 +168,13 @@ const QuizQuestion = (props) => {
     <hr />
 
     return <View style={{ flex: 1 }}>
-        <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
+        <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum} setIsQuizOpen={props.setIsQuizOpen} isQuizOpen={props.isQuizOpen}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={true}
             setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact} />
 
         <QuizBreadcrumb quizNum={props.quizNum} />
 
-        <ConfirmExitOverlay setOverlay={props.setOverlay} setQuizNum={props.setQuizNum}
+        <ConfirmExitOverlay setOverlay={props.setOverlay} setQuizNum={props.setQuizNum} setIsQuizOpen={props.setIsQuizOpen}
             setScore={props.setScore} setAnswers={props.setAnswers} navigation={props.navigation}
             setQuizPage={props.setQuizPage} overlay={props.overlay} />
 
@@ -182,8 +205,12 @@ const QuizQuestion = (props) => {
 
 
 const QuizCorrectOrWrong = (props) => {
+    useEffect(() => {
+        props.setIsQuizOpen(true);
+    }, []);
+
     return <>
-        <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
+        <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum} setIsQuizOpen={props.setIsQuizOpen} isQuizOpen={props.isQuizOpen}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={true}
             setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact} />
 
@@ -191,7 +218,7 @@ const QuizCorrectOrWrong = (props) => {
 
         <ConfirmExitOverlay setOverlay={props.setOverlay} setQuizNum={props.setQuizNum}
             setScore={props.setScore} setAnswers={props.setAnswers} navigation={props.navigation}
-            setQuizPage={props.setQuizPage} overlay={props.overlay} />
+            setQuizPage={props.setQuizPage} overlay={props.overlay} setIsQuizOpen={props.setIsQuizOpen} />
 
         <QuizCorrectOrWrongBody answers={props.answers} quizNum={props.quizNum}
             questionAndAnswers={props.artifact == "Sunflowers" ?
@@ -206,9 +233,14 @@ const QuizCorrectOrWrong = (props) => {
                     props.setQuizNum(x => x + 1);
                     props.setQuizPage("Question");
                 } else {
-                    props.setNumTakenQuiz(x => x + 1);
                     props.setQuizNum(1);
-                    props.updateBest();
+                    props.updateState({
+                        artifact: props.artifact,
+                        answers: props.answers,
+                        date: moment().calendar(),
+                        score: props.score
+                    });
+                    props.addAnswers();
                     props.setQuizPage("Results");
                 }
             }}>
@@ -223,17 +255,11 @@ const QuizCorrectOrWrong = (props) => {
 
 
 const QuizResults = (props) => {
-    props.givenAnswers.push(
-        {
-            artifact: props.artifact,
-            answers: props.answers,
-            date: moment().calendar(),
-            score: props.score
-        }
-    );
+    useEffect(() => {
+        props.setIsQuizOpen(true);
+    }, []);
 
     let resultCommentMessage = "";
-
     switch (props.score) {
         case 0:
             resultCommentMessage = "You can definitely do better...\n"
@@ -252,7 +278,7 @@ const QuizResults = (props) => {
             break;
     }
     return <>
-        <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum}
+        <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum} setIsQuizOpen={props.setIsQuizOpen} isQuizOpen={props.isQuizOpen}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={false}
             setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact} />
 
@@ -294,6 +320,7 @@ const QuizResults = (props) => {
             </TouchableHighlight>
         </View>
         {props.newAchieved.length !== 0 ? <Overlay isVisible={props.overlayAchieved} onBackdropPress={props.toggleOverlay} overlayStyle={{ backgroundColor: styles.palette._0, color: styles.palette._0, borderRadius: 15, width: '65%', height: '20%' }}>
+
             <View>
                 <Icon name='close' type='material' onPress={props.toggleOverlay} style={{ color: 'black', marginLeft: 'auto' }}></Icon>
                 <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 20, margin: 5, alignSelf: "center", alignContent: 'center', position: 'absolute' }}>New Achievements!</Text>
@@ -310,6 +337,7 @@ const QuizSecondHeader = (props) => {
     return <>
         <ActivityBar
             titleName={"Quiz - " + props.artifact}
+            isMenuHidden={props.isQuizOpen}
             navigation={props.navigation}
             isHome={true}
             isClose={props.xIcon ? true : undefined}
@@ -321,44 +349,18 @@ const QuizSecondHeader = (props) => {
                     props.setQuizNum(1);
                     props.setScore(0);
                     props.setAnswers([]);
+                    props.setIsQuizOpen(false);
                     props.navigation.navigate('Home');
                     props.setQuizPage("Home");
                 }
             }}
         />
-        {/*
-        <View style={{ ...styles.secondHeader }}>
-
-            <TouchableHighlight style={{ ...styles.button, width: "20%", alignSelf: 'center' }} onPress={() => {
-                if (props.xIcon) { //quizQuestion or quizCorrectOrWrong page
-                    props.setOverlay(1);
-                } else { //quizHome or quizResult page
-                    props.setQuizNum(1);
-                    props.setScore(0);
-                    props.setAnswers([]);
-                    props.navigation.navigate('Home');
-                    props.setQuizPage("Home");
-                }
-            }}>
-                <Text style={{ color: 'white', alignSelf: 'center' }}>Home</Text>
-            </TouchableHighlight>
-            <Text style={{ color: 'white', alignSelf: 'center', fontSize: 25 }}>
-                Quiz - {props.artifact}
-            </Text>
-            {props.xIcon ?
-                <Text style={{ color: 'white', alignSelf: 'center', fontSize: 20, padding: 10 }}
-                    onPress={() => {
-                        props.setOverlay(2);
-                    }}>
-                    x
-                </Text> : <Text></Text>}
-        </View>
-    */}
     </>
 }
 
 const QuizBreadcrumb = (props) => {
     return <>
+        {/* height breadcrumb: 35 */}
         <View style={{ ...styles.breadcrumb }}>
             <Text style={{ color: props.quizNum == 1 ? 'black' : 'gray', fontSize: 15, paddingRight: 15 }}>
                 Question 1
@@ -467,6 +469,7 @@ const ConfirmExitOverlay = (props) => {
                     props.setScore(0);
                     props.setAnswers([]);
                     if (props.overlay == 1) {
+                        props.setIsQuizOpen(false);
                         props.navigation.navigate('Home');
                     }
                     props.setQuizPage("Home");

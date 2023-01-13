@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 import 'react-native-gesture-handler';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Node } from 'react';
 import { Image, Platform, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { Button, PermissionsAndroid } from "react-native";
@@ -14,7 +14,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem, } from '@react-navigation/drawer';
 import { getHeaderTitle } from '@react-navigation/elements';
 import SwitchSelector from 'react-native-switch-selector';
-import { givenAnswersSunflowers } from "./Components/Quiz/QuestionsAndAnswers";
+import { questionsGreatWave, questionsSunflowers } from "./Components/Quiz/QuestionsAndAnswers";
+import { themes, getIndexByTheme, pointPerLevel } from './Components/Achievements/AchievementLists';
 
 import {
   SafeAreaView,
@@ -35,6 +36,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import moment from 'moment';
 import { Header as HeaderRNE, HeaderProps } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -46,7 +48,8 @@ import Quiz from './Components/Quiz/Quiz';
 import QuizHistory from './Components/QuizHistory/QuizHistory';
 import Achievements from './Components/Achievements/Achievements';
 import { node } from 'prop-types';
-import { achievementsList } from './Components/Achievements/AchievementLists';
+import { pathStrings, readFromFile, writeToFile, resetFiles } from './Globals/storageFunctions';
+import { achievementsList as al, doneByTheme as dbt, quizAnswered as qa, givenAnswersArtifact as gaa } from './Globals/storageFunctions'
 
 //const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -107,6 +110,7 @@ const UserInfoText = () => {
 
 const CustomHeader = (props) => {
   return (
+    props.isQuizOpen === false &&
     <View style={{ ...props.style, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
       <TouchableOpacity>
         <MCIcon style={{ paddingVertical: 13, paddingHorizontal: 13 }} size={28} color="#FFF" name="menu" onPress={() => { props.navigation.getParent("MenuDrawer").openDrawer(); }}></MCIcon>
@@ -142,15 +146,16 @@ const RightDrawerContent = () => {
 const LeftDrawerContent = (props) => {
   return (
     <DrawerContentScrollView {...props}>
+      {/*
       <View style={{ flexDirection: "row", alignItems: "center", alignItems: "center" }}>
-        <DrawerItem label="Language" style={{ flex: 4, marginLeft: 0 }} labelStyle={{ color: styles.palette._1 }} icon={IconComponent('globe', 0) /* also "language" icon */} />
+        <DrawerItem label="Language" style={{ flex: 4, marginLeft: 0 }} labelStyle={{ color: styles.palette._1 }} icon={IconComponent('globe', 0)} />
         <View style={{ flex: 2 }}><CustomSwitchSelector opts={[
           { label: "ENG", value: 0, },
           { label: "ITA", value: 1 }
         ]} /></View>
       </View>
       <View style={{ flexDirection: "row", justifyContent: 'center', alignItems: "center" }}>
-        <DrawerItem label="Audio description" style={{ flex: 5, marginLeft: 0 }} labelStyle={{ color: styles.palette._1 }} icon={IconComponent('volume-up', 0) /* also "audio-description" icon */} />
+        <DrawerItem label="Audio description" style={{ flex: 5, marginLeft: 0 }} labelStyle={{ color: styles.palette._1 }} icon={IconComponent('volume-up', 0)} />
         <Switch value='false' style={{ flex: 1 }}></Switch>
       </View>
       <View style={{ flexDirection: "row", justifyContent: 'center', alignItems: "center" }}>
@@ -160,6 +165,7 @@ const LeftDrawerContent = (props) => {
           { label: "BIG", value: 1 }
         ]} /></View>
       </View>
+       */}
       <DrawerItemList {...props} activeBackgroundColor={styles.palette._1} />
     </DrawerContentScrollView >
   );
@@ -167,6 +173,7 @@ const LeftDrawerContent = (props) => {
 
 // Right drawer
 const RightDrawerNavigator = () => {
+  const [isQuizOpen, setIsQuizOpen] = useState(false);
   return (
     <RightDrawer.Navigator id="RightDrawer"
       drawerContent={(props) => <RightDrawerContent {...props} />}
@@ -175,42 +182,193 @@ const RightDrawerNavigator = () => {
         drawerInactiveTintColor: styles.palette._1, drawerInactiveBackgroundColor: "#fff",
         drawerActiveTintColor: styles.palette._1, drawerActiveBackgroundColor: "FFF",
         drawerItemStyle: { marginLeft: 0 }
+        swipeEnabled: isQuizOpen ? false : true
       }}>
-      <RightDrawer.Screen name="MenuDrawer" component={LeftDrawerNavigator} />
-      
+      <RightDrawer.Screen name="MenuDrawer">
+        {(props) => <LeftDrawerNavigator {...props} isQuizOpen={isQuizOpen} setIsQuizOpen={setIsQuizOpen} />}
+      </RightDrawer.Screen>
     </RightDrawer.Navigator>
   );
 };
 
 /* Quiz and Home screens are hidden in the drawer, but still available */
-const LeftDrawerNavigator = () => {
-  const [numTakenQuiz, setNumTakenQuiz] = useState(0);
+const LeftDrawerNavigator = (props) => {
+  const [takenQuiz, setTakenQuiz] = useState([]);
+  const [doneByTheme, setDoneByTheme] = useState({});
+  const [achievementsList, setAchievementsList] = useState([]);
+  const [quizAnswered, setQuizAnswered] = useState([]);
+  const [newAchieved, setNewAchieved] = useState([]);
+  const isQuizOpen = props.isQuizOpen, setIsQuizOpen = props.setIsQuizOpen;
+
+
+  // USE THIS FOR KEEPING THE STATE
+  useEffect(() => {
+    readFromFile(pathStrings.path_givenAnswers).then((success) => { setTakenQuiz(success) });
+    readFromFile(pathStrings.path_doneByTheme).then((success) => { setDoneByTheme(success) });
+    readFromFile(pathStrings.path_achievementsList).then((success) => { setAchievementsList(success) });
+    readFromFile(pathStrings.path_quizAnswered).then((success) => { setQuizAnswered(success) });
+  }, []);
+
+  useEffect(() => {
+    writeToFile(pathStrings.path_givenAnswers, takenQuiz);
+  }, [takenQuiz]);
+
+  useEffect(() => {
+    writeToFile(pathStrings.path_achievementsList, achievementsList);
+  }, [achievementsList]);
+
+  useEffect(() => {
+    writeToFile(pathStrings.path_doneByTheme, doneByTheme);
+  }, [doneByTheme]);
+
+  useEffect(() => {
+    writeToFile(pathStrings.path_quizAnswered, quizAnswered);
+  }, [quizAnswered]);
+
+  /*
+  // USE THIS FOR RESET
+  useEffect(() => {
+    resetFiles();
+    setAchievementsList(al);
+    setDoneByTheme(dbt);
+    setQuizAnswered(qa);
+    setTakenQuiz(gaa);
+  }, []);*/
+
+  const getDone = (theme) => {
+    let index = getIndexByTheme(theme);
+    return doneByTheme[index];
+  }
+
+  const getQuizDetails = (quiz) => {
+    switch (quiz.artifact) {
+      case "Sunflowers":
+        return {
+          index: 1,
+          theme: getIndexByTheme(themes.vanGogh),
+          questionSolutions: questionsSunflowers
+        };
+      case "The Great Wave":
+        return {
+          index: 2,
+          theme: getIndexByTheme(themes.nineteenthCentury),
+          questionSolutions: questionsGreatWave
+        };
+      default: return {};
+    }
+  }
+
+  const updateQuizAnswered = (lastQuiz, quizDetails) => {
+    let count = 0;
+    let oldScore = 0;
+    let updatedAnswers = [];
+    let correctLocalAnswer = [];
+    let quizAnsweredToUpdate = quizAnswered.find(q => q.quizID === quizDetails.index);
+
+    if (quizAnsweredToUpdate.bestScore === 3) {
+      return {
+        result: quizAnsweredToUpdate,
+        oldScore: 3
+      };
+    }
+
+    for (let i = 0; i < 3; i++) {
+      correctLocalAnswer[i] = (lastQuiz.answers[i] === quizDetails.questionSolutions[i].solution ? 1 : 0);
+      oldScore += quizAnsweredToUpdate.correctAnswers[i];
+      updatedAnswers[i] = quizAnsweredToUpdate.correctAnswers[i] | correctLocalAnswer[i];
+      count += updatedAnswers[i];
+    }
+
+    return {
+      result: {
+        quizID: quizDetails.index,
+        correctAnswers: updatedAnswers,
+        bestScore: count
+      },
+      oldScore: oldScore
+    };
+  }
+
+  const updateAchievementList = (theme, scoreDelta) => {
+    let newAchieved = [];
+    let points = doneByTheme[theme];
+    switch (theme) {
+      case getIndexByTheme(themes.vanGogh):
+        if ((points < pointPerLevel.enjoyer) && ((points + scoreDelta >= pointPerLevel.enjoyer))) {
+          setAchievementsList(list => list.map(a => a.id === 1 ? Object.assign({}, a, { date_obtained: moment().format('MM/DD/YYYY') }) : a));
+          newAchieved.push(achievementsList.find(a => a.id === 1));
+        }
+        if ((points < pointPerLevel.fan) && ((points + scoreDelta >= pointPerLevel.fan))) {
+          setAchievementsList(list => list.map(a => a.id === 3 ? Object.assign({}, a, { date_obtained: moment().format('MM/DD/YYYY') }) : a));
+          newAchieved.push(achievementsList.find(a => a.id === 3));
+        }
+        if ((points < pointPerLevel.expert) && ((points + scoreDelta >= pointPerLevel.expert))) {
+          setAchievementsList(list => list.map(a => a.id === 6 ? Object.assign({}, a, { date_obtained: moment().format('MM/DD/YYYY') }) : a));
+          newAchieved.push(achievementsList.find(a => a.id === 6));
+        }
+        break;
+      case getIndexByTheme(themes.nineteenthCentury):
+        if ((points < pointPerLevel.novice) && ((points + scoreDelta >= pointPerLevel.novice))) {
+          setAchievementsList(list => list.map(a => a.id === 22 ? Object.assign({}, a, { date_obtained: moment().format('MM/DD/YYYY') }) : a));
+          newAchieved.push(achievementsList.find(a => a.id === 22));
+        }
+        if ((points < pointPerLevel.expert) && ((points + scoreDelta >= pointPerLevel.expert))) {
+          setAchievementsList(list => list.map(a => a.id === 23 ? Object.assign({}, a, { date_obtained: moment().format('MM/DD/YYYY') }) : a));
+          newAchieved.push(achievementsList.find(a => a.id === 23));
+        }
+        break;
+      default:
+        break;
+    }
+    return newAchieved;
+  }
+
+  const updateState = (lastQuiz) => {
+    let details = getQuizDetails(lastQuiz);
+    let updatedQuizAnswered = updateQuizAnswered(lastQuiz, details);
+    let scoreDelta = updatedQuizAnswered.result.bestScore - updatedQuizAnswered.oldScore;
+    if (scoreDelta !== 0) {
+      let res = updateAchievementList(details.theme, scoreDelta);
+      setNewAchieved(res);
+      setQuizAnswered(list => list.map((q) => (q.quizID === details.index ? updatedQuizAnswered.result : q)));
+      setDoneByTheme(obj => {
+        let updated = {};
+        updated[details.theme] = obj[details.theme] + scoreDelta;
+        return Object.assign({}, obj, updated);
+      });
+    }
+  }
+
   return (
     <Drawer.Navigator  id="MenuDrawer" drawerContent={(props) => <LeftDrawerContent {...props} />} screenOptions={{
       drawerPosition: 'left',
       unmountOnBlur:true,
       header: ({ navigation, route, options }) => {
         const title = getHeaderTitle(options, route.name);
-        return <CustomHeader navigation={navigation} title={title} style={options.headerStyle} />;
+        return <CustomHeader navigation={navigation} title={title} style={options.headerStyle} isQuizOpen={isQuizOpen} />;
       },
       headerStyle: { backgroundColor: styles.palette._1 }, headerTintColor: '#fff', headerTitleAlign: "center",
       drawerInactiveTintColor: styles.palette._1, drawerInactiveBackgroundColor: "#fff",
       drawerActiveTintColor: styles.palette._1, drawerActiveBackgroundColor: "FFF",
       drawerItemStyle: { marginLeft: 0 }
+      swipeEnabled: isQuizOpen ? false : true
     }}>
-      <Drawer.Screen name="Home" component={HomePage} options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} />
+      <Drawer.Screen name="Home" options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }}>
+        {(props) => <HomePage {...props} setIsQuizOpen={setIsQuizOpen} />}
+      </Drawer.Screen>
       {
         // dalla pagina degli artifact si passa ai quiz prop artifact
         // uguale a "Sunflowers" o a "The Great Wave"
       }
       <Drawer.Screen name="Quiz" options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} >
-        {(props) => <Quiz {...props} setNumTakenQuiz={setNumTakenQuiz} artifact={"The Great Wave"} />}
+        {(props) => <Quiz {...props} isQuizOpen={isQuizOpen} setIsQuizOpen={setIsQuizOpen} takenQuiz={takenQuiz} setTakenQuiz={setTakenQuiz} updateState={updateState} artifact={"The Great Wave"}
+          newAchieved={newAchieved} setNewAchieved={setNewAchieved} />}
       </Drawer.Screen>
       <Drawer.Screen name="Achievements" options={{ drawerIcon: IconComponent('trophy', 0), drawerLabel: "Achievements", title: "IntARactive Museum" }}>
-        {(props) => <Achievements {...props} list={achievementsList} />}
+        {(props) => <Achievements {...props} list={achievementsList} getDone={getDone} />}
       </Drawer.Screen>
       <Drawer.Screen name="QuizHistory" options={{ drawerIcon: IconComponent('clipboard-list', 0), drawerLabel: "Quiz History", title: "IntARactive Museum" }} >
-        {(props) => <QuizHistory {...props} numTakenQuiz={numTakenQuiz} />}
+        {(props) => <QuizHistory {...props} takenQuiz={takenQuiz} />}
       </Drawer.Screen>
       <Drawer.Screen name="Tips" options={{ drawerIcon: IconComponent('lightbulb-on-outline', 1), drawerLabel: "Tips", title: "IntARactive Museum" }} >
         {(props) => <Tips {...props} isFirstVisit={false} />}
@@ -226,7 +384,6 @@ const LeftDrawerNavigator = () => {
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [place, setPlace] = useState(true);
-  const [numTakenQuiz, setNumTakenQuiz] = useState(0);
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
