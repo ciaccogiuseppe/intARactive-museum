@@ -148,13 +148,15 @@ const firstscene = (props) => {
     const overlayActive = props.arSceneNavigator.viroAppProps.overlayActive;
     const curArtifact = props.arSceneNavigator.viroAppProps.curArtifact;
     const setCurArtifact = props.arSceneNavigator.viroAppProps.setCurArtifact;
+    const setGlobArtifact = props.arSceneNavigator.viroAppProps.setGlobArtifact;
 
     return <>
     
     {curScene.main == "scene1" && <ARSunflowersMain 
       curScene={curScene} setNextScene={setNextScene}
       nextScene={nextScene} overlayActive={overlayActive}
-      curArtifact={curArtifact} setCurArtifact={setCurArtifact}/>}
+      curArtifact={curArtifact} setCurArtifact={setCurArtifact}
+      setGlobArtifact={setGlobArtifact}/>}
 
 
     {curScene.main == "scene2" && <ARSunflowersFlowers curScene={curScene} setNextScene={setNextScene} nextScene={nextScene} overlayActive={overlayActive}/>}
@@ -172,8 +174,8 @@ const firstscene = (props) => {
     </>
   }
 
-const ARComponent = ({navigation}) => {
-
+const ARComponent = (props) => {
+  const { navigation } = props;
   const secondFooter = true;
   const [position, setPosition] = useState([0,0,0]);
   const [percentage, setPercentage] = useState(2);
@@ -182,6 +184,7 @@ const ARComponent = ({navigation}) => {
   const [curScene, setCurScene] = useState({main:"scene1", inner:""});
   const [curArtifact, setCurArtifact] = useState(0);
   const [switchC, setSwitchC] = useState(true);
+  const setGlobArtifact = props.setCurArtifact;
   const [panelProps, setPanelProps] = useState({
     fullWidth: true,
     openLarge: false,
@@ -273,7 +276,8 @@ const ARComponent = ({navigation}) => {
             setNextScene: setNextScene,
             overlayActive:isPanelActive,
             curArtifact: curArtifact,
-            setCurArtifact: setCurArtifact}
+            setCurArtifact: setCurArtifact,
+            setGlobArtifact: setGlobArtifact}
             }
           initialScene={{
             scene: firstscene
@@ -320,7 +324,7 @@ const ARComponent = ({navigation}) => {
         
         {curArtifact > 0 &&<View style={styles.footer}>
 
-            <TouchableHighlight style={styles.button}>
+            <TouchableHighlight style={styles.button} onPress={() =>  navigation.navigate('Quiz')}>
             <Text style={{alignSelf:"center"}} >Quiz</Text>
             </TouchableHighlight>
             <TouchableHighlight style={styles.button} onPress={() => openPanel()}>
@@ -403,7 +407,7 @@ const ARComponent = ({navigation}) => {
             <Icon2  style={{margin:4}} name="arrow-back" type="Ionicons" color="white" size={30} />
           </TouchableOpacity>}
           <Text style={{color:"white", margin:4, fontSize: 16, alignSelf:'center', position:'absolute'}}>{artifactNames[curArtifact]}</Text>
-          <TouchableOpacity onPress={() => {setCurArtifact(0); navigation.navigate('Home')}} style={{marginLeft: 'auto', margin: 6}}>
+          <TouchableOpacity onPress={() => {setCurArtifact(0); setCurScene({main:"scene1", inner:""}); setNextScene({main:"scene1", inner:""}); navigation.navigate('ARObject')}} style={{marginLeft: 'auto', margin: 6}}>
             <Icon  name="circle-with-cross" type="Entypo" color="white" size={30} />
           </TouchableOpacity>
           

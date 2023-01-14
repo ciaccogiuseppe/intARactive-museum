@@ -47,9 +47,11 @@ import Tips from './Components/Tips/Tips';
 import Quiz from './Components/Quiz/Quiz';
 import QuizHistory from './Components/QuizHistory/QuizHistory';
 import Achievements from './Components/Achievements/Achievements';
+import { useRoute } from '@react-navigation/native';
 import { node } from 'prop-types';
 import { pathStrings, readFromFile, writeToFile, resetFiles } from './Globals/storageFunctions';
 import { achievementsList as al, doneByTheme as dbt, quizAnswered as qa, givenAnswersArtifact as gaa } from './Globals/storageFunctions'
+import { Divider } from 'react-native-paper';
 
 //const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -128,7 +130,7 @@ const RightDrawerContent = () => {
     <SafeAreaView style={{ flex: 1 }} forceInset={{ top: "always", horizontal: "never" }}>
       <DrawerContentScrollView>
         <View style={{ flexDirection: "row", justifyContent: 'center', alignItems: "center" }}>
-          <Icon style={{ paddingVertical: 15 }} size={90} color="#777" name="user-tie"></Icon>
+          <Icon style={{ paddingVertical: 15, marginTop:20, paddingBottom:0 }} size={90} color="#777" name="user-tie"></Icon>
         </View>
         <View style={{ flexDirection: "row", justifyContent: 'center', alignItems: "center" }}>
           <UserInfoText />
@@ -182,6 +184,7 @@ const RightDrawerNavigator = () => {
         drawerInactiveTintColor: styles.palette._1, drawerInactiveBackgroundColor: "#fff",
         drawerActiveTintColor: styles.palette._1, drawerActiveBackgroundColor: "FFF",
         drawerItemStyle: { marginLeft: 0 },
+        drawerStyle:{backgroundColor:styles.palette._5, width:200},
         swipeEnabled: isQuizOpen ? false : true
       }}>
       <RightDrawer.Screen name="MenuDrawer">
@@ -198,6 +201,8 @@ const LeftDrawerNavigator = (props) => {
   const [achievementsList, setAchievementsList] = useState([]);
   const [quizAnswered, setQuizAnswered] = useState([]);
   const [newAchieved, setNewAchieved] = useState([]);
+  const [reset, setReset] = useState(false);
+  const [curArtifact, setCurArtifact] = useState("");
   const isQuizOpen = props.isQuizOpen, setIsQuizOpen = props.setIsQuizOpen;
 
 
@@ -228,18 +233,21 @@ const LeftDrawerNavigator = (props) => {
   useEffect(() => {
     if(quizAnswered.length != 0)
     writeToFile(pathStrings.path_quizAnswered, quizAnswered);
-    console.log(quizAnswered)
   }, [quizAnswered]);
 
   
   // USE THIS FOR RESET
-  /*useEffect(() => {
-    resetFiles();
-    setAchievementsList(al);
-    setDoneByTheme(dbt);
-    setQuizAnswered(qa);
-    setTakenQuiz(gaa);
-  }, []);*/
+  useEffect(() => {
+    if(reset == true){
+      resetFiles();
+      setAchievementsList(al);
+      setDoneByTheme(dbt);
+      setQuizAnswered(qa);
+      setTakenQuiz(gaa);
+      setReset(false);
+    }
+    
+  }, [reset]);
 
   const getDone = (theme) => {
     let index = getIndexByTheme(theme);
@@ -351,7 +359,6 @@ const LeftDrawerNavigator = (props) => {
       });
     }
   }
-
   return (
     <Drawer.Navigator  id="MenuDrawer" drawerContent={(props) => <LeftDrawerContent {...props} />} screenOptions={{
       drawerPosition: 'left',
@@ -361,9 +368,10 @@ const LeftDrawerNavigator = (props) => {
         return <CustomHeader navigation={navigation} title={title} style={options.headerStyle} isQuizOpen={isQuizOpen} />;
       },
       headerStyle: { backgroundColor: styles.palette._1 }, headerTintColor: '#fff', headerTitleAlign: "center",
-      drawerInactiveTintColor: styles.palette._1, drawerInactiveBackgroundColor: "#fff",
-      drawerActiveTintColor: styles.palette._1, drawerActiveBackgroundColor: "FFF",
-      drawerItemStyle: { marginLeft: 0 },
+      drawerInactiveTintColor: styles.palette._1, drawerInactiveBackgroundColor: styles.palette._5,
+      drawerActiveTintColor: styles.palette._1, drawerActiveBackgroundColor: styles.palette._5,
+      drawerStyle:{backgroundColor:styles.palette._5, width:200},
+      drawerItemStyle: { marginLeft: 0},
       swipeEnabled: isQuizOpen ? false : true
     }}>
       <Drawer.Screen name="Home" options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }}>
@@ -374,19 +382,32 @@ const LeftDrawerNavigator = (props) => {
         // uguale a "Sunflowers" o a "The Great Wave"
       }
       <Drawer.Screen name="Quiz" options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} >
-        {(props) => <Quiz {...props} isQuizOpen={isQuizOpen} setIsQuizOpen={setIsQuizOpen} takenQuiz={takenQuiz} setTakenQuiz={setTakenQuiz} updateState={updateState} artifact={"Sunflowers"}
+        {(props) => <Quiz {...props} isQuizOpen={isQuizOpen} setIsQuizOpen={setIsQuizOpen} takenQuiz={takenQuiz} setTakenQuiz={setTakenQuiz} updateState={updateState} artifact={curArtifact}
           newAchieved={newAchieved} setNewAchieved={setNewAchieved} />}
       </Drawer.Screen>
-      <Drawer.Screen name="Achievements" options={{ drawerIcon: IconComponent('trophy', 0), drawerLabel: "Achievements", title: "IntARactive Museum" }}>
-        {(props) => <Achievements {...props} list={achievementsList} getDone={getDone} />}
+      <Drawer.Screen name="Achievements" options={{ drawerIcon: IconComponent('trophy', 0), drawerLabel: "Achievements", title: "IntARactive Museum", drawerItemStyle:{marginTop:20, marginLeft:5, paddingBottom:5, borderBottomColor:styles.palette._1, borderBottomWidth:0.5}}}>
+        {(props) => <Achievements {...props} list={achievementsList} getDone={getDone} setReset={setReset} />}
       </Drawer.Screen>
-      <Drawer.Screen name="QuizHistory" options={{ drawerIcon: IconComponent('clipboard-list', 0), drawerLabel: "Quiz History", title: "IntARactive Museum" }} >
+
+
+      <Drawer.Screen name="QuizHistory" options={{drawerItemStyle:{marginLeft:5, marginTop:0, paddingBottom:5, borderBottomColor:styles.palette._1, borderBottomWidth:0.5}, drawerIcon: IconComponent('clipboard-list', 0), drawerLabel: "Quiz History", title: "IntARactive Museum" }} >
         {(props) => <QuizHistory {...props} takenQuiz={takenQuiz} />}
       </Drawer.Screen>
-      <Drawer.Screen name="Tips" options={{ drawerIcon: IconComponent('lightbulb-on-outline', 1), drawerLabel: "Tips", title: "IntARactive Museum" }} >
+      <Drawer.Screen name="Tips" options={{drawerItemStyle:{marginLeft:5, marginTop:0, paddingBottom:5, borderBottomColor:styles.palette._1, borderBottomWidth:0.5},  drawerIcon: IconComponent('lightbulb-on-outline', 1), drawerLabel: "Tips", title: "IntARactive Museum" }} >
         {(props) => <Tips {...props} isFirstVisit={false} />}
       </Drawer.Screen>
-      <Stack.Screen name="ARObject" component={ARComponent} options={{drawerItemStyle: { height: 0 }}}/>
+
+      <Drawer.Screen name="ToHome" options={{drawerItemStyle:{marginLeft:5, marginTop:0},  drawerIcon: IconComponent('home', 0), drawerLabel: "Back to home", title: "IntARactive Museum" }} >
+        {(props) => <HomePage {...props} setIsQuizOpen={setIsQuizOpen} />}
+      </Drawer.Screen>
+
+      <Drawer.Screen name="TipsFirst" options={{drawerItemStyle: { height: 0 }}} >
+        {(props) => <Tips {...props} isFirstVisit={true} />}
+      </Drawer.Screen>
+
+      <Stack.Screen name="ARObject" options={{drawerItemStyle: { height: 0 }}}>
+        {(props) => <ARComponent {...props} setCurArtifact={setCurArtifact}/>}
+      </Stack.Screen>
 
     </Drawer.Navigator>)
 };

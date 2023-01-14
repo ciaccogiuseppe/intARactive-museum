@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { TouchableHighlight, View } from 'react-native';
 import { Text, Icon } from "@rneui/themed";
-import { Overlay } from 'react-native-elements';
+import { Button, Overlay } from 'react-native-elements';
 import { ActivityBar } from '../../Globals/Components'
 import { achievementsList, getDone, getNeeded, levels } from './AchievementLists';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -19,8 +19,10 @@ const Achievements = (props) => {
             <Icon name='account-circle' size={150} />
         </View>
         <View style={{ flex: 2 }}>
-            <IconsList list={props.list} getDone={props.getDone} />
+            <IconsList list={props.list} getDone={props.getDone} setReset={props.setReset}/>
+            
         </View>
+        
     </>
 }
 
@@ -59,13 +61,15 @@ function IconsList(props) {
             scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: false });
         }
     }, [isFocused]);
-    console.log(props.list);
     return <ScrollView ref={scrollViewRef}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', flexWrap: "wrap" }}>
             {props.list.map((achievement) => <AchievementIcon key={achievement.id} title={achievement.title} theme={achievement.theme}
                 done={props.getDone(achievement.theme)} needed={getNeeded(achievement)} date_obtained={achievement.date_obtained}
                 level={achievement.level} />)}
         </View>
+        <TouchableHighlight onPress={() => props.setReset(true)} style={{opacity:0.3}}>
+                <Text></Text>
+            </TouchableHighlight>
     </ScrollView>;
 }
 

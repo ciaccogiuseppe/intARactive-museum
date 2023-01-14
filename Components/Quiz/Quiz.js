@@ -117,30 +117,38 @@ const QuizHomePage = (props) => {
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={false}
             setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact} />
 
-        <Image source={props.artifact == "Sunflowers" ?
-            require('./../../res/default.jpg') :
-            require('./../../res/default2.jpg')
-        }
-            style={{ height: 240, width: 180, alignSelf: "center", marginTop: 10 }} />
+        <View style={{backgroundColor:styles.palette._5, flex:1}}>
+            <Image source={props.artifact == "Sunflowers" ?
+                require('./../../res/default.jpg') :
+                require('./../../res/default2.jpg')
+            }
+                style={
+                    props.artifact == "Sunflowers" ?
+                    { height: 240, width: 180, alignSelf: "center", marginTop: 20, borderRadius:20, borderColor:styles.palette._3, borderWidth:3 }:
+                    { height: 240, width: 320, alignSelf: "center", marginTop: 20, borderRadius:20, borderColor:styles.palette._3, borderWidth:3 }
+                    
+                    } />
 
-        <Text style={{ color: 'black', marginTop: 10, alignSelf: 'center', fontSize: 40, fontWeight: "bold" }}>
-            Quiz
-        </Text>
-        <Text style={{ color: 'black', marginTop: 5, alignSelf: 'center', fontSize: 27, textAlign: "center" }}>
-            Test your knowledge{"\n"}about "{props.artifact}"
-        </Text>
-        <Text style={{ fontStyle: 'italic', color: 'black', marginTop: 5, marginHorizontal: 10, alignSelf: 'center', textAlign: 'center', fontSize: 20 }}>
-            There will be 3 questions in this quiz.{"\n"}
-            Only one answer for each question is correct.
-        </Text>
+            <Text style={{ color: 'black', margin: 10, alignSelf: 'center', fontSize: 40, fontWeight: "bold" }}>
+                QUIZ
+            </Text>
+            <Divider color="black"></Divider>
+            <Text style={{ color: 'black', marginTop: 5, alignSelf: 'center', fontSize: 27, textAlign: "center" }}>
+                Test your knowledge about{"\n"}"{props.artifact}"
+            </Text>
+            <Text style={{ fontStyle: 'italic', color: 'grey', marginTop: 5, marginHorizontal: 10, alignSelf: 'center', textAlign: 'center', fontSize: 16 }}>
+                There will be 3 questions in this quiz.{"\n"}
+                Only one answer for each question is correct.
+            </Text>
 
-        <View style={{ ...styles.bottom }}>
-            <TouchableHighlight 
-                underlayColor={styles.palette._3}
-                style={{ ...styles.buttonConfirm, width: "90%", alignSelf: 'center' }} onPress={() => props.setQuizPage("Question")}>
-                <Text style={styles.textButtonConfirm}>START NOW</Text>
-            </TouchableHighlight>
-        </View>
+            <View style={{ ...styles.bottom}}>
+                <TouchableHighlight 
+                    underlayColor={styles.palette._3}
+                    style={{ ...styles.buttonConfirm, width: "90%", alignSelf: 'center' }} onPress={() => props.setQuizPage("Question")}>
+                    <Text style={styles.textButtonConfirm}>START NOW</Text>
+                </TouchableHighlight>
+            </View>
+            </View>
     </>
 }
 
@@ -158,7 +166,7 @@ const QuizQuestion = (props) => {
                 underlayColor={styles.palette._4}
                 style={answerSelected === i ?
                 { ...styles.quizSelected, width: "90%", alignSelf: 'center' } :
-                { ...styles.button, width: "90%", alignSelf: 'center', backgroundColor: "white", borderWidth: 3 }}
+                { ...styles.button, width: "90%", alignSelf: 'center', backgroundColor:styles.palette._0, borderWidth: 3 }}
                 onPress={() => setAnswerSelected(i)}>
                 <Text style={{ color: answerSelected === i ? "white" : styles.palette._2, alignSelf: 'center', fontSize: 16, fontWeight: "600" }}>{props.questionAndAnswers.options[i]}</Text>
             </TouchableHighlight>
@@ -167,7 +175,7 @@ const QuizQuestion = (props) => {
 
     <hr />
 
-    return <View style={{ flex: 1 }}>
+    return <View style={{ flex: 1, backgroundColor:styles.palette._5 }}>
         <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum} setIsQuizOpen={props.setIsQuizOpen} isQuizOpen={props.isQuizOpen}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={true}
             setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact} />
@@ -178,7 +186,7 @@ const QuizQuestion = (props) => {
             setScore={props.setScore} setAnswers={props.setAnswers} navigation={props.navigation}
             setQuizPage={props.setQuizPage} overlay={props.overlay} />
 
-        <Text style={{ color: 'black', paddingHorizontal: 20, marginTop: 90, marginBottom: 30, alignSelf: 'center', fontSize: 28, textAlign: "center" }}>
+        <Text style={{ color: 'black', paddingHorizontal: 20, marginTop: 90, marginBottom: 60, alignSelf: 'center', fontWeight:'bold', fontSize: 28, textAlign: "center" }}>
             {props.questionAndAnswers.question}
         </Text>
 
@@ -210,46 +218,49 @@ const QuizCorrectOrWrong = (props) => {
     }, []);
 
     return <>
-        <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum} setIsQuizOpen={props.setIsQuizOpen} isQuizOpen={props.isQuizOpen}
-            setAnswers={props.setAnswers} navigation={props.navigation} xIcon={true}
-            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact} />
+        <View style={{flex:1, backgroundColor:styles.palette._5}}>
+            <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum} setIsQuizOpen={props.setIsQuizOpen} isQuizOpen={props.isQuizOpen}
+                setAnswers={props.setAnswers} navigation={props.navigation} xIcon={true}
+                setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact} />
 
-        <QuizBreadcrumb quizNum={props.quizNum} />
+        
+            <QuizBreadcrumb quizNum={props.quizNum} />
 
-        <ConfirmExitOverlay setOverlay={props.setOverlay} setQuizNum={props.setQuizNum}
-            setScore={props.setScore} setAnswers={props.setAnswers} navigation={props.navigation}
-            setQuizPage={props.setQuizPage} overlay={props.overlay} setIsQuizOpen={props.setIsQuizOpen} />
+            <ConfirmExitOverlay setOverlay={props.setOverlay} setQuizNum={props.setQuizNum}
+                setScore={props.setScore} setAnswers={props.setAnswers} navigation={props.navigation}
+                setQuizPage={props.setQuizPage} overlay={props.overlay} setIsQuizOpen={props.setIsQuizOpen} />
 
-    
-        <QuizCorrectOrWrongBody answers={props.answers} quizNum={props.quizNum}
-            questionAndAnswers={props.artifact == "Sunflowers" ?
-                questionsSunflowers[props.quizNum - 1] :
-                questionsGreatWave[props.quizNum - 1]} />
+        
+            <QuizCorrectOrWrongBody answers={props.answers} quizNum={props.quizNum}
+                questionAndAnswers={props.artifact == "Sunflowers" ?
+                    questionsSunflowers[props.quizNum - 1] :
+                    questionsGreatWave[props.quizNum - 1]} />
 
-        <View style={{ ...styles.bottom }}>
-            <TouchableHighlight 
-                underlayColor={styles.palette._3}
-                style={{ ...styles.buttonConfirm, width: "90%", alignSelf: 'center' }} onPress={() => {
-                if (props.quizNum < 3) {
-                    props.setQuizNum(x => x + 1);
-                    props.setQuizPage("Question");
-                } else {
-                    props.setQuizNum(1);
-                    props.updateState({
-                        artifact: props.artifact,
-                        answers: props.answers,
-                        date: moment().format("YYYY/MM/DD [at] hh:mm A"),
-                        score: props.score
-                    });
-                    props.addAnswers();
-                    props.setQuizPage("Results");
-                }
-            }}>
-                <Text style={styles.textButtonConfirm}>{props.quizNum == 3 ?
-                    "SUBMIT AND SEE RESULTS" :
-                    "NEXT"
-                }</Text>
-            </TouchableHighlight>
+            <View style={{ ...styles.bottom }}>
+                <TouchableHighlight 
+                    underlayColor={styles.palette._3}
+                    style={{ ...styles.buttonConfirm, width: "90%", alignSelf: 'center' }} onPress={() => {
+                    if (props.quizNum < 3) {
+                        props.setQuizNum(x => x + 1);
+                        props.setQuizPage("Question");
+                    } else {
+                        props.setQuizNum(1);
+                        props.updateState({
+                            artifact: props.artifact,
+                            answers: props.answers,
+                            date: moment().format("YYYY/MM/DD [at] hh:mm A"),
+                            score: props.score
+                        });
+                        props.addAnswers();
+                        props.setQuizPage("Results");
+                    }
+                }}>
+                    <Text style={styles.textButtonConfirm}>{props.quizNum == 3 ?
+                        "SUBMIT AND SEE RESULTS" :
+                        "NEXT"
+                    }</Text>
+                </TouchableHighlight>
+            </View>
         </View>
     </>
 }
@@ -279,16 +290,18 @@ const QuizResults = (props) => {
             break;
     }
     return <>
+        <View style={{flex:1, backgroundColor:styles.palette._5}}>
         <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum} setIsQuizOpen={props.setIsQuizOpen} isQuizOpen={props.isQuizOpen}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={false}
             setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact} />
 
         <QuizBreadcrumb quizNum={-1} />
         
-        <View  style={{ ...styles.quizCards, marginTop: 55 }}>
+        <View  style={{ ...styles.quizCards, marginTop: 55, backgroundColor:styles.palette._0 }}>
             <Text style={{ color: 'black', alignSelf: 'center', fontSize: 40, fontWeight: "bold" }}>
-                Quiz result
+                QUIZ RESULT
             </Text>
+            <Divider color="black"></Divider>
             <Text style={{ color: 'black', marginTop: 10, alignSelf: 'center', fontSize: 25 }}>
                 You answered correctly at
             </Text>
@@ -296,16 +309,16 @@ const QuizResults = (props) => {
                 {props.score}/3
             </Text>
             <Text style={{ color: 'black', alignSelf: 'center', fontSize: 25 }}>
-                proposed questions
+                questions
             </Text>
         </View>
 
-        <View style={{ ...styles.quizCards, marginTop: 10 }}>
+        <View style={{ ...styles.quizCards, marginTop: 10, backgroundColor:styles.palette._0  }}>
             <Text style={{ color: 'black', marginHorizontal: 10, alignSelf: 'flex-start', fontSize: 20, textAlign: "justify" }}>
                 {resultCommentMessage}
             </Text>
-            <Text style={{ color: 'black', marginHorizontal: 10, alignSelf: 'flex-start', fontSize: 20, textAlign: "justify" }}>
-                This quiz attempt has been saved into <Text style={{ fontWeight: "bold" }}>Quiz History</Text>.
+            <Text style={{ color: 'black', marginHorizontal: 10, alignSelf: 'flex-start', fontSize: 20, textAlign: "center" }}>
+                This quiz attempt has been saved into <Text style={{ fontWeight: "bold" }}>Quiz History</Text>
             </Text>
         </View>
 
@@ -331,6 +344,7 @@ const QuizResults = (props) => {
                 })}
             </View>
         </Overlay> : <></>}
+        </View>
     </>
 }
 
@@ -363,25 +377,25 @@ const QuizBreadcrumb = (props) => {
     return <>
         {/* height breadcrumb: 35 */}
         <View style={{ ...styles.breadcrumb }}>
-            <Text style={{ color: props.quizNum == 1 ? 'black' : 'gray', fontSize: 15, paddingRight: 15 }}>
+            <Text style={{ color: props.quizNum == 1 ? 'black' : 'gray', fontSize: 15, paddingRight: 10, marginLeft:5 }}>
                 Question 1
             </Text>
             <Text style={{ color: 'gray', fontSize: 15, paddingRight: 15 }}>
                 &gt;
             </Text>
-            <Text style={{ color: props.quizNum == 2 ? 'black' : 'gray', fontSize: 15, paddingRight: 15 }}>
+            <Text style={{ color: props.quizNum == 2 ? 'black' : 'gray', fontSize: 15, paddingRight: 10 }}>
                 Question 2
             </Text>
             <Text style={{ color: 'gray', fontSize: 15, paddingRight: 15 }}>
                 &gt;
             </Text>
-            <Text style={{ color: props.quizNum == 3 ? 'black' : 'gray', fontSize: 15, paddingRight: 15 }}>
+            <Text style={{ color: props.quizNum == 3 ? 'black' : 'gray', fontSize: 15, paddingRight: 10 }}>
                 Question 3
             </Text>
             <Text style={{ color: 'gray', fontSize: 15, paddingRight: 15 }}>
                 &gt;
             </Text>
-            <Text style={{ color: props.quizNum == -1 ? 'black' : 'gray', fontSize: 15 }}>
+            <Text style={{ color: props.quizNum == -1 ? 'black' : 'gray', fontSize: 15, marginRight:5 }}>
                 Results
             </Text>
         </View>
@@ -397,8 +411,8 @@ export const QuizCorrectOrWrongBody = (props) => {
     }
 
     return <>
-        <View style={{ ...styles.quizCards, marginTop: 45 }}>
-            <Text style={{ color: correct ? 'green' : '#d80303', alignSelf: 'center', fontSize: 35, fontWeight: "800", marginBottom: 10 }}>
+        <View style={{ ...styles.quizCards, marginTop: 55, backgroundColor:styles.palette._0 }}>
+            <Text style={{ color: correct ? '#5d9b59' : '#EC4646', alignSelf: 'center', fontSize: 35, fontWeight: "800", marginBottom: 10 }}>
                 {correct ? "Correct!" : "Wrong!"}
             </Text>
 
@@ -408,7 +422,7 @@ export const QuizCorrectOrWrongBody = (props) => {
                         <Text style={{ marginLeft: 10, marginRight: 10, fontSize: 20 }}>Your answer:</Text>
                     </View>
                     <View>
-                        <Text style={{ color: 'green', fontStyle: "italic", fontWeight: "600", fontSize: 20, marginRight: 10 }}>
+                        <Text style={{ color: '#5d9b59', fontStyle: "italic", fontWeight: "600", fontSize: 20, marginRight: 10 }}>
                             {props.questionAndAnswers.options[props.answers[props.quizNum - 1]]}
                         </Text>
                     </View>
@@ -420,7 +434,7 @@ export const QuizCorrectOrWrongBody = (props) => {
                             <Text style={{ marginLeft: 10, marginRight: 10, fontSize: 20 }}>Your answer:</Text>
                         </View>
                         <View>
-                            <Text style={{ color: '#d80303', fontStyle: "italic", fontWeight: "600", fontSize: 20, marginRight: 10 }}>
+                            <Text style={{ color: '#EC4646', fontStyle: "italic", fontWeight: "600", fontSize: 20, marginRight: 10 }}>
                                 {props.questionAndAnswers.options[props.answers[props.quizNum - 1]]}
                             </Text>
                         </View>
@@ -430,7 +444,7 @@ export const QuizCorrectOrWrongBody = (props) => {
                             <Text style={{ marginLeft: 10, marginRight: 10, fontSize: 20 }}>Correct answer:</Text>
                         </View>
                         <View>
-                            <Text style={{ color: 'green', fontStyle: "italic", fontWeight: "600", fontSize: 20, marginRight: 10 }}>
+                            <Text style={{ color: '#5d9b59', fontStyle: "italic", fontWeight: "600", fontSize: 20, marginRight: 10 }}>
                                 {props.questionAndAnswers.options[props.questionAndAnswers.solution]}
                             </Text>
                         </View>
@@ -439,7 +453,7 @@ export const QuizCorrectOrWrongBody = (props) => {
             }
         </View>
 
-        <View style={{ ...styles.quizCards, marginTop: 10 }}>
+        <View style={{ ...styles.quizCards, marginTop: 10, backgroundColor:styles.palette._0 }}>
             <Text style={{ color: 'black', marginHorizontal: 10, alignSelf: 'center', fontSize: 23, textAlign: "center", fontWeight: "900" }}>
                 {props.questionAndAnswers.question}
             </Text>

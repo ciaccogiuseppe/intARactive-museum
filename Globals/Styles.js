@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
     },
     arView: {
       flex: 10,
+      backgroundColor:'black'
     },
     footer: {
       flex: 1,

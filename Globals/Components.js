@@ -52,7 +52,7 @@ function ActivityBar(props) {
                 </TouchableOpacity>
                 :
                 <TouchableOpacity>
-                                    <Icon name="question-circle" size={props.isMenuHidden ? 28 : 25} style={{ opacity: 0, marginRight: 13, paddingVertical: props.isMenuHidden ? 13 : 0  }}></Icon>
+                                    <Icon name="question-circle" size={props.isMenuHidden ? 28 : 25} style={{ opacity: 1, marginRight: 13, paddingVertical: props.isMenuHidden ? 13 : 0  }}></Icon>
                 </TouchableOpacity>
                 }
         </View>

@@ -19,9 +19,10 @@ const QuizHistory = (props) => {
                 <ActivityBar titleName={'Quiz history'} navigation={props.navigation} isHome={true} onHomeOrBack={() => navigation.navigate('Home')} />
 
                 {props.takenQuiz.length === 0 ?
+                    <View style={{backgroundColor:styles.palette._5, height:"100%"}}>
                     <Text style={{ color: 'black', marginTop: 250, alignSelf: 'center', fontSize: 20 }}>
-                        You have not completed any quiz yet.
-                    </Text> :
+                        You have not completed any quiz yet
+                    </Text></View> :
                     <View style={{ flex: 2 }}>
                         <CompletedQuizList navigation={navigation}
                             setHistoryId={setHistoryId} takenQuiz={props.takenQuiz}
@@ -52,7 +53,6 @@ const CompletedQuizList = (props) => {
             scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: false });
         }
     }, [isFocused]);
-    console.log(props);
     let list = [];
     for (let i = 0; i < props.takenQuiz.length; ++i) {
         list.push(<TouchableHighlight  underlayColor={styles.palette._4} key={i} style={{ ...styles.button, borderColor:styles.palette._3, borderWidth:3, backgroundColor:styles.palette._0, marginTop: i == 0 ? 20 : 5, width: "90%", alignSelf: 'center' }}
@@ -78,7 +78,7 @@ const CompletedQuizList = (props) => {
         </TouchableHighlight>
         );
     }
-    return <ScrollView ref={scrollViewRef}>
+    return <ScrollView ref={scrollViewRef} style={{backgroundColor:styles.palette._5}}>
         <View>
             {list}
         </View>
@@ -122,24 +122,27 @@ const QuizHistoryCorrectOrWrong = (props) => {
                 Question 3
             </Text>
         </View>
-        <QuizCorrectOrWrongBody answers={props.answers} quizNum={props.historyNum}
-            questionAndAnswers={props.questionAndAnswers} />
 
-        <View style={{ ...styles.bottom }}>
-            <TouchableHighlight underlayColor={styles.palette._3} style={{ ...styles.buttonConfirm, marginBottom:20}} onPress={() => {
-                if (props.historyNum < 3) {
-                    props.setHistoryNum(x => x + 1);
-                } else {
-                    props.setHistoryNum(1);
-                    props.setHistoryPage("Home");
-                }
-            }}>
+        <View style={{flex:1, backgroundColor:styles.palette._5}}>
+            <QuizCorrectOrWrongBody answers={props.answers} quizNum={props.historyNum}
+                questionAndAnswers={props.questionAndAnswers} />
 
-                <Text style={styles.textButtonConfirm}>{props.historyNum == 3 ?
-                    "BACK TO QUIZ HISTORY" :
-                    "NEXT"
-                }</Text>
-            </TouchableHighlight>
+            <View style={{ ...styles.bottom }}>
+                <TouchableHighlight underlayColor={styles.palette._3} style={{ ...styles.buttonConfirm}} onPress={() => {
+                    if (props.historyNum < 3) {
+                        props.setHistoryNum(x => x + 1);
+                    } else {
+                        props.setHistoryNum(1);
+                        props.setHistoryPage("Home");
+                    }
+                }}>
+
+                    <Text style={styles.textButtonConfirm}>{props.historyNum == 3 ?
+                        "BACK TO QUIZ HISTORY" :
+                        "NEXT"
+                    }</Text>
+                </TouchableHighlight>
+            </View>
         </View>
     </>
 }

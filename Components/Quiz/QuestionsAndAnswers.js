@@ -1,6 +1,6 @@
 export const questionsSunflowers = [
   {
-    question: "Where did Van Gogh paint them?",
+    question: "Where did Van Gogh paint the Sunflowers?",
     options: [
       "Arles",
       "Paris",

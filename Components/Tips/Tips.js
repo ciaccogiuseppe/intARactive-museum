@@ -85,12 +85,14 @@ const Tips = ({ navigation, isFirstVisit }) => {
                 case '1':
                     return (
                         <View style={renderItemStyles.container}>
+                            <Text style={{position:'absolute', fontSize:370, left:55, top:0, opacity:0.01}}>1</Text>
                             <Text style={renderItemStyles.title}>{item.title}</Text>
                             <Animated.Image source={item.image} style={renderItemStyles.image_page1} />
                         </View>
                     );
                 case '2':
                     return (<View style={renderItemStyles.container}>
+                        <Text style={{position:'absolute', fontSize:370, left:75, top:0, opacity:0.06}}>2</Text>
                         <Text style={renderItemStyles.title}>{item.title}</Text>
                         <View style={renderItemStyles.itemRowGroup}>
                             <Animated.Text style={renderItemStyles.itemRowGroup_text}>{item.description1}</Animated.Text>
@@ -104,6 +106,7 @@ const Tips = ({ navigation, isFirstVisit }) => {
                     </View>);
                 case '3':
                     return (<View style={renderItemStyles.container}>
+                        <Text style={{position:'absolute', fontSize:370, left:75, top:0, opacity:0.06}}>3</Text>
                         <Text style={renderItemStyles.title}>{item.title}</Text>
                         <View style={renderItemStyles.itemRowGroup}>
                             <Animated.Text style={renderItemStyles.itemRowGroup_text}>{item.description1}</Animated.Text>
@@ -126,6 +129,7 @@ const Tips = ({ navigation, isFirstVisit }) => {
                     </View>);
                 case '4':
                     return (<View style={renderItemStyles.container}>
+                        <Text style={{position:'absolute', fontSize:370, left:75, top:0, opacity:0.06}}>4</Text>
                         <Text style={renderItemStyles.title}>{item.title}</Text>
                         
                         <View style={renderItemStyles.itemRowGroup}>
@@ -196,12 +200,12 @@ const Tips = ({ navigation, isFirstVisit }) => {
             {curPage < 3 ? <TouchableHighlight style={{ ...otherStyles.button }} onPress={() => {
                 flatListRef.current.scrollToIndex({ animated: true, index: (curPage + 1) });
             }}>
-                <Text style={{ color: 'white', alignSelf: 'center' }}>Next</Text>
+                <Text style={{ color: 'white', alignSelf: 'center' }}>NEXT</Text>
             </TouchableHighlight> : (isFirstVisit === true ? <TouchableHighlight style={{ ...otherStyles.button }} onPress={() => {
                 setNewPage(1);
-                navigation.navigate("Home");
+                navigation.navigate("ARObject");
             }}>
-                <Text style={{ color: 'white', alignSelf: 'center' }}>Start now</Text>
+                <Text style={{ color: 'white', alignSelf: 'center' }}>START NOW</Text>
             </TouchableHighlight> : <TouchableHighlight style={{ ...otherStyles.button, opacity: 0 }} >
                 <Text></Text>
             </TouchableHighlight>)}

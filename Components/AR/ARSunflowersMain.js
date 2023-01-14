@@ -12,6 +12,7 @@ const ARSunflowersMain = (props) => {
     const [pauseUpdates, setPauseUpdates] = useState(false);
     const curArtifact = props.curArtifact;
     const setCurArtifact = props.setCurArtifact;
+    const setGlobArtifact = props.setGlobArtifact;
     const curScene = props.curScene;
     const setNextScene = props.setNextScene;
     const nextScene = props.nextScene;
@@ -33,7 +34,7 @@ const ARSunflowersMain = (props) => {
       {(curArtifact == 0 || curArtifact == 1) &&
       <ViroARImageMarker 
       target={"logo"}
-      onAnchorFound={() => setCurArtifact(1)}
+      onAnchorFound={() => {setCurArtifact(1); setGlobArtifact("Sunflowers")}}
       pauseUpdates={pauseUpdates}>
       
       {curArtifact == 1 && <>
@@ -181,7 +182,7 @@ const ARSunflowersMain = (props) => {
     </ViroARImageMarker>}
     {(curArtifact == 0 || curArtifact == 2) && <ViroARImageMarker 
       target={"logo2"}
-      onAnchorFound={() => setCurArtifact(2)}
+      onAnchorFound={() => {setCurArtifact(2); setGlobArtifact("The Great Wave")}}
       pauseUpdates={pauseUpdates}>
         {curArtifact == 2 && <>
           <ViroBox 
