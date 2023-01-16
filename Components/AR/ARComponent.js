@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ViroARImageMarker, ViroARScene, ViroARSceneNavigator, ViroARTrackingTargets, ViroBox, ViroCamera, ViroImage, ViroMaterials, ViroOmniLight, ViroSphere, ViroSpotLight, ViroText } from "@viro-community/react-viro"
 import styles from "../../Globals/Styles"
 import Icon from 'react-native-vector-icons/Entypo';
@@ -30,6 +30,7 @@ import { Svg, Text as T2 } from 'react-native-svg';
 import ARWaveWave from './ARWaveWave';
 import ARWaveSignature from './ARWaveSignature';
 import ARWaveBoats from './ARWaveBoats';
+import { useFocusEffect } from '@react-navigation/native';
 
 const artifactNames = [
   " - ",
@@ -256,12 +257,24 @@ const ARComponent = (props) => {
     else getBack();
     return true;
   })
+  const [arVisible, setArVisible] = useState(false);
+  useFocusEffect(
+    useCallback(() => {
+      // Do something when the screen is focused/mount
+      setArVisible(true);
+      return () => {
+        setArVisible(false);
+        // Do something when the screen is unfocused/unmount
+        // Useful for cleanup functions
+      };
+    }, [])
+  );
 
   const ref = React.createRef();
     return(
         <>
         <View style={styles.arView}>
-        <ViroARSceneNavigator
+        {arVisible && <ViroARSceneNavigator
           ref={ref}
           autofocus={true}
           style={styles.arView}
@@ -284,7 +297,7 @@ const ARComponent = (props) => {
           }}
         >
         
-        </ViroARSceneNavigator>
+        </ViroARSceneNavigator>}
         </View>
         {/*<View style={styles.crosshair}/>*/}
         
@@ -360,12 +373,12 @@ const ARComponent = (props) => {
         </Text></View>}
 
         
-        <Overlay onBackdropPress={() => getBack()} isVisible={curScene.inner == "description1" || curScene.inner == "description2"} overlayStyle={{backgroundColor:styles.palette._0, color:styles.palette._0}}>
+        <Overlay onBackdropPress={() => getBack()} isVisible={curScene.inner == "description1" || curScene.inner == "description2"} overlayStyle={{borderColor:styles.palette._3, borderWidth:3, borderRadius: 15, width:"93%", backgroundColor:styles.palette._0, color:styles.palette._0}}>
         <Text style={{color:"black", alignSelf:"center", fontSize:25, fontWeight:"bold"}}>{aritfactName[curArtifact]}</Text>
         <Text style={{color:"black", alignSelf:"center", fontSize:17}}>{authorDate[curArtifact]}</Text>
         
-        <Divider color="black" inset={true} insetType="middle" style={{margin:3}}/>
-        <Text style={{color:"black", alignSelf:"center", fontSize:16, fontWeight:"bold"}}>
+        <Divider color="black" inset={true} insetType="middle" style={{marginTop:5, marginBottom:0}}/>
+        <Text style={{color:"black", alignSelf:"center", fontSize:16, fontWeight:"bold", marginTop:0}}>
           {overlaySubtitle[curScene.main+curScene.inner]}
         </Text>
           <Text style={{color:"black", alignSelf:"center", fontSize:15, padding:10}}>{descriptions[curScene.main+curScene.inner]}</Text>

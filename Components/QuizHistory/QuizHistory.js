@@ -1,4 +1,4 @@
-import { Text } from "@rneui/themed";
+import { Text, Icon } from "@rneui/themed";
 import React, { useEffect, useState } from 'react';
 import { TouchableHighlight, View, ScrollView } from "react-native";
 import styles from "../../Globals/Styles";
@@ -6,6 +6,7 @@ import { QuizCorrectOrWrongBody } from "../Quiz/Quiz";
 import { questionsSunflowers, questionsGreatWave } from "../Quiz/QuestionsAndAnswers";
 import { ActivityBar } from "../../Globals/Components";
 import { useIsFocused } from '@react-navigation/native';
+import { Button, Divider, Overlay } from 'react-native-elements';
 
 const QuizHistory = (props) => {
     const { navigation } = props;
@@ -13,10 +14,11 @@ const QuizHistory = (props) => {
     const [historyPage, setHistoryPage] = useState("Home");
     const [historyNum, setHistoryNum] = useState(1);
     const [historyId, setHistoryId] = useState(0);
+    const [helpOverlay, setHelpOverlay] = useState(false);
     switch (historyPage) {
         case "Home":
             return <>
-                <ActivityBar titleName={'Quiz history'} navigation={props.navigation} isHome={true} onHomeOrBack={() => navigation.navigate('Home')} />
+                <ActivityBar onHelp={()=>setHelpOverlay(true)}  titleName={'Quiz history'} navigation={props.navigation} isHome={true} onHomeOrBack={() => navigation.navigate('Home')} />
 
                 {props.takenQuiz.length === 0 ?
                     <View style={{backgroundColor:styles.palette._5, height:"100%"}}>
@@ -27,7 +29,16 @@ const QuizHistory = (props) => {
                         <CompletedQuizList navigation={navigation}
                             setHistoryId={setHistoryId} takenQuiz={props.takenQuiz}
                             setHistoryPage={setHistoryPage} setHistoryNum={setHistoryNum} historyNum={historyNum} />
-                    </View>}
+                    </View>
+                    }
+                <Overlay  isVisible={helpOverlay} onBackdropPress={()=>setHelpOverlay(false)} overlayStyle={{borderColor:styles.palette._3, borderWidth:3, backgroundColor: styles.palette._4, color: styles.palette._4, borderRadius: 15, width: '65%', height: '20%' }}>
+                    <View>
+                        <Icon name='close' type='material' onPress={()=>setHelpOverlay(false)} style={{ color: 'black', marginLeft: 'auto' }}></Icon>
+                        <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 20, margin: 5, alignSelf: "center", alignContent: 'center', position: 'absolute' }}>HELP</Text>
+                        <Divider color="black" style={{marginTop:10, width:"70%", alignSelf:'center'}}/>
+                        <Text style={{ textAlign: "center", fontSize: 14, margin: 10 }}>{"Click on the achievement icons to see more details about the achievements"}</Text>
+                    </View>
+                </Overlay>
             </>
             break;
         case "Info":
@@ -93,6 +104,7 @@ const QuizHistoryCorrectOrWrong = (props) => {
         correct = false;
     }
     return <>
+    <View style={{flex:1, backgroundColor:styles.palette._5}}>
         <ActivityBar titleName={'Quiz - ' + props.artifact} isClose={true} onCloseOrHelp={() => {
             props.setHistoryNum(1);
             props.setHistoryPage("Home");
@@ -101,7 +113,7 @@ const QuizHistoryCorrectOrWrong = (props) => {
             props.setHistoryNum(1);
             props.setHistoryPage("Home");
         }} />
-
+        
         <View style={{ ...styles.breadcrumb }}>
             <Text style={{ color: props.historyNum == 1 ? 'black' : 'gray', fontSize: 15, paddingRight: 15 }}
                 onPress={() => props.setHistoryNum(1)}>
@@ -123,7 +135,7 @@ const QuizHistoryCorrectOrWrong = (props) => {
             </Text>
         </View>
 
-        <View style={{flex:1, backgroundColor:styles.palette._5}}>
+        
             <QuizCorrectOrWrongBody answers={props.answers} quizNum={props.historyNum}
                 questionAndAnswers={props.questionAndAnswers} />
 

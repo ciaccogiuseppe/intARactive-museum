@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
   breadcrumb: {
     flex: 1,
-    top: 55,
+    top: 45,
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',

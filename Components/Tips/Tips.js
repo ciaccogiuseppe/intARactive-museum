@@ -161,7 +161,7 @@ const Tips = ({ navigation, isFirstVisit }) => {
         {isFirstVisit === false ? <ActivityBar titleName="Tips" navigation={navigation} onCloseOrHelp={() => {
             setNewPage(1);
             navigation.navigate("Home");
-        }} isClose={true} /> : <></>}
+        }} isClose={true}  isHome={true}/> : <></>}
         <View style={{ ...otherStyles.container }}/* marginTop: 50*/>
             <FlatList
                 flex={1}

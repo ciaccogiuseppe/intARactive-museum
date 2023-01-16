@@ -9,6 +9,7 @@ import { questionsSunflowers, questionsGreatWave, givenAnswersArtifact, quizAnsw
 import { updateDone } from '../Achievements/AchievementLists';
 import { ActivityBar } from '../../Globals/Components';
 import { pathStrings, writeToFile } from '../../Globals/storageFunctions';
+import { Alert } from 'react-native';
 
 const Quiz = (props) => {
     const { navigation } = props;
@@ -20,6 +21,18 @@ const Quiz = (props) => {
     const [overlay, setOverlay] = useState(0); //0 no overlay, 1 overlay home, 2 overlay X button
     const [newAchieved, setNewAchieved] = useState([]);
     const [overlayAchieved, setOverlayAchieved] = useState(false);
+
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', (e) => {
+            setQuizPage("Home");
+            setQuizNum(1);
+            setScore(0);
+            setAnswers([]);
+            setOverlay(0);
+        });
+    
+        return unsubscribe;
+      }, [navigation]);
 
     const updateBest = () => {
         let correctLocalAnswer = [];
@@ -112,10 +125,14 @@ const Quiz = (props) => {
 }
 
 const QuizHomePage = (props) => {
+    useEffect(() => {
+        props.setIsQuizOpen(false);
+    }, []);
+    const [helpOverlay, setHelpOverlay] = useState(false);
     return <>
         <QuizSecondHeader setScore={props.setScore} setQuizNum={props.setQuizNum} setIsQuizOpen={props.setIsQuizOpen} isQuizOpen={props.isQuizOpen}
             setAnswers={props.setAnswers} navigation={props.navigation} xIcon={false}
-            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} artifact={props.artifact} />
+            setQuizPage={props.setQuizPage} setOverlay={props.setOverlay} setHelp={setHelpOverlay} artifact={props.artifact} />
 
         <View style={{backgroundColor:styles.palette._5, flex:1}}>
             <Image source={props.artifact == "Sunflowers" ?
@@ -149,6 +166,16 @@ const QuizHomePage = (props) => {
                 </TouchableHighlight>
             </View>
             </View>
+
+            <Overlay isVisible={helpOverlay} onBackdropPress={()=>setHelpOverlay(false)} overlayStyle={{borderColor:styles.palette._1, borderWidth:3,  backgroundColor: styles.palette._4, color: styles.palette._4, borderRadius: 15, width: '65%', height: '20%' }}>
+
+            <View>
+                <Icon name='close' type='material' onPress={()=>setHelpOverlay(false)} style={{ color: 'black', marginLeft: 'auto' }}></Icon>
+                <Text style={{  textAlign: "center", fontWeight: "bold", fontSize: 20, margin: 5, alignSelf: "center", alignContent: 'center', position: 'absolute' }}>HELP</Text>
+                <Divider color="black" style={{marginTop:10, width:"70%", alignSelf:'center'}}/>
+                <Text style={{ textAlign: "center", fontSize: 14, margin: 10 }}>{"Start the quiz to test your knowledge about " + props.artifact + "\nYou can unlock new achievements by completing quizzes"}</Text>
+            </View>
+            </Overlay>
     </>
 }
 
@@ -268,7 +295,7 @@ const QuizCorrectOrWrong = (props) => {
 
 const QuizResults = (props) => {
     useEffect(() => {
-        props.setIsQuizOpen(true);
+        props.setIsQuizOpen(false);
     }, []);
 
     let resultCommentMessage = "";
@@ -352,11 +379,12 @@ const QuizSecondHeader = (props) => {
     return <>
         <ActivityBar
             titleName={"Quiz - " + props.artifact}
-            isMenuHidden={props.isQuizOpen}
+            isMenuHidden={false}
             navigation={props.navigation}
             isHome={true}
             isClose={props.xIcon ? true : undefined}
             onCloseOrHelp={() => { props.setOverlay(2); }}    // Overlay "X" button
+            onHelp={() => {props.setHelp(true);}}
             onHomeOrBack={() => {
                 if (props.xIcon) { //quizQuestion or quizCorrectOrWrong page
                     props.setOverlay(1);
@@ -464,8 +492,10 @@ export const QuizCorrectOrWrongBody = (props) => {
     </>
 }
 
+
+
 const ConfirmExitOverlay = (props) => {
-    return <Overlay onBackdropPress={() => props.setOverlay(0)} isVisible={props.overlay != 0} overlayStyle={{ backgroundColor: styles.palette._0, color: styles.palette._0, borderRadius: 10, padding: 20 }}>
+    return <Overlay onBackdropPress={() => props.setOverlay(0)} isVisible={props.overlay != 0} overlayStyle={{borderColor:styles.palette._3, borderWidth:3, backgroundColor: styles.palette._0, color: styles.palette._0, borderRadius: 10, padding: 20 }}>
         <Text style={{ color: "black", alignSelf: "center", fontSize: 22, fontWeight: "700" }}>
             Your progress will be lost
         </Text>

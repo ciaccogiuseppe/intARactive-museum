@@ -112,16 +112,16 @@ const UserInfoText = () => {
 
 const CustomHeader = (props) => {
   return (
-    props.isQuizOpen === false &&
     <View style={{ ...props.style, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
       <TouchableOpacity>
-        <MCIcon style={{ paddingVertical: 13, paddingHorizontal: 13 }} size={28} color="#FFF" name="menu" onPress={() => { props.navigation.getParent("MenuDrawer").openDrawer(); }}></MCIcon>
+        <MCIcon style={{ paddingVertical: 13, paddingHorizontal: 13, opacity:props.isQuizOpen?0.2:1 }} size={28} color={"#FFF"} name="menu" onPress={props.isQuizOpen? ()=>{} : () => { props.navigation.getParent("MenuDrawer").openDrawer(); }}></MCIcon>
       </TouchableOpacity>
       <Text style={{ fontSize: 20, color: "#FFF" }}> int<Text style={{ fontWeight: "900", color: styles.palette._0 }}>AR</Text>active museum </Text>
       <TouchableOpacity>
         <Icon style={{ paddingVertical: 13, paddingHorizontal: 13 }} size={25} color="#FFF" name="user-circle" onPress={() => { props.navigation.getParent("RightDrawer").openDrawer() }}></Icon>
       </TouchableOpacity>
     </View>
+    
   );
 };
 
@@ -360,9 +360,11 @@ const LeftDrawerNavigator = (props) => {
     }
   }
   return (
-    <Drawer.Navigator  id="MenuDrawer" drawerContent={(props) => <LeftDrawerContent {...props} />} screenOptions={{
+    <Drawer.Navigator  
+      backBehavior="history"
+      id="MenuDrawer" drawerContent={(props) => <LeftDrawerContent {...props} />} screenOptions={{
       drawerPosition: 'left',
-      unmountOnBlur:true,
+      unmountOnBlur:false,
       header: ({ navigation, route, options }) => {
         const title = getHeaderTitle(options, route.name);
         return <CustomHeader navigation={navigation} title={title} style={options.headerStyle} isQuizOpen={isQuizOpen} />;
@@ -381,7 +383,7 @@ const LeftDrawerNavigator = (props) => {
         // dalla pagina degli artifact si passa ai quiz prop artifact
         // uguale a "Sunflowers" o a "The Great Wave"
       }
-      <Drawer.Screen name="Quiz" options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }} >
+      <Drawer.Screen name="Quiz" options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum", swipeEnabled:false }} >
         {(props) => <Quiz {...props} isQuizOpen={isQuizOpen} setIsQuizOpen={setIsQuizOpen} takenQuiz={takenQuiz} setTakenQuiz={setTakenQuiz} updateState={updateState} artifact={curArtifact}
           newAchieved={newAchieved} setNewAchieved={setNewAchieved} />}
       </Drawer.Screen>
@@ -405,9 +407,9 @@ const LeftDrawerNavigator = (props) => {
         {(props) => <Tips {...props} isFirstVisit={true} />}
       </Drawer.Screen>
 
-      <Stack.Screen name="ARObject" options={{drawerItemStyle: { height: 0 }}}>
+      <Drawer.Screen name="ARObject" options={{drawerItemStyle: { height: 0 }}}>
         {(props) => <ARComponent {...props} setCurArtifact={setCurArtifact}/>}
-      </Stack.Screen>
+      </Drawer.Screen>
 
     </Drawer.Navigator>)
 };
@@ -425,11 +427,7 @@ const App = () => {
   return (
     <View style={styles.container}>
       <NavigationContainer>
-        <Drawer.Navigator>
-        
-        <Drawer.Screen name="RightDrawer" component={RightDrawerNavigator} options={{ headerShown: false }}/>
-        
-        </Drawer.Navigator>
+        <RightDrawerNavigator/>
       </NavigationContainer>
     </View >
   );
