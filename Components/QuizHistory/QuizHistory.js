@@ -36,7 +36,7 @@ const QuizHistory = (props) => {
                         <Icon name='close' type='material' onPress={()=>setHelpOverlay(false)} style={{ color: 'black', marginLeft: 'auto' }}></Icon>
                         <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 20, margin: 5, alignSelf: "center", alignContent: 'center', position: 'absolute' }}>HELP</Text>
                         <Divider color="black" style={{marginTop:10, width:"70%", alignSelf:'center'}}/>
-                        <Text style={{ textAlign: "center", fontSize: 14, margin: 10 }}>{"Click on the achievement icons to see more details about the achievements"}</Text>
+                        <Text style={{ textAlign: "center", fontSize: 14, margin: 10 }}>{"Here you can browse your past quiz attempts"}</Text>
                     </View>
                 </Overlay>
             </>

@@ -24,7 +24,7 @@ const Achievements = (props) => {
             <IconsList list={props.list} getDone={props.getDone} setReset={props.setReset}/>
             
         </View>
-        <Overlay isVisible={helpOverlay} onBackdropPress={()=>setHelpOverlay(false)} overlayStyle={{borderColor:styles.palette._1, borderWidth:3,  backgroundColor: styles.palette._4, color: styles.palette._4, borderRadius: 15, width: '65%', height: '20%' }}>
+        <Overlay isVisible={helpOverlay} onBackdropPress={()=>setHelpOverlay(false)} overlayStyle={{borderColor:styles.palette._3, borderWidth:3,  backgroundColor: styles.palette._4, color: styles.palette._4, borderRadius: 15, width: '65%', height: '20%' }}>
             <View>
                 <Icon name='close' type='material' onPress={()=>setHelpOverlay(false)} style={{ color: 'black', marginLeft: 'auto' }}></Icon>
                 <Text style={{ textAlign: "center", fontWeight: "bold", fontSize: 20, margin: 5, alignSelf: "center", alignContent: 'center', position: 'absolute' }}>HELP</Text>
