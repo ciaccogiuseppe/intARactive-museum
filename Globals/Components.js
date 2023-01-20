@@ -48,11 +48,11 @@ function ActivityBar(props) {
             <Text style={{ alignSelf: 'center', fontSize: 23, color: "#FFF", opacity: 1 }}>{props.titleName}</Text>
             {props.isClose !== undefined && props.onCloseOrHelp !== undefined ?
                 <TouchableOpacity>
-                    <MCIcon name="close-circle" onPress={()=>props.onCloseOrHelp()} size={props.isMenuHidden ? 28 : 25} style={{ opacity: 1, marginRight: 13, paddingVertical: props.isMenuHidden ? 13 : 0  }}></MCIcon>
+                    <MCIcon name="close-circle" onPress={()=>props.onCloseOrHelp()} size={props.isMenuHidden ? 28 : 25} style={{color: "#FFF", opacity: 1, marginRight: 13, paddingVertical: props.isMenuHidden ? 13 : 0  }}></MCIcon>
                 </TouchableOpacity>
                 :
                 <TouchableOpacity>
-                                    <Icon name="question-circle" onPress={()=>props.onHelp()} size={props.isMenuHidden ? 28 : 25} style={{ opacity: 1, marginRight: 13, paddingVertical: props.isMenuHidden ? 13 : 0  }}></Icon>
+                    <Icon name="question-circle" onPress={()=>props.onHelp()} size={props.isMenuHidden ? 28 : 25} style={{color: "#FFF", opacity: 1, marginRight: 13, paddingVertical: props.isMenuHidden ? 13 : 0  }}></Icon>
                 </TouchableOpacity>
                 }
         </View>
