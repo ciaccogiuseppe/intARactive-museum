@@ -184,7 +184,7 @@ const ARComponent = (props) => {
   const [nextScene, setNextScene] = useState({main:"scene1", inner:""});
   const [curScene, setCurScene] = useState({main:"scene1", inner:""});
   const [curArtifact, setCurArtifact] = useState(0);
-  const [switchC, setSwitchC] = useState(true);
+  const [switchC, setSwitchC] = useState(false);
   const setGlobArtifact = props.setCurArtifact;
   const [panelProps, setPanelProps] = useState({
     fullWidth: true,
