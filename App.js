@@ -209,10 +209,10 @@ const LeftDrawerNavigator = (props) => {
   // USE THIS FOR KEEPING THE STATE
   useEffect(() => {
 
-    readFromFile(pathStrings.path_givenAnswers).then((success) => { setTakenQuiz(success) });
-    readFromFile(pathStrings.path_doneByTheme).then((success) => { setDoneByTheme(success) });
-    readFromFile(pathStrings.path_achievementsList).then((success) => { setAchievementsList(success) });
-    readFromFile(pathStrings.path_quizAnswered).then((success) => { setQuizAnswered(success) });
+    readFromFile(pathStrings.path_givenAnswers).then((success) => { setTakenQuiz(success) }).catch(e => console.log(e));
+    readFromFile(pathStrings.path_doneByTheme).then((success) => { setDoneByTheme(success) }).catch(e => console.log(e));
+    readFromFile(pathStrings.path_achievementsList).then((success) => { setAchievementsList(success) }).catch(e => console.log(e));
+    readFromFile(pathStrings.path_quizAnswered).then((success) => { setQuizAnswered(success) }).catch(e => console.log(e));
   }, []);
 
   useEffect(() => {
@@ -377,7 +377,7 @@ const LeftDrawerNavigator = (props) => {
       swipeEnabled: isQuizOpen ? false : true
     }}>
       <Drawer.Screen name="Home" options={{ drawerItemStyle: { display: "none" }, title: "IntARactive Museum" }}>
-        {(props) => <HomePage {...props} setIsQuizOpen={setIsQuizOpen} />}
+        {(props) => <HomePage {...props} setIsQuizOpen={setIsQuizOpen} setReset={setReset}/>}
       </Drawer.Screen>
       {
         // dalla pagina degli artifact si passa ai quiz prop artifact

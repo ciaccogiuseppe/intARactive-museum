@@ -34,7 +34,7 @@ const readFromFile = async (path) => {
     }
     catch (error) {
         console.log(error);
-        return "ERROR in reading: " + path;
+        throw "ERROR in reading: " + path;
     }
 };
 

@@ -1,17 +1,19 @@
 import { Button, Text } from "@rneui/themed";
 import { TouchableHighlight, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import Animated from "react-native-reanimated";
 import styles from "../../Globals/Styles";
-
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 const HomePage = (props) => {
     const { navigation } = props;
     return <>
     <View style={{height:"100%", backgroundColor:styles.palette._5}}>
     <Animated.Image source={require('./../../res/logo.png')} style={{alignSelf:'center', height: 120, width: 350, margin: 20, marginBottom:0 }} />
+    <AnimatedTouchable onPress={() => props.setReset(true)}>
     <Animated.Image source={require('./../../res/logo2.png')} style={{alignSelf:'center', height: 30, width: 250, margin: 2 }} />
-
+    </AnimatedTouchable>
     <Animated.Image source={require('./../../res/mainpage.png')} style={{alignSelf:'center', height: 330, width: 240, margin: 2 }} />
-
+    
     {/*<TouchableHighlight style={{...styles.button, width:"40%", alignSelf:'center'}} onPress={() => navigation.navigate('Tips')}>
         <Text style={{color:'white', alignSelf:'center'}}>Tips</Text>
     </TouchableHighlight>
