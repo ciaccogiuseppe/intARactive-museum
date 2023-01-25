@@ -392,6 +392,14 @@ const ARComponent = (props) => {
           right: 0,
           bottom: 0,
           backgroundColor: 'rgba(0,0,0,0.7)'}} />
+        <TouchableOpacity style={{position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.01)'}}
+          onPress={()=>getBack()}/>
+        
         <VideoPlayer
             video={curArtifact==1?require('../../res/sunflowersvid.mp4'):require('../../res/wavevid.mp4')}
             videoWidth={1920}
@@ -410,7 +418,8 @@ const ARComponent = (props) => {
                 position: 'absolute',
                 top: '33%'}
               }}
-        /></>}
+        /></>
+        }
         
         
         {curArtifact > 0 &&
