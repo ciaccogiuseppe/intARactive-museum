@@ -17,10 +17,10 @@ const Achievements = (props) => {
     const [helpOverlay, setHelpOverlay] = useState(false);
     return <>
         <ActivityBar titleName="Achievements" navigation={props.navigation} isHome={true} onHelp={()=>setHelpOverlay(true)} />
-        <View style={{ alignItems: 'center', paddingTop: 20, flex: 1, flexGrow: 1 }}>
+        <View style={{ alignItems: 'center', paddingTop: 20, flex: 1, flexGrow: 1, backgroundColor:styles.palette._5 }}>
             <Icon2 name='user-tie' color="#777" size={150} onPress={()=>props.setReset}/>
         </View>
-        <View style={{ flex: 2 }}>
+        <View style={{ backgroundColor:styles.palette._5, flex: 2 }}>
             <IconsList list={props.list} getDone={props.getDone} setReset={props.setReset}/>
             
         </View>
